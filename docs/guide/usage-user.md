@@ -11,7 +11,7 @@
   - Customize table name.
   - Customize rules.
   - Customize attribute labels.
-  - Customize 
+  - Customize behaviors.
 
 ## Implement your own User model
 
@@ -107,8 +107,8 @@ When a user provides new password, you also need to check the password reset tok
 $result = $user->resetPassword('<New Password>', '<Password Reset Token>');
 ```
 
-This is to prevent data inconsistency.
+This is to prevent data inconsistency, because it is possible that password reset token has been updated before reset new password.
 
-## Design Pattern
+## Best Practices
 
 We do not recommend you do any changes on this class, unless you know the consequences of doing so.
