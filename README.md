@@ -1,7 +1,47 @@
-# yii2-user
-Common user model, including identity and profile.
+# rhosocial/yii2-user
+Common User & Profile Models for Yii 2.
 
 ## Introduction
 This package consists of two models:
 - User: GUID, ID, Password Hash, IP Address, Timestamp, Password Refresh Token, Auth Key, Source, Status.
 - Profile: GUID (corresponding with GUID), Nickname, Timestamp.
+
+## Installation
+
+The preferred way to install this extension is through [composer](https://getcomposer.org)
+
+Either run
+
+```
+php composer.phar require rhosocial/yii2-user:dev-master
+```
+
+or add
+
+```
+"rhosocial/yii2-user": "dev-master"
+```
+
+to the require section of your composer.json
+
+## Basic Usage
+
+Once the extension is installed, simply use it in your code by:
+
+```php
+class User extends \rhosocial\user\User
+{
+    ...
+}
+```
+
+and
+
+```php
+class Profile extends \rhosocial\user\Profile
+{
+    ...
+}
+```
+
+further detailed usage seen in [here](docs/guide).
