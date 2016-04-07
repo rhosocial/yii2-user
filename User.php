@@ -138,15 +138,37 @@ class User extends BaseUserModel
     }
 
     /**
+     * @var string|false Profile class name. If you do not need profile model,
+     * please set it false.
+     */
+    public $profileClass;
+
+    public function init()
+    {
+        if (!is_string($this->profileClass) && $this->profileClass !== false) {
+            if (class_exists('Profile')) {
+                $this->profileClass = 'Profile';
+            } else {
+                $this->profileClass = Profile::className();
+            }
+        }
+        parent::init();
+    }
+
+    /**
      * Create or get an existed profile.
      * @param array $config
      * @return Profile
      */
     public function createProfile($config = [])
     {
-        $profile = Profile::findOne($this->guid);
+        $profileClass = $this->profileClass;
+        if ($this->profileClass === false || !is_string($this->profileClass)) {
+            return null;
+        }
+        $profile = $profileClass::findOne($this->guid);
         if (!$profile) {
-            $profile = $this->create(Profile::className(), $config);
+            $profile = $this->create($profileClass::className(), $config);
             $profile->guid = $this->guid;
         }
         return $profile;
@@ -164,7 +186,11 @@ class User extends BaseUserModel
      */
     public function getProfile()
     {
-        $profileModel = Profile::buildNoInitModel();
-        return $this->hasOne(Profile::className(), [$profileModel->guidAttribute => $this->guidAttribute])->inverseOf('user');
+        $profileClass = $this->profileClass;
+        if ($this->profileClass === false || !is_string($this->profileClass)) {
+            return null;
+        }
+        $profileModel = $profileClass::buildNoInitModel();
+        return $this->hasOne($profileClass::className(), [$profileModel->guidAttribute => $this->guidAttribute])->inverseOf('user');
     }
 }
