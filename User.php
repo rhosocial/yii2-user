@@ -14,6 +14,7 @@ namespace rhosocial\user;
 
 use vistart\Models\models\BaseUserModel;
 use vistart\Models\queries\BaseBlameableQuery;
+use Yii;
 
 /**
  * Common User Model.
@@ -141,7 +142,7 @@ class User extends BaseUserModel
      * @var string|false Profile class name. If you do not need profile model,
      * please set it false.
      */
-    public $profileClass;
+    public $profileClass = false;
 
     public function init()
     {
