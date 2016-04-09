@@ -15,6 +15,9 @@
 
 ## Implement your own User model
 
+Regardless of whether the current model to meet your needs, we do not recommend
+that you use the model as a user identity model. You need to implement your own user model:
+
 ```php
 class User extends \rhosocial\user\User
 {
