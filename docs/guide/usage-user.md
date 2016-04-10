@@ -126,7 +126,7 @@ $user->profileClass = Profile::className();
 
 It is not associated with any Profile model by default.
 
-If you want to use with Profile model, you can simply specify the $profileClass property to true:
+If you want to use with Profile model, you can simply specify the `$profileClass` property to true:
 
 ```php
 $user->profileClass = true;

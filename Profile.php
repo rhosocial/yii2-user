@@ -91,7 +91,7 @@ class Profile extends BaseBlameableModel
         ];
     }
 
-    public function nameRules()
+    public function getNameRules()
     {
         return [
             [['first_name', 'last_name'], 'string', 'max' => 255, 'skipOnEmpty' => true],
@@ -99,7 +99,7 @@ class Profile extends BaseBlameableModel
         ];
     }
 
-    public function individualSignRules()
+    public function getIndividualSignRules()
     {
         return [
             ['individual_sign', 'string', 'skipOnEmpty' => true],
@@ -112,7 +112,7 @@ class Profile extends BaseBlameableModel
      */
     public function rules()
     {
-        return array_merge($this->getEmailRules(), $this->getPhoneRules(), $this->nameRules(), $this->individualSignRules(), parent::rules());
+        return array_merge($this->getEmailRules(), $this->getPhoneRules(), $this->getNameRules(), $this->getIndividualSignRules(), parent::rules());
     }
 
     /**
