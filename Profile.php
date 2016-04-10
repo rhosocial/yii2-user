@@ -52,15 +52,28 @@ use vistart\Models\models\BaseBlameableModel;
 class Profile extends BaseBlameableModel
 {
 
+    public $createdByAttribute = 'guid';
+    public $updatedByAttribute = false;
+    public $idAttribute = false;
+    public $enableIP = 0;
+
     /**
      * @var string Specify the nickname as the content attribute.
      */
     public $contentAttribute = 'nickname';
 
+    public function init()
+    {
+        if (empty($this->userClass) || !class_exists($this->userClass)) {
+            $this->userClass = User::className();
+        }
+        parent::init();
+    }
+
     public function getEmailRules()
     {
         return [
-            ['email', 'email', 'max' => 255, 'skipOnEmpty' => true],
+            ['email', 'email', 'skipOnEmpty' => true],
             ['email', 'default', 'value' => ''],
         ];
     }

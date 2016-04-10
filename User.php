@@ -169,7 +169,7 @@ class User extends BaseUserModel
         }
         $profile = $profileClass::findOne($this->guid);
         if (!$profile) {
-            $profile = $this->create($profileClass::className(), $config);
+            $profile = $this->create($profileClass, $config);
             $profile->guid = $this->guid;
         }
         return $profile;
@@ -188,10 +188,10 @@ class User extends BaseUserModel
     public function getProfile()
     {
         $profileClass = $this->profileClass;
-        if ($this->profileClass === false || !is_string($this->profileClass)) {
+        if ($this->profileClass === false || !is_string($this->profileClass) || !class_exists($this->profileClass)) {
             return null;
         }
         $profileModel = $profileClass::buildNoInitModel();
-        return $this->hasOne($profileClass::className(), [$profileModel->guidAttribute => $this->guidAttribute])->inverseOf('user');
+        return $this->hasOne($profileClass, [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
     }
 }

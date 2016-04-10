@@ -20,22 +20,34 @@ use rhosocial\user\tests\data\User;
  *
  * @author vistart
  */
-class RegisterUserTest extends TestCase {
-    
+class RegisterUserTest extends TestCase
+{
+
     public function testNew()
     {
         $user = new User();
         $this->assertInstanceOf(User::className(), $user);
+
+        $profile = $user->createProfile();
+        $this->assertNull($profile);
+
+        $this->assertNull($user->profile);
     }
 
-    public function testRegister() {
-        $user = new User(['password' => '123456']);
-        if ($user->register()) {
+    public function testRegister($user = null, $associatedModels = null)
+    {
+        if (empty($user)) {
+            $user = new User(['password' => '123456']);
+        }
+        $result = $user->register($associatedModels);
+        if ($result === true) {
             $this->assertTrue(true);
         } else {
-            $this->fail();
+            $this->fail($result);
         }
-        
+
+        $user = User::findOne($user->guid);
+
         if ($user->deregister()) {
             $this->assertTrue(true);
         } else {
@@ -43,4 +55,32 @@ class RegisterUserTest extends TestCase {
         }
     }
 
+    public function testProfile()
+    {
+        $user = new User(['profileClass' => true, 'password' => 123456]);
+        $this->assertInstanceOf(User::className(), $user);
+
+        $profile = $user->createProfile(['nickname' => 'vistart']);
+        $this->assertInstanceOf(\rhosocial\user\Profile::className(), $profile);
+        $this->assertEquals($user->guid, $profile->guid);
+        $this->assertNull($user->profile);
+
+        $result = $user->register([$profile]);
+        if ($result === true) {
+            $this->assertTrue(true);
+        } else {
+            $this->fail($result);
+        }
+        
+        unset($user->profile);
+        
+        $this->assertInstanceOf(\rhosocial\user\Profile::className(), $user->profile);
+
+
+        if ($user->deregister()) {
+            $this->assertTrue(true);
+        } else {
+            $this->fail();
+        }
+    }
 }
