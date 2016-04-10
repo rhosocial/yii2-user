@@ -2,6 +2,7 @@
 Common User & Profile Models for Yii 2.
 
 [![Build Status](https://img.shields.io/travis/rhosocial/yii2-user.svg)](http://travis-ci.org/rhosocial/yii2-user)
+[![Code Climate](https://img.shields.io/codeclimate/github/rhosocial/yii2-user.svg)](https://codeclimate.com/github/rhosocial/yii2-user)
 
 ## Introduction
 This package consists of two models:

@@ -112,6 +112,37 @@ $result = $user->resetPassword('<New Password>', '<Password Reset Token>');
 
 This is to prevent data inconsistency, because it is possible that password reset token has been updated before reset new password.
 
+## Use with Profile
+
+### Create Profile
+
+Each user can have a profile. We provide a default Profile class. [How to use it](usage-profile.md)
+
+Before creating a Profile, you need to specify the name of the Profile class:
+
+```php
+$user->profileClass = Profile::className();
+```
+
+It is not associated with any Profile model by default.
+
+If you want to use with Profile model, you can simply specify the $profileClass property to true:
+
+```php
+$user->profileClass = true;
+```
+
+When you create a Profile model, the `createProfile()` will check whether the `Profile` class exists in the current namespace.
+If so, then use it. If not, the `rhosocial\user\Profile` will be used.
+
+If they are not what you want, you can also customize the full qualified name of your Profile model.
+
+### Get Profile
+
+You can simply access `$user->profile` to get Profile model. It is a magic property defined by `getProfile()` method.
+
+Note. If you want to get updated Profile model after profile updated, you should unset the `$user->profile` magic property first.
+
 ## Best Practices
 
 We do not recommend you do any changes on this class, unless you know the consequences of doing so.

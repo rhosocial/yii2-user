@@ -18,7 +18,7 @@ use rhosocial\user\tests\data\User;
 /**
  * Description of RegisterUserTest
  *
- * @author vistart
+ * @author vistart <i@vistart.name>
  */
 class RegisterUserTest extends TestCase
 {
@@ -57,7 +57,7 @@ class RegisterUserTest extends TestCase
 
     public function testProfile()
     {
-        $user = new User(['profileClass' => true, 'password' => 123456]);
+        $user = new User(['profileClass' => true, 'password' => '123456']);
         $this->assertInstanceOf(User::className(), $user);
 
         $profile = $user->createProfile(['nickname' => 'vistart']);
