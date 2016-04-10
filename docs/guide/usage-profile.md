@@ -2,7 +2,7 @@
 
 ## Concepts
 
-- table name: '{{%profile}}'
+- table name: `{{%profile}}`
 
 ## Preparation
 
