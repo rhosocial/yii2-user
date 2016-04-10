@@ -70,6 +70,12 @@ class Profile extends BaseBlameableModel
         parent::init();
     }
 
+    /**
+     * Get rules associated with email attribute.
+     * You can override this method if current rules do not satisfy your needs.
+     * If you do not use email attribute, please override this method and return empty array.
+     * @return array Rules associated with email.
+     */
     public function getEmailRules()
     {
         return [
@@ -81,6 +87,7 @@ class Profile extends BaseBlameableModel
     /**
      * Get rules associated with phone attribute.
      * You can override this method if current rules do not satisfy your needs.
+     * If you do not use phone attribute, please override this method and return empty array.
      * @return array Rules associated with phone.
      */
     public function getPhoneRules()
@@ -91,6 +98,12 @@ class Profile extends BaseBlameableModel
         ];
     }
 
+    /**
+     * Get rules associated with name attribute.
+     * You can override this method if current rules do not satisfy your needs.
+     * If you do not use name attribute, please override this method and return empty array.
+     * @return array Rules associated with name.
+     */
     public function getNameRules()
     {
         return [
@@ -99,6 +112,12 @@ class Profile extends BaseBlameableModel
         ];
     }
 
+    /**
+     * Get rules associated with individual sign attribute.
+     * You can override this method if current rules do not satisfy your needs.
+     * If you do not use individual sign attribute, please override this method and return empty array.
+     * @return array Rules associated with individual sign.
+     */
     public function getIndividualSignRules()
     {
         return [
