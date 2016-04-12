@@ -16,6 +16,7 @@ use vistart\Models\models\BaseBlameableModel;
 
 /**
  * Common Profile Model.
+ * One Profile corresponds to only one [[User]].
  * 
  * If you're using MySQL, we recommend that you create a data table using the following statement:
  * ```
@@ -35,7 +36,7 @@ use vistart\Models\models\BaseBlameableModel;
  * ```
  * 
  * The fields of Profile table in database are following:
- * @property string $guid
+ * @property string $guid Profile GUID, which is same as the User's.
  * @property string $nickname
  * @property string $email
  * @property string $phone
@@ -62,10 +63,17 @@ class Profile extends BaseBlameableModel
      */
     public $contentAttribute = 'nickname';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (empty($this->userClass) || !class_exists($this->userClass)) {
-            $this->userClass = User::className();
+            if (class_exists(__NAMESPACE__ . '\User')) {
+                $this->userClass = __NAMESPACE__ . '\User';
+            } else {
+                $this->userClass = User::className();
+            }
         }
         parent::init();
     }

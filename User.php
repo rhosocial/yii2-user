@@ -147,8 +147,8 @@ class User extends BaseUserModel
     public function init()
     {
         if (!is_string($this->profileClass) && $this->profileClass !== false) {
-            if (class_exists('Profile')) {
-                $this->profileClass = 'Profile';
+            if (class_exists(__NAMESPACE__ . '\Profile')) {
+                $this->profileClass = __NAMESPACE__ . '\Profile';
             } else {
                 $this->profileClass = Profile::className();
             }

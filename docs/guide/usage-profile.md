@@ -9,6 +9,7 @@
 - Create table for this model.
 - Implement your own Profile model.
   - Customize table name.
+  - Specify user class if needed (in `init()` method).
   - Customize rules.
   - Customize attribute labels.
   - Customize behaviors.
