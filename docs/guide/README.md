@@ -12,3 +12,5 @@ This extension provides two common models:
 
 - [Using the User model](usage-user.md)
 - [Using the Profile model](usage-profile.md)
+
+## [Test](Test.md)
