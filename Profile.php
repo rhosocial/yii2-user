@@ -12,7 +12,7 @@
 
 namespace rhosocial\user;
 
-use vistart\Models\models\BaseBlameableModel;
+use rhosocial\base\models\models\BaseBlameableModel;
 
 /**
  * Common Profile Model.
@@ -48,7 +48,7 @@ use vistart\Models\models\BaseBlameableModel;
  * 
  * @property-read User $user
  *
- * @author vistart <i@vistart.name>
+ * @author vistart <i@vistart.me>
  */
 class Profile extends BaseBlameableModel
 {
