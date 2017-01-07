@@ -5,9 +5,9 @@
  * | | / // // ___//_  _//   ||  __||_   _|
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
- * @link http://vistart.name/
+ * @link http://vistart.me/
  * @copyright Copyright (c) 2016 vistart
- * @license http://vistart.name/license/
+ * @license http://vistart.me/license/
  */
 
 // ensure we get report on all possible php errors

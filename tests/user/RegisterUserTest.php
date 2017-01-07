@@ -5,9 +5,9 @@
  * | | / // // ___//_  _//   ||  __||_   _|
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
- * @link https://vistart.name/
+ * @link https://vistart.me/
  * @copyright Copyright (c) 2016 vistart
- * @license https://vistart.name/license/
+ * @license https://vistart.me/license/
  */
 
 namespace rhosocial\user\tests\user;
@@ -18,7 +18,7 @@ use rhosocial\user\tests\data\User;
 /**
  * Description of RegisterUserTest
  *
- * @author vistart <i@vistart.name>
+ * @author vistart <i@vistart.me>
  */
 class RegisterUserTest extends TestCase
 {
@@ -26,7 +26,7 @@ class RegisterUserTest extends TestCase
     public function testNew()
     {
         $user = new User();
-        $this->assertInstanceOf(User::className(), $user);
+        $this->assertInstanceOf(User::class, $user);
 
         $profile = $user->createProfile();
         $this->assertNull($profile);
@@ -58,10 +58,10 @@ class RegisterUserTest extends TestCase
     public function testProfile()
     {
         $user = new User(['profileClass' => true, 'password' => '123456']);
-        $this->assertInstanceOf(User::className(), $user);
+        $this->assertInstanceOf(User::class, $user);
 
         $profile = $user->createProfile(['nickname' => 'vistart']);
-        $this->assertInstanceOf(\rhosocial\user\Profile::className(), $profile);
+        $this->assertInstanceOf(\rhosocial\user\Profile::class, $profile);
         $this->assertEquals($user->guid, $profile->guid);
         $this->assertNull($user->profile);
 
@@ -74,7 +74,7 @@ class RegisterUserTest extends TestCase
         
         unset($user->profile);
         
-        $this->assertInstanceOf(\rhosocial\user\Profile::className(), $user->profile);
+        $this->assertInstanceOf(\rhosocial\user\Profile::class, $user->profile);
 
 
         if ($user->deregister()) {
