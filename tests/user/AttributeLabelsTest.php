@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 vistart
+ * @copyright Copyright (c) 2016 - 2017 vistart
  * @license https://vistart.me/license/
  */
 
@@ -20,8 +20,11 @@ use rhosocial\user\tests\data\User;
  *
  * @author vistart <i@vistart.me>
  */
-class AttributeLabelsTest extends TestCase {
-
+class AttributeLabelsTest extends TestCase 
+{
+    /**
+     * @group attribute
+     */
     public function testGet() {
         $user = new User();
         $this->assertNotEmpty($user->attributeLabels());

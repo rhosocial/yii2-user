@@ -45,7 +45,7 @@ try {
 
 ### Get IP Address used for registration
 
-if you enabled the IP Address features, it will automatically record the IP address
+If you enabled the IP Address features, it will automatically record the IP address
 of the user when registering. After that, you can use the following statement to
 get it:
 
@@ -71,9 +71,12 @@ If you have defined a field named `createdAt`, you should use `$user->getCreated
 $updatedAt = $user->updatedAt;
 ```
 
-if you have defined a field named `updatedAt`, you should use `$user->getUpdatedAt()` method instead.
+If you have defined a field named `updatedAt`, you should use `$user->getUpdatedAt()` method instead.
 
 ## Deregister a user
+
+The `deregister()` method would throw exception when user de-registration failed,
+so you should wrap it into try-catch block.
 
 ```php
 try {
@@ -90,6 +93,9 @@ try {
 $user->password = '<New Password>' // $password is write-only.
 $user->save();                     // 
 ```
+
+The `password` property is a magic one, it's origined from `setPassword()` method,
+therefore it can only be set.
 
 or
 ### Change password if reset token is valid:
@@ -125,12 +131,6 @@ $user->profileClass = Profile::className();
 ```
 
 It is not associated with any Profile model by default.
-
-If you want to use with Profile model, you can simply specify the `$profileClass` property to true:
-
-```php
-$user->profileClass = true;
-```
 
 When you create a Profile model, the `createProfile()` will check whether the `Profile` class exists in the current namespace.
 If so, then use it. If not, the `rhosocial\user\Profile` will be used.

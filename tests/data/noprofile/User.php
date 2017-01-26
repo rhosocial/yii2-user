@@ -10,7 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\tests\data;
+namespace rhosocial\user\tests\data\noprofile;
 
 /**
  * Description of User
@@ -19,5 +19,5 @@ namespace rhosocial\user\tests\data;
  */
 class User extends \rhosocial\user\User
 {
-    public $profileClass = Profile::class;
+    //put your code here
 }

@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 vistart
+ * @copyright Copyright (c) 2016 - 2017 vistart
  * @license https://vistart.me/license/
  */
 
@@ -14,6 +14,7 @@ namespace rhosocial\user\tests\user;
 
 use rhosocial\user\tests\TestCase;
 use rhosocial\user\tests\data\User;
+use rhosocial\user\tests\data\Profile;
 
 /**
  * Description of RegisterUserTest
@@ -22,18 +23,25 @@ use rhosocial\user\tests\data\User;
  */
 class RegisterUserTest extends TestCase
 {
-
+    /**
+     * @group register
+     */
     public function testNew()
     {
         $user = new User();
         $this->assertInstanceOf(User::class, $user);
 
         $profile = $user->createProfile();
-        $this->assertNull($profile);
+        $this->assertInstanceOf(Profile::class, $profile);
 
         $this->assertNull($user->profile);
     }
 
+    /**
+     * @group register
+     * @param type $user
+     * @param type $associatedModels
+     */
     public function testRegister($user = null, $associatedModels = null)
     {
         if (empty($user)) {
@@ -55,32 +63,16 @@ class RegisterUserTest extends TestCase
         }
     }
 
+    /**
+     * @group register
+     */
     public function testProfile()
     {
         $user = new User(['profileClass' => true, 'password' => '123456']);
         $this->assertInstanceOf(User::class, $user);
 
         $profile = $user->createProfile(['nickname' => 'vistart']);
-        $this->assertInstanceOf(\rhosocial\user\Profile::class, $profile);
-        $this->assertEquals($user->guid, $profile->guid);
+        $this->assertNull($profile);
         $this->assertNull($user->profile);
-
-        $result = $user->register([$profile]);
-        if ($result === true) {
-            $this->assertTrue(true);
-        } else {
-            $this->fail($result);
-        }
-        
-        unset($user->profile);
-        
-        $this->assertInstanceOf(\rhosocial\user\Profile::class, $user->profile);
-
-
-        if ($user->deregister()) {
-            $this->assertTrue(true);
-        } else {
-            $this->fail();
-        }
     }
 }

@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 vistart
+ * @copyright Copyright (c) 2016 - 2017 vistart
  * @license https://vistart.me/license/
  */
 
@@ -25,16 +25,13 @@ use Yii;
  * 
  * ```
  * CREATE TABLE `user` (
- *   `guid` varchar(36) COLLATE utf8_unicode_ci NOT NULL COMMENT 'GUID',
+ *   `guid` varbinary(16) NOT NULL COMMENT 'GUID',
  *   `id` varchar(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'ID',
  *   `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
- *   `ip_1` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'IP 1',
- *   `ip_2` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'IP 2',
- *   `ip_3` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'IP 3',
- *   `ip_4` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'IP 4',
+ *   `ip` varbinary(16) NOT NULL DEFAULT '0' COMMENT 'IP',
  *   `ip_type` tinyint(3) unsigned NOT NULL DEFAULT '4' COMMENT 'IP Address Type',
- *   `create_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Create Time',
- *   `update_time` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Update Time',
+ *   `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Create Time',
+ *   `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Update Time',
  *   `auth_key` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Authentication Key',
  *   `access_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Access Token',
  *   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Password Reset Token',
@@ -46,7 +43,7 @@ use Yii;
  *   KEY `user_auth_key_normal` (`auth_key`),
  *   KEY `user_access_token_normal` (`access_token`),
  *   KEY `user_password_reset_token` (`password_reset_token`),
- *   KEY `user_create_time_normal` (`create_time`)
+ *   KEY `user_create_time_normal` (`created_at`)
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
  * ```
  * 
@@ -61,13 +58,10 @@ use Yii;
  * @property string $pass_hash Password Hash.
  * We strongly recommend you NOT to change this property directly!
  * If you want to set or reset password, please use setPassword() magic property instead.
- * @property integer $ip_1 The first 32-bit of IPv6 address, or IPv4 address.
- * @property integer $ip_2
- * @property integer $ip_3
- * @property integer $ip_4
- * @property integer $ip_type
- * @property string $create_time
- * @property string $update_time
+ * @property integer $ip IP address.
+ * @property integer $ipType
+ * @property string $createdAt
+ * @property string $updatedAt
  * @property string $auth_key
  * @property string $access_token
  * @property string $password_reset_token
@@ -78,13 +72,13 @@ use Yii;
  * @property-read Profile $profile Profile. This magic property is read-only.
  * If you want to modify anyone property of Profile model, please get it first,
  * then change and save it, like following:
- * 
  * ```php
  * $profile = $user->profile;
  * $profile->nickname = 'vistart';
  * $profile->save();
  * ```
- *
+ * If $profileClass is `false`, `null` returned.
+ * @version 1.0
  * @author vistart <i@vistart.me>
  */
 class User extends BaseUserModel
@@ -99,13 +93,10 @@ class User extends BaseUserModel
             'guid' => Yii::t('app', 'GUID'),
             'id' => Yii::t('app', 'ID'),
             'pass_hash' => Yii::t('app', 'Password Hash'),
-            'ip_1' => Yii::t('app', 'IP 1'),
-            'ip_2' => Yii::t('app', 'IP 2'),
-            'ip_3' => Yii::t('app', 'IP 3'),
-            'ip_4' => Yii::t('app', 'IP 4'),
+            'ip' => Yii::t('app', 'IP'),
             'ip_type' => Yii::t('app', 'IP Address Type'),
-            'create_time' => Yii::t('app', 'Create Time'),
-            'update_time' => Yii::t('app', 'Update Time'),
+            'created_at' => Yii::t('app', 'Create Time'),
+            'updated_at' => Yii::t('app', 'Update Time'),
             'auth_key' => Yii::t('app', 'Authentication Key'),
             'access_token' => Yii::t('app', 'Access Token'),
             'password_reset_token' => Yii::t('app', 'Password Reset Token'),
@@ -144,40 +135,31 @@ class User extends BaseUserModel
      */
     public $profileClass = false;
 
-    public function init()
-    {
-        if (!is_string($this->profileClass) && $this->profileClass !== false) {
-            if (class_exists(__NAMESPACE__ . '\Profile')) {
-                $this->profileClass = __NAMESPACE__ . '\Profile';
-            } else {
-                $this->profileClass = Profile::className();
-            }
-        }
-        parent::init();
-    }
-
     /**
-     * Create or get an existed profile.
-     * @param array $config
+     * Create profile.
+     * If profile of this user exists, it will be returned instead of creating it.
+     * Meanwhile, the $config parameter will be skipped.
+     * @param array $config Profile configuration. Skipped if it exists.
      * @return Profile
      */
     public function createProfile($config = [])
     {
         $profileClass = $this->profileClass;
-        if ($this->profileClass === false || !is_string($this->profileClass)) {
+        if (empty($profileClass) || !is_string($this->profileClass)) {
             return null;
         }
-        $profile = $profileClass::findOne($this->guid);
+        $profile = $profileClass::findOne($this->getGUID());
         if (!$profile) {
             $profile = $this->create($profileClass, $config);
-            $profile->guid = $this->guid;
+            $profile->setGUID($this->getGUID());
         }
         return $profile;
     }
 
     /**
      * Get Profile query.
-     * If you want to get profile model, please access this method by magic property, like following:
+     * If you want to get profile model, please access this method in magic property way,
+     * like following:
      * 
      * ```php
      * $user->profile;
