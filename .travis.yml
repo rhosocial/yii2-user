@@ -43,11 +43,13 @@ before_script:
     - mysql -uroot < tests/data/rhosocial_yii2_user.sql
     - |
         if [ $TRAVIS_PHP_VERSION = 'nightly' ]; then
-            travis_retry wget https://phar.phpunit.de/phpunit.phar
+            travis_retry wget https://phar.phpunit.de/phpunit-5.7.phar
+            mv phpunit-5.7.phar phpunit.phar
             chmod +x phpunit.phar
             EXCLUDE_FLAGS="--exclude-group mongo"
         elif [ $TRAVIS_PHP_VERSION = '7.1' ]; then
-            travis_retry wget https://phar.phpunit.de/phpunit.phar
+            travis_retry wget https://phar.phpunit.de/phpunit-5.7.phar
+            mv phpunit-5.7.phar phpunit.phar
             chmod +x phpunit.phar
             EXCLUDE_FLAGS="--exclude-group mongo"
         elif [ $TRAVIS_PHP_VERSION = '7.0' ]; then
