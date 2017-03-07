@@ -31,6 +31,9 @@ CREATE TABLE `profile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile'
 ```SQL
  *
+ * If you want to go back, please execute `yii migrate/down rhosocial\user\migrations\M170304142349CreateProfileTable`,
+ * instead of droping profile table yourself.
+ *
  * @version 1.0
  * @author vistart <i@vistart.me>
  */

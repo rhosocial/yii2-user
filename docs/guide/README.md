@@ -12,5 +12,6 @@ This extension provides two common models:
 
 - [Using the User model](usage-user.md)
 - [Using the Profile model](usage-profile.md)
+- [Using the Password History model](usage-password-history.md)
 
 ## [Test](Test.md)

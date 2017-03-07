@@ -74,6 +74,25 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `user_password_reset_token_unique` (`password_reset_token`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `password_history`
+--
+-- 创建时间： 2017-03-07 23:26:59
+--
+
+DROP TABLE IF EXISTS `password_history`;
+CREATE TABLE `password_history` (
+  `guid` varbinary(16) NOT NULL COMMENT 'Password GUID',
+  `user_guid` varbinary(16) NOT NULL COMMENT 'Created By',
+  `created_at` datetime NOT NULL COMMENT 'Created At',
+  `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
+  PRIMARY KEY (`guid`),
+  KEY `user_password_fk` (`user_guid`),
+  CONSTRAINT `user_password_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History';
+
 --
 -- 限制导出的表
 --

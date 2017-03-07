@@ -3,6 +3,7 @@
 ## Migrations
 
 If you want to use built-in tables, you can execute built-in migrations.
+Or you can create tables referenced by our provided SQL file (`vendor/rhosocial/yii2-user/tests/data/rhosocial_yii2_user.sql`), or migrations' comments.
 
 Before you execute built-in migrations, you need to add our migration namespace
 to the `migrationNamespaces` attribute of `migrate` controller in the `controllerMap`
@@ -16,6 +17,17 @@ attribute of the console application:
         ],
     ],
 ],
+```
+
+And specify `schemaMap` attribute of `Connection` component:
+```
+return [
+    'class' => 'yii\db\Connection',
+    ...
+    'schemaMap' => [
+        'mysql' => 'rhosocial\user\migrations\mysql\Schema',
+    ],
+];
 ```
 
 Then you can execute the following command in the console:
@@ -38,4 +50,3 @@ If you see more than two of those above migrations, you need to specify the migr
 ```
 yii migrate/to rhosocial\user\migrations\M170304140437CreateUserTable
 ```
-
