@@ -34,8 +34,6 @@ DROP TABLE IF EXISTS `profile`;
 CREATE TABLE IF NOT EXISTS `profile` (
   `guid` varbinary(16) NOT NULL,
   `nickname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `individual_sign` text COLLATE utf8mb4_unicode_ci NOT NULL,

@@ -16,6 +16,10 @@ use rhosocial\user\tests\data\User;
 use rhosocial\user\tests\data\Profile;
 use rhosocial\user\tests\TestCase;
 
+/**
+ * @version 1.0
+ * @author vistart <i@vistart.me>
+ */
 class NormalTest extends TestCase
 {
     /**
@@ -67,7 +71,7 @@ class NormalTest extends TestCase
         $this->assertNull(Profile::findOne($this->profile->getGUID()));
         $this->assertInstanceOf(get_class(Profile::find()), $this->user->getProfile());
         $this->assertNull($this->user->profile);
-        
+
         $this->assertTrue($this->user->register([$this->profile]));
         
         $this->assertInstanceOf(Profile::class, Profile::findOne($this->user->getGUID()));
