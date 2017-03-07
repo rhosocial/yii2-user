@@ -41,8 +41,6 @@ CREATE TABLE IF NOT EXISTS `profile` (
   `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
   PRIMARY KEY (`guid`),
   KEY `user_nickname_normal` (`nickname`) USING BTREE,
-  KEY `user_email_normal` (`email`) USING BTREE,
-  KEY `user_phone_normal` (`phone`) USING BTREE,
   KEY `user_name_normal` (`first_name`,`last_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
