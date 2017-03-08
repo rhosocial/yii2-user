@@ -14,6 +14,7 @@ namespace rhosocial\user;
 
 use rhosocial\base\models\models\BaseUserModel;
 use rhosocial\base\models\queries\BaseBlameableQuery;
+use rhosocial\user\security\UserPasswordHistoryTrait;
 use Yii;
 
 /**
@@ -83,6 +84,7 @@ use Yii;
  */
 class User extends BaseUserModel
 {
+    use UserPasswordHistoryTrait;
 
     /**
      * @inheritdoc
@@ -135,15 +137,10 @@ class User extends BaseUserModel
      */
     public $profileClass = false;
     
-    /**
-     * @var string|false Password History class name. If you do not need password
-     * history model, please set it false.
-     */
-    public $passwordHistoryClass = false;
-    
     public function init()
     {
-        $this->on(self::$eventAfterRegister, [$this, 'onAddPasswordToHistory'], $this->{$this->passwordHashAttribute});
+        $this->on(static::$eventAfterRegister, [$this, 'onAddPasswordToHistory']);
+        $this->on(static::$eventAfterResetPassword, [$this, 'onAddPasswordToHistory']);
         parent::init();
     }
 
@@ -187,39 +184,5 @@ class User extends BaseUserModel
         }
         $profileModel = $profileClass::buildNoInitModel();
         return $this->hasOne($profileClass, [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
-    }
-    
-    /**
-     * 
-     * @param \yii\base\ModelEvent $event
-     */
-    public function onAddPasswordToHistory($event)
-    {
-        $passHash = $event->data;
-        $sender = $event->sender;
-        /* @var $sender static */
-        if (empty($sender->passwordHistoryClass) || !class_exists($sender->passwordHistoryClass)) {
-            return false;
-        }
-        $p = $sender->create($sender->passwordHistoryClass, [$sender->passwordHashAttribute => $passHash]);
-        return $p->save();
-    }
-
-    /**
-     * Add password to history.
-     * Note: Please specify password history model before using this method.
-     *
-     * @param string $password the password to be added.
-     * @return boolean whether the password added.
-     * @throws \yii\base\InvalidConfigException throw if password history class not specified.
-     * @throws \yii\base\InvalidParamException throw if password existed.
-     */
-    public function addPasswordHistory($password)
-    {
-        if (!empty($this->passwordHistoryClass) && class_exists($this->passwordHistoryClass)) {
-            $class = $this->passwordHistoryClass;
-            return $class::add($password, $this);
-        }
-        return false;
     }
 }

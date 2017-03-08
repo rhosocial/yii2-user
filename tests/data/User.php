@@ -20,4 +20,5 @@ namespace rhosocial\user\tests\data;
 class User extends \rhosocial\user\User
 {
     public $profileClass = Profile::class;
+    public $passwordHistoryClass = PasswordHistory::class;
 }

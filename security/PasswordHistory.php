@@ -30,11 +30,18 @@ class PasswordHistory extends BaseBlameableModel
     public $idAttribute = false;
     public $updatedAtAttribute = false;
     public $updatedByAttribute = false;
+    public $enableIP = false;
+    public $contentAttribute = false;
     public $passwordHashAttribute = 'pass_hash';
+    
+    /**
+     * @var boolean determine whether to allow the password that has been used to be stored.
+     */
+    public $allowDuplicatePassword = true;
     
     public static function tableName()
     {
-        return "{{%password_history}}";
+        return '{{%password_history}}';
     }
     
     /**
@@ -43,15 +50,16 @@ class PasswordHistory extends BaseBlameableModel
      * @param string $password
      * @return boolean
      */
-    public function validate($password)
+    public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->{$this->passwordHashAttribute});
     }
     
     /**
      * Check whether the password has been used.
-     * @param string $password
+     * @param string $password Password or Password Hash.
      * @param User $user
+     * @return false|static
      */
     public static function isUsed($password, $user = null)
     {
@@ -61,6 +69,9 @@ class PasswordHistory extends BaseBlameableModel
         $passwords = static::find()->createdBy($user)->all();
         foreach ($passwords as $p) {
             /* @var $p static */
+            if (static::judgePasswordHash($password)) {
+                return $p->{$p->passwordHashAttribute} == $password ? $p : false;
+            }
             if ($p->validate($password)) {
                 return $p;
             }
@@ -77,20 +88,29 @@ class PasswordHistory extends BaseBlameableModel
         $this->{$this->passwordHashAttribute} = Yii::$app->security->generatePasswordHash($password);
     }
     
+    protected static function judgePasswordHash($password)
+    {
+        return strpos($password, '$2y$') != false;
+    }
+    
     /**
      * Add password to history.
      *
-     * @param string $password
+     * @param string $password Password or Password Hash.
      * @param User $user
      * @return boolean
      * @throws InvalidParamException throw if password existed.
      */
     public static function add($password, $user = null)
     {
-        if (static::isUsed($password, $user)) {
+        if (static::isUsed($password, $user) && !$this->allowDuplicatePassword) {
             throw new InvalidParamException('Password exists.');
         }
-        $p = $user->create(static::class, ['password' => $password]);
+        if (static::judgePasswordHash($password)) {
+            $p = $user->create(static::class, [$p->passwordHashAttribute => $password]);
+        } else {
+            $p = $user->create(static::class, ['password' => $password]);
+        }
         /* @var $p static */
         return $p->save();
     }
