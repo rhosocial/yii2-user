@@ -34,11 +34,6 @@ class PasswordHistory extends BaseBlameableModel
     public $contentAttribute = false;
     public $passwordHashAttribute = 'pass_hash';
     
-    /**
-     * @var boolean determine whether to allow the password that has been used to be stored.
-     */
-    public $allowDuplicatePassword = true;
-    
     public static function tableName()
     {
         return '{{%password_history}}';
@@ -103,7 +98,7 @@ class PasswordHistory extends BaseBlameableModel
      */
     public static function add($password, $user = null)
     {
-        if (static::isUsed($password, $user) && !$this->allowDuplicatePassword) {
+        if (static::isUsed($password, $user) && !$user->allowDuplicatePassword) {
             throw new InvalidParamException('Password exists.');
         }
         if (static::judgePasswordHash($password)) {

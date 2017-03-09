@@ -32,6 +32,11 @@ trait UserPasswordHistoryTrait
     public $passwordHistoryClass = false;
     
     /**
+     * @var boolean determine whether to allow the password that has been used to be stored.
+     */
+    public $allowDuplicatePassword = true;
+    
+    /**
      * Get password history.
      * @return boolean|PasswordHistory[] False if password history invalid.
      */
@@ -104,26 +109,38 @@ trait UserPasswordHistoryTrait
         return false;
     }
     
+    /**
+     * @inheritdoc
+     */
     public function getPasswordHashRules()
     {
         $rules = parent::getPasswordHashRules();
         $rules[] = [
             [$this->passwordHashAttribute], 'checkPasswordNotUsed', 'when' => function() {
-                $class = $this->passwordHistoryClass;
-                if (empty($class) || !class_exists($class)) {
-                    return false;
-                }
-                $noInit = new $class();
-                return !$noInit->allowDuplicatePassword && !$this->getIsNewRecord();
+                return $this->isAttributeChanged($this->passwordHashAttribute) && !$this->allowDuplicatePassword && !$this->getIsNewRecord();
             }
         ];
         return $rules;
     }
+    
+    public $passwordUsedMessage = 'The password has been used.';
+    
+    public static $eventPasswordUsed = 'passwordUsed';
 
+    /**
+     * This method is only used for password hash attribute validation.
+     * @param type $attribute
+     * @param type $params
+     * @param type $validator
+     */
     public function checkPasswordNotUsed($attribute, $params, $validator)
     {
         $class = $this->passwordHistoryClass;
-        return !$class::isUsed($this->_password, $this);
+        $result = $class::isUsed($this->_password, $this);
+        if ($result != false) {
+            $this->trigger(static::$eventPasswordUsed);
+            $this->addError($attribute, $this->passwordUsedMessage);
+        }
     }
     
 }

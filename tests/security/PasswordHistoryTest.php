@@ -26,9 +26,13 @@ class PasswordHistoryTest extends TestCase
      */
     protected $user;
     
+    protected $password1 = '123456';
+    
+    protected $password2 = '654321';
+    
     protected function setUp() {
         parent::setUp();
-        $this->user = new User(['password' => '123456']);
+        $this->user = new User(['password' => $this->password1]);
     }
     
     protected function tearDown() {
@@ -46,7 +50,7 @@ class PasswordHistoryTest extends TestCase
         $this->assertTrue($this->user->register());
         $ph = $this->user->passwordHistories;
         $this->assertCount(1, $ph);
-        $this->assertTrue($ph[0]->validatePassword('123456'));
+        $this->assertTrue($ph[0]->validatePassword($this->password1));
         $this->assertTrue($this->user->deregister());
         $this->assertEmpty($this->user->passwordHistories);
     }
@@ -60,10 +64,63 @@ class PasswordHistoryTest extends TestCase
         $this->assertCount(1, $this->user->passwordHistories);
         
         $this->assertTrue($this->user->applyForNewPassword());
-        $this->assertTrue($this->user->resetPassword('654321', $this->user->{$this->user->passwordResetTokenAttribute}));
-        $this->assertTrue($this->user->validatePassword('654321'));
+        $this->assertTrue($this->user->resetPassword($this->password2, $this->user->{$this->user->passwordResetTokenAttribute}));
+        $this->assertTrue($this->user->validatePassword($this->password2));
         $this->assertCount(2, $this->user->getPasswordHistories());
         
-        $this->assertTrue($this->user->getPasswordHistories()[0]->validatePassword('654321'));
+        $this->assertTrue($this->user->getPasswordHistories()[0]->validatePassword($this->password2));
+    }
+    
+    /**
+     * @group password
+     */
+    public function testAllowDuplicatePassword()
+    {
+        $this->user->allowDuplicatePassword = true;
+        $this->assertTrue($this->user->register());
+        $this->assertTrue($this->user->validatePassword($this->password1));
+        $this->assertCount(1, $this->user->getPasswordHistories());
+        
+        $this->assertTrue($this->user->applyForNewPassword());
+        $this->assertTrue($this->user->resetPassword($this->password1, $this->user->{$this->user->passwordResetTokenAttribute}));
+        $this->assertTrue($this->user->validatePassword($this->password1));
+        
+        $this->assertCount(2, $this->user->getPasswordHistories());
+        
+        foreach ($this->user->getPasswordHistories() as $history)
+        {
+            $history->validatePassword($this->password1);
+        }
+    }
+    
+    protected $resetPasswordFailed = false;
+    
+    /**
+     * 
+     * @param \yii\base\ModelEvent $event
+     */
+    public function onResetPasswordFailed($event)
+    {
+        $this->assertEquals(User::$eventResetPasswordFailed, $event->name);
+        $this->resetPasswordFailed = !$this->resetPasswordFailed;
+    }
+    
+    /**
+     * @group password
+     */
+    public function testDisallowDuplicatePassword()
+    {
+        $this->user->allowDuplicatePassword = false;
+        $this->user->on(User::$eventResetPasswordFailed, [$this, 'onResetPasswordFailed']);
+        $this->assertTrue($this->user->register());
+        $this->assertTrue($this->user->validatePassword($this->password1));
+        $this->assertCount(1, $this->user->getPasswordHistories());
+        
+        $this->assertTrue($this->user->applyForNewPassword());
+        $this->assertFalse($this->resetPasswordFailed);
+        $this->assertFalse($this->user->resetPassword($this->password1, $this->user->{$this->user->passwordResetTokenAttribute}));
+        $this->assertTrue($this->resetPasswordFailed);
+        $this->assertTrue($this->user->validatePassword($this->password1));
+        
     }
 }
