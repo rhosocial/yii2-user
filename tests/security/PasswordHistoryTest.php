@@ -62,7 +62,7 @@ class PasswordHistoryTest extends TestCase
     {
         $this->assertTrue($this->user->register());
         $this->assertCount(1, $this->user->passwordHistories);
-        
+        sleep(1);
         $this->assertTrue($this->user->applyForNewPassword());
         $this->assertTrue($this->user->resetPassword($this->password2, $this->user->{$this->user->passwordResetTokenAttribute}));
         $this->assertTrue($this->user->validatePassword($this->password2));
@@ -74,9 +74,9 @@ class PasswordHistoryTest extends TestCase
     /**
      * @group password
      */
-    public function testAllowDuplicatePassword()
+    public function testAllowUsedPassword()
     {
-        $this->user->allowDuplicatePassword = true;
+        $this->user->allowUsedPassword = true;
         $this->assertTrue($this->user->register());
         $this->assertTrue($this->user->validatePassword($this->password1));
         $this->assertCount(1, $this->user->getPasswordHistories());
@@ -108,9 +108,9 @@ class PasswordHistoryTest extends TestCase
     /**
      * @group password
      */
-    public function testDisallowDuplicatePassword()
+    public function testDisallowUsedPassword()
     {
-        $this->user->allowDuplicatePassword = false;
+        $this->user->allowUsedPassword = false;
         $this->user->on(User::$eventResetPasswordFailed, [$this, 'onResetPasswordFailed']);
         $this->assertTrue($this->user->register());
         $this->assertTrue($this->user->validatePassword($this->password1));
@@ -121,6 +121,149 @@ class PasswordHistoryTest extends TestCase
         $this->assertFalse($this->user->resetPassword($this->password1, $this->user->{$this->user->passwordResetTokenAttribute}));
         $this->assertTrue($this->resetPasswordFailed);
         $this->assertTrue($this->user->validatePassword($this->password1));
+    }
+    
+    /**
+     * @group password
+     */
+    public function testNoPasswordHistory()
+    {
+        $this->user->passwordHistoryClass = false;
+        $this->assertFalse($this->user->getPasswordHistories());
+        $this->assertFalse($this->user->passwordHistories);
         
+        $this->assertFalse($this->user->addPasswordHistory($this->password1));
+        $this->assertFalse($this->user->addPasswordHashToHistory(\Yii::$app->security->generatePasswordHash($this->password1)));
+    }
+    
+    /**
+     * @group password
+     */
+    public function testInvalidUser()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        
+        try {
+            $class::isUsed($this->user->pass_hash, new User());
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        try {
+            $class::passHashIsUsed(\Yii::$app->security->generatePasswordHash($this->password1), new User());
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        try {
+            $class::addHash($this->user->pass_hash, new User());
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        try {
+            $class::first(new User());
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        try {
+            $class::last(new User());
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+    }
+    
+    /**
+     * @group password
+     */
+    public function testExistedPasswordHash()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        
+        try {
+            $class::addHash($this->user->pass_hash, $this->user);
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        $this->user->allowUsedPassword = false;
+        
+        try {
+            $class::add($this->password1, $this->user);
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+        
+        try {
+            $class::add($this->user->pass_hash, $this->user);
+            $this->fail();
+        } catch (\Exception $ex) {
+            $this->assertInstanceOf(\yii\base\InvalidParamException::class, $ex);
+        }
+    }
+    
+    /**
+     * @group password
+     */
+    public function testFirstPassword()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        sleep(1);
+        $this->assertTrue($this->user->addPasswordHistory($this->password2));
+        $p = $class::first($this->user);
+        $this->assertInstanceOf($class, $p);
+        $this->assertEquals($this->user->getPasswordHistories()[1], $p);
+    }
+    
+    /**
+     * @group password
+     */
+    public function testLastPassword()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        sleep(1);
+        $this->assertTrue($this->user->addPasswordHistory($this->password2));
+        $p = $class::last($this->user);
+        $this->assertInstanceOf($class, $p);
+        $this->assertEquals($this->user->getPasswordHistories()[0], $p);
+    }
+    
+    /**
+     * @group password
+     */
+    public function testAddPasswordHash()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        
+        $this->assertTrue($class::add(\Yii::$app->security->generatePasswordHash($this->password2), $this->user));
+        $this->assertTrue($this->user->addPasswordHashToHistory(\Yii::$app->security->generatePasswordHash($this->password1 . $this->password2)));
+    }
+        
+    /**
+     * @group password
+     */
+    public function testOnAddPasswordToHistory()
+    {
+        $class = $this->user->passwordHistoryClass;
+        $this->assertTrue($this->user->register());
+        
+        $event = new \yii\base\ModelEvent(['sender' => $this->user, 'data' => ['password' => $this->password2]]);
+        $this->assertTrue($this->user->onAddPasswordToHistory($event));
+        
+        $event->data = ['pass' => $this->password2];
+        $this->assertFalse($this->user->onAddPasswordToHistory($event));
     }
 }

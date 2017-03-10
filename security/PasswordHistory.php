@@ -42,11 +42,14 @@ class PasswordHistory extends BaseBlameableModel
     /**
      * Validate password.
      *
-     * @param string $password
+     * @param string $password Password or Password Hash.
      * @return boolean
      */
     public function validatePassword($password)
     {
+        if (static::judgePasswordHash($password)) {
+            return $this->{$this->passwordHashAttribute} == $password;
+        }
         return Yii::$app->security->validatePassword($password, $this->{$this->passwordHashAttribute});
     }
     
@@ -64,10 +67,7 @@ class PasswordHistory extends BaseBlameableModel
         $passwords = static::find()->createdBy($user)->all();
         foreach ($passwords as $p) {
             /* @var $p static */
-            if (static::judgePasswordHash($password)) {
-                return $p->{$p->passwordHashAttribute} == $password ? $p : false;
-            }
-            if ($p->validate($password)) {
+            if ($p->validatePassword($password)) {
                 return $p;
             }
         }
@@ -85,7 +85,7 @@ class PasswordHistory extends BaseBlameableModel
     
     protected static function judgePasswordHash($password)
     {
-        return strpos($password, '$2y$') != false;
+        return strpos($password, '$2y$') !== false;
     }
     
     /**
@@ -98,11 +98,12 @@ class PasswordHistory extends BaseBlameableModel
      */
     public static function add($password, $user = null)
     {
-        if (static::isUsed($password, $user) && !$user->allowDuplicatePassword) {
-            throw new InvalidParamException('Password exists.');
+        if (static::isUsed($password, $user) && !$user->allowUsedPassword) {
+            throw new InvalidParamException('Password existed.');
         }
         if (static::judgePasswordHash($password)) {
-            $p = $user->create(static::class, [$p->passwordHashAttribute => $password]);
+            $p = $user->create(static::class);
+            $p->{$p->passwordHashAttribute} = $password;
         } else {
             $p = $user->create(static::class, ['password' => $password]);
         }
@@ -128,7 +129,7 @@ class PasswordHistory extends BaseBlameableModel
     public static function addHash($pass_hash, $user = null)
     {
         if (static::passHashIsUsed($pass_hash, $user)) {
-            throw new InvalidParamException('User Invalid');
+            throw new InvalidParamException('Password existed.');
         }
         $noInit = static::buildNoInitModel();
         $p = $user->create(static::class, [$noInit->passwordHashAttribute => $pass_hash]);
@@ -162,6 +163,6 @@ class PasswordHistory extends BaseBlameableModel
         if (!User::isValid($user)) {
             throw new InvalidParamException('User Invalid.');
         }
-        return static::find()->createdBy($user)->orderByCreatedAt('DESC')->one();
+        return static::find()->createdBy($user)->orderByCreatedAt(SORT_DESC)->one();
     }
 }

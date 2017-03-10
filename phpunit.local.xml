@@ -24,6 +24,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <file>User.php</file>
             <file>Profile.php</file>
+            <directory>security</directory>
         </whitelist>
     </filter>
 </phpunit>

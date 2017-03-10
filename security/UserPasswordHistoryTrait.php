@@ -34,7 +34,7 @@ trait UserPasswordHistoryTrait
     /**
      * @var boolean determine whether to allow the password that has been used to be stored.
      */
-    public $allowDuplicatePassword = true;
+    public $allowUsedPassword = true;
     
     /**
      * Get password history.
@@ -67,10 +67,10 @@ trait UserPasswordHistoryTrait
         }
         $class = $sender->passwordHistoryClass;
         if (array_key_exists('pass_hash', $password)) {
-            return $class::addHash($password['pass_hash'], $this);
+            return $class::addHash($password['pass_hash'], $sender);
         }
         if (array_key_exists('password', $password)) {
-            return $class::add($password['password'], $this);
+            return $class::add($password['password'], $sender);
         }
         return false;
     }
@@ -117,7 +117,7 @@ trait UserPasswordHistoryTrait
         $rules = parent::getPasswordHashRules();
         $rules[] = [
             [$this->passwordHashAttribute], 'checkPasswordNotUsed', 'when' => function() {
-                return $this->isAttributeChanged($this->passwordHashAttribute) && !$this->allowDuplicatePassword && !$this->getIsNewRecord();
+                return $this->isAttributeChanged($this->passwordHashAttribute) && !$this->allowUsedPassword && !$this->getIsNewRecord();
             }
         ];
         return $rules;
