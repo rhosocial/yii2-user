@@ -16,8 +16,8 @@
 
 ## Built-in Attributes
 
-- Email
-- Phone
+- Email (`SimpleProfile` only)
+- Phone (`SimpleProfile` only)
 - First name and Last name
 - Individual Sign
 

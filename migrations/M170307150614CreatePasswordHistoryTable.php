@@ -25,7 +25,7 @@ CREATE TABLE `password_history` (
   PRIMARY KEY (`guid`),
   KEY `user_password_fk` (`user_guid`),
   CONSTRAINT `user_password_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History';
 ```
  *
  * If you want to go back, please execute `yii migrate/down rhosocial\user\migrations\M170307150614CreatePasswordHistoryTable`,

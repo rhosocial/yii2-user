@@ -50,7 +50,8 @@ trait UserPasswordHistoryTrait
     }
     
     /**
-     * 
+     * This event is ONLY used for adding password to history.
+     * You SHOULD NOT call this method directly, or you know the consequences of doing so
      * @param ModelEvent $event
      * @return boolean
      */
@@ -123,6 +124,9 @@ trait UserPasswordHistoryTrait
         return $rules;
     }
     
+    /**
+     * @var string The message for password used error. 
+     */
     public $passwordUsedMessage = 'The password has been used.';
     
     public static $eventPasswordUsed = 'passwordUsed';

@@ -47,4 +47,13 @@ class Profile extends \rhosocial\user\Profile
 }
 ```
 
+But the above `Profile` class does not contain `email` and `phone` attributes.
+The following `SimpleProfile` contains them (including corresponding rules):
+
+```php
+class Profile extends \rhosocial\user\SimpleProfile
+{
+    ...
+}
+```
 further detailed usage seen in [here](docs/guide).

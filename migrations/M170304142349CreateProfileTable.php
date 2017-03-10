@@ -28,7 +28,7 @@ CREATE TABLE `profile` (
   `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
   PRIMARY KEY (`guid`),
   CONSTRAINT `user_profile_fk` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
 ```SQL
  *
  * If you want to go back, please execute `yii migrate/down rhosocial\user\migrations\M170304142349CreateProfileTable`,

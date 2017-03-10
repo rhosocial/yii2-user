@@ -37,7 +37,7 @@ CREATE TABLE `user` (
   KEY `user_access_token_normal` (`access_token`),
   KEY `user_password_reset_token_normal` (`password_reset_token`),
   KEY `user_created_at_normal` (`created_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
 ```
  *
  * If you want to go back, please execute `yii migrate/down rhosocial\user\migrations\M170304140437CreateUserTable`,
