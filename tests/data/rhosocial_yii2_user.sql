@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017-03-11 21:24:26
+-- Generation Time: 2017-03-12 00:00:59
 -- 服务器版本： 8.0.0-dmr
 -- PHP Version: 7.1.2
 
@@ -151,14 +151,6 @@ CREATE TABLE IF NOT EXISTS `password_history` (
   KEY `user_password_fk` (`user_guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Profile';
 
---
--- 转存表中的数据 `password_history`
---
-
-INSERT INTO `password_history` (`guid`, `user_guid`, `created_at`, `pass_hash`) VALUES
-(0x18f38d92edb0586db5d04ebd16554488, 0x81f6c6a4ba2a11d761ff696dfe78b8f3, '2017-03-11 21:24:24', '$2y$13$zwR.kbEv5lqnMvZfD6/BxOqbpws1TOjK95dV7aQXbH1wqRimewGNy'),
-(0xe0298bab8eb1f15d224b1e49c98b7275, 0x81f6c6a4ba2a11d761ff696dfe78b8f3, '2017-03-11 21:24:25', '$2y$13$RUVzhRUU2bZLgZ9NPDaMjeUdHvZ123PLGJbOIwMX.eW08V/PzasbG');
-
 -- --------------------------------------------------------
 
 --
@@ -210,13 +202,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `user_password_reset_token_normal` (`password_reset_token`),
   KEY `user_created_at_normal` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
-
---
--- 转存表中的数据 `user`
---
-
-INSERT INTO `user` (`guid`, `id`, `pass_hash`, `ip`, `ip_type`, `created_at`, `updated_at`, `auth_key`, `access_token`, `password_reset_token`, `status`, `type`, `source`) VALUES
-(0x81f6c6a4ba2a11d761ff696dfe78b8f3, '41953716', '$2y$13$zwR.kbEv5lqnMvZfD6/BxOqbpws1TOjK95dV7aQXbH1wqRimewGNy', 0x30, 4, '2017-03-11 21:24:24', '2017-03-11 21:24:24', 'a3f764844e10ec5ae8e8834b7c20e4e9e34b0ed8', '0a947c3ad914ff550c38b5b0d56392608339f40b', '', 1, 0, '0');
 
 --
 -- 限制导出的表

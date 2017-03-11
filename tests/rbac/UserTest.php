@@ -181,11 +181,78 @@ class UserTest extends TestCase
      */
     public function testGetRolesByUser()
     {
+        $this->assertEquals([], Yii::$app->authManager->getRolesByUser(''));
+        
         $role = new UserRole();
         $this->assertTrue($this->user->register([$this->profile], $role));
         $this->assertTrue(Yii::$app->user->login($this->user));
         $roles = Yii::$app->authManager->getRolesByUser($this->user);
         $this->assertCount(1, $roles);
         $this->assertInstanceOf(Role::class, $roles[$role->name]);
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testGetAssignments()
+    {
+        $this->assertNull(Yii::$app->authManager->getAssignment(null, null));
+        $this->assertTrue($this->user->register([$this->profile]));
+        $this->assertNull(Yii::$app->authManager->getAssignment('', $this->user));
+        
+        $this->assertEquals([], Yii::$app->authManager->getAssignments(null));
+        $this->assertNotNull(Yii::$app->authManager->getAssignments($this->user));
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testRevoke()
+    {
+        $role = new UserRole();
+        $this->assertTrue($this->user->register([$this->profile], $role));
+        $this->assertFalse(Yii::$app->authManager->revoke($role, ''));
+        $this->assertTrue(Yii::$app->authManager->revoke($role, $this->user));
+        $this->assertFalse(Yii::$app->authManager->revoke($role, $this->user));
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testRevokeAll()
+    {
+        $this->assertFalse(Yii::$app->authManager->revokeAll(''));
+        $role = new UserRole();
+        $this->assertTrue($this->user->register([$this->profile], $role));
+        $this->assertTrue(Yii::$app->authManager->revokeAll($this->user));
+        $this->assertFalse(Yii::$app->authManager->revokeAll($this->user));
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testGetUserGuidsByRoles()
+    {
+        $this->assertEquals([], Yii::$app->authManager->getUserGuidsByRole(''));
+        $role = new UserRole();
+        $this->assertTrue($this->user->register([$this->profile], $role));
+        $this->assertEquals($this->user->getGUID(), Yii::$app->authManager->getUserGuidsByRole($role->name)[0]);
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testGetPermissionsByUser()
+    {
+        $role = new UserRole();
+        $this->assertTrue($this->user->register([$this->profile], $role));
+        $permissions = Yii::$app->authManager->getPermissionsByUser($this->user);
+        $this->assertArrayHasKey((new UpdateMyself)->name, $permissions);
+        $this->assertArrayHasKey((new DeleteMyself)->name, $permissions);
     }
 }
