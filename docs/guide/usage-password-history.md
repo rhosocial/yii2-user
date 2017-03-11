@@ -1,6 +1,6 @@
 # Using the Password History model
 
-The password history model automatically records the new password after registering and modifying the password.
+The password history model automatically records the new password after registering and changing the password.
 
 ## Preparation
 
@@ -18,15 +18,32 @@ class User extends \rhosocial\user\User
 If you do not specify, the password history feature is not enabled by default.
 The following are based on enabling the password history features.
 
-## Allow duplicate password
+## Allow used password
 
 By default, it is allowed to continue using the passwords that have been used.
+That is:
+```php
+class User extends \rhosocial\user\User {
+    ...
+    $allowUsedPassword = true;
+    ...
+}
+```
 
-If you want to check whether the password is used, you can call the `isUsed` method to achieve.
+If you want to check whether the password is used, you can call the `PasswordHistory::isUsed()` method to achieve.
 
 If you want to make sure that the password you have used is not recorded, set the
 `allowUsedPassword` property of `User` class to false.
-At this point, if you have saved a password has been used, the `save` process will be blocked,
+
+At this point, if you save a password has been used, the `save` process will be blocked,
 the default error message is 'This password has been used.'.
+
 If you want to modify it, you can assign `passwordUsedMessage` property of `User`
-class with your own message.
+class with your own message:
+```php
+class User extends \rhosocial\user\User {
+    ...
+    $passwordUsedMessage = <Your Own Message>;
+    ...
+}
+```
