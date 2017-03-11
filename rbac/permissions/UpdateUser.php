@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\rbac\permissions;
 
+use rhosocial\user\rbac\rules\UpdateUserRule;
 use yii\rbac\Permission;
 
 /**
@@ -29,4 +30,10 @@ class UpdateUser extends Permission
      * @inheritdoc
      */
     public $description = 'Update a user';
+    
+    public function init()
+    {
+        parent::init();
+        $this->ruleName = empty($this->ruleName) ? (new UpdateUserRule())->name : $this->ruleName;
+    }
 }

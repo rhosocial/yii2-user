@@ -14,6 +14,7 @@ namespace rhosocial\user\rbac;
 
 use rhosocial\user\User;
 use yii\db\Query;
+use yii\rbac\Item;
 
 /**
  * @version 1.0
@@ -221,7 +222,7 @@ class DbManager extends \yii\rbac\DbManager
      * returned if role is not assigned to any user.
      * @since 2.0.7
      */
-    public function getUserIdsByRole($roleName)
+    public function getUserGuidsByRole($roleName)
     {
         if (empty($roleName)) {
             return [];

@@ -13,14 +13,11 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use rhosocial\user\rbac\roles\Admin as AdminRoles;
-use Yii;
-use yii\rbac\Item;
 use yii\rbac\Rule;
 
-class AdminRule extends Rule
+class DeleteUserRule extends Rule
 {
-    public $name = 'isAdmin';
+    public $name = 'canDeleteUser';
     
     /**
      * Executes the rule.
@@ -32,11 +29,6 @@ class AdminRule extends Rule
      * @return bool a value indicating whether the rule permits the auth item it is associated with.
      */
     public function execute($user, $item, $params) {
-        if (is_string($user)) {
-            $user = User::find()->guid($user)->one();
-        }
-        if (empty($user)) {
-            return false;
-        }
+        return true;
     }
 }
