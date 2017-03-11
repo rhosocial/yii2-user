@@ -102,6 +102,9 @@ DROP TABLE IF EXISTS `auth_rule`;
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 表的结构 `auth_item`
+--
 DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -117,6 +120,24 @@ CREATE TABLE `auth_item` (
   CONSTRAINT `rule_name_fk` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- 转存表中的数据 `auth_item`
+--
+
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
+('admin', 1, 'Administrator', NULL, NULL, 1489220532, 1489220532),
+('createUser', 2, 'Create a user', NULL, NULL, 1489220532, 1489220532),
+('deleteMyself', 2, 'Delete myself', NULL, NULL, 1489220532, 1489220532),
+('deleteUser', 2, 'Delete a user', NULL, NULL, 1489220532, 1489220532),
+('updateMyself', 2, 'Update myself', NULL, NULL, 1489220532, 1489220532),
+('updateUser', 2, 'Update a user', NULL, NULL, 1489220532, 1489220532),
+('user', 1, 'User', NULL, NULL, 1489220532, 1489220532);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `auth_item_child`
+--
 DROP TABLE IF EXISTS `auth_item_child`;
 CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -126,6 +147,18 @@ CREATE TABLE `auth_item_child` (
   CONSTRAINT `child_name_fk` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `parent_name_fk` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `auth_item_child`
+--
+
+INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
+('admin', 'createUser'),
+('admin', 'deleteMyself'),
+('admin', 'deleteUser'),
+('user', 'updateMyself'),
+('admin', 'updateUser'),
+('admin', 'user');
 
 DROP TABLE IF EXISTS `auth_assignment`;
 CREATE TABLE `auth_assignment` (

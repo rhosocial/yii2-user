@@ -13,6 +13,7 @@
 namespace rhosocial\user\rbac;
 
 use rhosocial\user\User;
+use yii\db\Query;
 
 /**
  * @version 1.0

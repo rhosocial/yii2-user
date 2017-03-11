@@ -25,6 +25,7 @@
             <file>User.php</file>
             <file>Profile.php</file>
             <directory>security</directory>
+            <directory>rbac</directory>
         </whitelist>
     </filter>
 </phpunit>

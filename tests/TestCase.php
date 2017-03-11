@@ -78,7 +78,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
                             'class' => '\yii\web\User',
                             'identityClass' => 'rhosocial\user\tests\data\User',
                             'enableAutoLogin' => true,
-                        ]
+                        ],
+                        'authManager' => [
+                            'class' => 'rhosocial\user\rbac\DbManager',
+                        ],
                     ]
                         ], $config));
     }

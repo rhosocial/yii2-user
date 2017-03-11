@@ -13,6 +13,16 @@
 namespace rhosocial\user\rbac\migrations;
 
 use rhosocial\user\migrations\Migration;
+use rhosocial\user\rbac\roles\Admin;
+use rhosocial\user\rbac\roles\User;
+use rhosocial\user\rbac\permissions\CreateAdminUser;
+use rhosocial\user\rbac\permissions\CreateUser;
+use rhosocial\user\rbac\permissions\DeleteAdminUser;
+use rhosocial\user\rbac\permissions\DeleteMyself;
+use rhosocial\user\rbac\permissions\DeleteUser;
+use rhosocial\user\rbac\permissions\UpdateAdminUser;
+use rhosocial\user\rbac\permissions\UpdateMyself;
+use rhosocial\user\rbac\permissions\UpdateUser;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\rbac\DbManager;
@@ -131,6 +141,7 @@ class M170310150337CreateAuthTables extends Migration
             $this->addPrimaryKey('user_item_name_pk', $authManager->assignmentTable, ['item_name', 'user_guid']);
             $this->addForeignKey('user_assignment_fk', $authManager->assignmentTable, 'user_guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
         }
+        $this->addRoles();
     }
 
     public function down()
@@ -141,6 +152,38 @@ class M170310150337CreateAuthTables extends Migration
         $this->dropTable($authManager->itemChildTable);
         $this->dropTable($authManager->itemTable);
         $this->dropTable($authManager->ruleTable);
+    }
+    
+    protected function addRoles()
+    {
+        $authManager = $this->getAuthManager();
+        $this->db = $authManager->db;
+        
+        $createUser = new CreateUser();
+        $updateUser = new UpdateUser();
+        $deleteUser = new DeleteUser();
+        $updateMyself = new UpdateMyself();
+        $deleteMyself = new DeleteMyself();
+        
+        $authManager->add($createUser);
+        $authManager->add($updateUser);
+        $authManager->add($deleteUser);
+        $authManager->add($updateMyself);
+        $authManager->add($deleteMyself);
+        
+        $admin = new Admin();
+        $user = new User();
+        
+        $authManager->add($admin);
+        $authManager->add($user);
+        
+        $authManager->addChild($user, $updateMyself);
+        $authManager->addChild($admin, $user);
+        
+        $authManager->addChild($admin, $createUser);
+        $authManager->addChild($admin, $updateUser);
+        $authManager->addChild($admin, $deleteUser);
+        $authManager->addChild($admin, $deleteMyself);
     }
 
     /*

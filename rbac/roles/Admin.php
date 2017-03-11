@@ -12,10 +12,21 @@
 
 namespace rhosocial\user\rbac\roles;
 
-use rhosocial\user\User;
 use yii\rbac\Role;
 
-class UserRole extends Role
+/**
+ * @version 1.0
+ * @author vistart <i@vistart.me>
+ */
+class Admin extends Role
 {
+    /**
+     * @inheritdoc
+     */
+    public $name = 'admin';
     
+    /**
+     * @inheritdoc
+     */
+    public $description = 'Administrator';
 }
