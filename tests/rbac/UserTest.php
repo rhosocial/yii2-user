@@ -176,6 +176,7 @@ class UserTest extends TestCase
     }
     
     /**
+     * Best Practise: Get All Assignments of user.
      * @group user
      * @group rbac
      */
@@ -254,5 +255,45 @@ class UserTest extends TestCase
         $permissions = Yii::$app->authManager->getPermissionsByUser($this->user);
         $this->assertArrayHasKey((new UpdateMyself)->name, $permissions);
         $this->assertArrayHasKey((new DeleteMyself)->name, $permissions);
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testFailedPermission()
+    {
+        $permission = new CreateAdminUser();
+        $this->assertTrue($this->user->register([$this->profile]));
+        $this->assertEmpty(Yii::$app->authManager->getPermissionsByUser($this->user));
+        $date = date('Y-m-d H:i:s');
+        $assignment = Yii::$app->authManager->assign($permission, $this->user, $date);
+        /* @var $assignment Assignment */
+        $this->assertInstanceOf(Assignment::class, $assignment);
+        $this->assertEquals($date, $assignment->failedAt);
+        sleep(1);
+        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s')));
+        
+        $this->assertNull(Yii::$app->authManager->getAssignment($permission->name, $this->user));
+    }
+    
+    /**
+     * @group user
+     * @group rbac
+     */
+    public function testFailedRole()
+    {
+        $role = new AdminRole();
+        $this->assertTrue($this->user->register([$this->profile]));
+        $this->assertEmpty(Yii::$app->authManager->getPermissionsByUser($this->user));
+        $date = date('Y-m-d H:i:s');
+        $assignment = Yii::$app->authManager->assign($role, $this->user, $date);
+        /* @var $assignment Assignment */
+        $this->assertInstanceOf(Assignment::class, $assignment);
+        $this->assertEquals($date, $assignment->failedAt);
+        sleep(1);
+        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s')));
+        
+        $this->assertNull(Yii::$app->authManager->getAssignment($role->name, $this->user));
     }
 }

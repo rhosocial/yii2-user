@@ -239,13 +239,41 @@ class DbManager extends \yii\rbac\DbManager
         if ($row === false) {
             return null;
         }
-
-        return new Assignment([
+        
+        $assignment = new Assignment([
             'userGuid' => $row['user_guid'],
             'roleName' => $row['item_name'],
             'createdAt' => $row['created_at'],
             'failedAt' => $row['failed_at'],
         ]);
+        
+        if ($this->revokeFailedAssignment($assignment)) {
+            return null;
+        }
+
+        return $assignment;
+    }
+    
+    /**
+     * Revoke failed assignment.
+     * If assignment's `failedAt` attribute is `null`, false will be given directly.
+     * @param Assignment $assignment
+     * @return boolean
+     */
+    protected function revokeFailedAssignment(Assignment $assignment)
+    {
+        if ($assignment->failedAt === null) {
+            return false;
+        }
+        if (strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s'))) {
+            $role = $this->getRole($assignment->roleName);
+            if (!$role) {
+                return true;
+            }
+            $this->revoke($role, $assignment->userGuid);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -267,12 +295,16 @@ class DbManager extends \yii\rbac\DbManager
 
         $assignments = [];
         foreach ($query->all($this->db) as $row) {
-            $assignments[$row['item_name']] = new Assignment([
+            $assignment = new Assignment([
                 'userGuid' => $row['user_guid'],
                 'roleName' => $row['item_name'],
                 'createdAt' => $row['created_at'],
                 'failedAt' => $row['failed_at'],
             ]);
+            if ($this->revokeFailedAssignment($assignment)) {
+                continue;
+            }
+            $assignments[$row['item_name']] = $assignment;
         }
 
         return $assignments;
