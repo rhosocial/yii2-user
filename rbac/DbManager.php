@@ -26,6 +26,121 @@ use yii\rbac\Item;
 class DbManager extends \yii\rbac\DbManager
 {
     /**
+     * @inheritdoc
+     */
+    protected function addItem($item)
+    {
+        $time = date('Y-m-d H:i:s');
+        if ($item->createdAt === null) {
+            $item->createdAt = $time;
+        }
+        if ($item->updatedAt === null) {
+            $item->updatedAt = $time;
+        }
+        $this->db->createCommand()
+            ->insert($this->itemTable, [
+                'name' => $item->name,
+                'type' => $item->type,
+                'description' => $item->description,
+                'rule_name' => $item->ruleName,
+                'data' => $item->data === null ? null : serialize($item->data),
+                'created_at' => $item->createdAt,
+                'updated_at' => $item->updatedAt,
+            ])->execute();
+
+        $this->invalidateCache();
+
+        return true;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    protected function updateItem($name, $item)
+    {
+        if ($item->name !== $name && !$this->supportsCascadeUpdate()) {
+            $this->db->createCommand()
+                ->update($this->itemChildTable, ['parent' => $item->name], ['parent' => $name])
+                ->execute();
+            $this->db->createCommand()
+                ->update($this->itemChildTable, ['child' => $item->name], ['child' => $name])
+                ->execute();
+            $this->db->createCommand()
+                ->update($this->assignmentTable, ['item_name' => $item->name], ['item_name' => $name])
+                ->execute();
+        }
+
+        $item->updatedAt = date('Y-m-d H:i:s');
+
+        $this->db->createCommand()
+            ->update($this->itemTable, [
+                'name' => $item->name,
+                'description' => $item->description,
+                'rule_name' => $item->ruleName,
+                'data' => $item->data === null ? null : serialize($item->data),
+                'updated_at' => $item->updatedAt,
+            ], [
+                'name' => $name,
+            ])->execute();
+
+        $this->invalidateCache();
+
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function addRule($rule)
+    {
+        $time = date('Y-m-d H:i:s');
+        if ($rule->createdAt === null) {
+            $rule->createdAt = $time;
+        }
+        if ($rule->updatedAt === null) {
+            $rule->updatedAt = $time;
+        }
+        $this->db->createCommand()
+            ->insert($this->ruleTable, [
+                'name' => $rule->name,
+                'data' => serialize($rule),
+                'created_at' => $rule->createdAt,
+                'updated_at' => $rule->updatedAt,
+            ])->execute();
+
+        $this->invalidateCache();
+
+        return true;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    protected function updateRule($name, $rule)
+    {
+        if ($rule->name !== $name && !$this->supportsCascadeUpdate()) {
+            $this->db->createCommand()
+                ->update($this->itemTable, ['rule_name' => $rule->name], ['rule_name' => $name])
+                ->execute();
+        }
+
+        $rule->updatedAt = date('Y-m-d H:i:s');
+
+        $this->db->createCommand()
+            ->update($this->ruleTable, [
+                'name' => $rule->name,
+                'data' => serialize($rule),
+                'updated_at' => $rule->updatedAt,
+            ], [
+                'name' => $name,
+            ])->execute();
+
+        $this->invalidateCache();
+
+        return true;
+    }
+    
+    /**
      * 
      * @param string|User $userGuid
      * @return array
@@ -129,6 +244,7 @@ class DbManager extends \yii\rbac\DbManager
             'userGuid' => $row['user_guid'],
             'roleName' => $row['item_name'],
             'createdAt' => $row['created_at'],
+            'failedAt' => $row['failed_at'],
         ]);
     }
 
@@ -155,6 +271,7 @@ class DbManager extends \yii\rbac\DbManager
                 'userGuid' => $row['user_guid'],
                 'roleName' => $row['item_name'],
                 'createdAt' => $row['created_at'],
+                'failedAt' => $row['failed_at'],
             ]);
         }
 
@@ -164,12 +281,13 @@ class DbManager extends \yii\rbac\DbManager
     /**
      * @inheritdoc
      */
-    public function assign($role, $userGuid)
+    public function assign($role, $userGuid, $failedAt = null)
     {
         $assignment = new Assignment([
             'userGuid' => $userGuid,
             'roleName' => $role->name,
-            'createdAt' => time(),
+            'createdAt' => date('Y-m-d H:i:s'),
+            'failedAt' => empty($failedAt) ? null : $failedAt,
         ]);
 
         $this->db->createCommand()
@@ -177,6 +295,7 @@ class DbManager extends \yii\rbac\DbManager
                 'user_guid' => $assignment->userGuid,
                 'item_name' => $assignment->roleName,
                 'created_at' => $assignment->createdAt,
+                'failed_at' => $assignment->failedAt,
             ])->execute();
 
         return $assignment;

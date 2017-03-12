@@ -112,8 +112,8 @@ class M170310150337CreateAuthTables extends Migration
             $this->createTable($authManager->ruleTable, [
                 'name' => $this->varchar(64)->notNull(),
                 'data' => $this->blob(),
-                'created_at' => $this->integer()->notNull(),
-                'updated_at' => $this->integer()->notNull(),
+                'created_at' => $this->dateTime()->notNull(),
+                'updated_at' => $this->dateTime()->notNull(),
             ], $tableOptions);
             $this->addPrimaryKey('rule_name_pk', $authManager->ruleTable, 'name');
 
@@ -123,8 +123,8 @@ class M170310150337CreateAuthTables extends Migration
                 'description' => $this->text(),
                 'rule_name' => $this->varchar(64),
                 'data' => $this->blob(),
-                'created_at' => $this->integer()->notNull(),
-                'updated_at' => $this->integer()->notNull(),
+                'created_at' => $this->dateTime()->notNull(),
+                'updated_at' => $this->dateTime()->notNull(),
             ], $tableOptions);
             $this->addPrimaryKey('item_name_pk', $authManager->itemTable, 'name');
             $this->addForeignKey('rule_name_fk', $authManager->itemTable, 'rule_name', $authManager->ruleTable, 'name', 'CASCADE', 'CASCADE');
@@ -141,7 +141,8 @@ class M170310150337CreateAuthTables extends Migration
             $this->createTable($authManager->assignmentTable, [
                 'item_name' => $this->varchar(64)->notNull(),
                 'user_guid' => $this->varbinary(16)->notNull(),
-                'created_at' => $this->integer()->notNull(),
+                'created_at' => $this->dateTime()->notNull(),
+                'failed_at' => $this->dateTime(),
             ], $tableOptions);
             $this->addPrimaryKey('user_item_name_pk', $authManager->assignmentTable, ['item_name', 'user_guid']);
             $this->addForeignKey('user_assignment_fk', $authManager->assignmentTable, 'user_guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');

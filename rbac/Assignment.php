@@ -24,4 +24,9 @@ class Assignment extends \yii\rbac\Assignment
      * @var string|User user ID (see [[\rhosocial\user\User::guid]])
      */
     public $userGuid;
+    
+    /**
+     * @var string the time of invalidation of this Assignment. (Format: Y-m-d H:i:s) 
+     */
+    public $failedAt;
 }
