@@ -1,7 +1,13 @@
 # rhosocial/yii2-user
 Common User & Profile Models for Yii 2.
 
+[![Latest Stable Version](https://poser.pugx.org/rhosocial/yii2-user/v/stable.png)](https://packagist.org/packages/rhosocial/yii2-user)
+[![License](https://poser.pugx.org/rhosocial/yii2-user/license)](https://packagist.org/packages/rhosocial/yii2-user)
+[![Reference Status](https://www.versioneye.com/php/rhosocial:yii2-user/reference_badge.svg)](https://www.versioneye.com/php/rhosocial:yii2-user/references)
 [![Build Status](https://img.shields.io/travis/rhosocial/yii2-user.svg)](http://travis-ci.org/rhosocial/yii2-user)
+[![Dependency Status](https://www.versioneye.com/php/rhosocial:yii2-user/dev-master/badge.png)](https://www.versioneye.com/php/rhosocial:yii2-user/dev-master)
+[![Code Coverage](https://scrutinizer-ci.com/g/rhosocial/yii2-user/badges/coverage.png)](https://scrutinizer-ci.com/g/rhosocial/yii2-user/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/rhosocial/yii2-user/badges/quality-score.png)](https://scrutinizer-ci.com/g/rhosocial/yii2-user/)
 [![Code Climate](https://img.shields.io/codeclimate/github/rhosocial/yii2-user.svg)](https://codeclimate.com/github/rhosocial/yii2-user)
 
 ## Introduction

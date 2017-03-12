@@ -17,6 +17,9 @@ use yii\db\Query;
 use yii\rbac\Item;
 
 /**
+ * This DbManager replaces the UserID of original DbManager with the UserGUID.
+ *
+ * @see User
  * @version 1.0
  * @author vistart <i@vistart.me>
  */

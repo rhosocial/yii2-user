@@ -18,7 +18,7 @@ use Yii;
 use yii\base\InvalidParamException;
 
 /**
- * This model holds password that have been used.
+ * This model holds passwords that have been used.
  *
  * @property-write string $password
  *

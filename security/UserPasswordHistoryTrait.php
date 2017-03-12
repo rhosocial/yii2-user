@@ -37,8 +37,8 @@ trait UserPasswordHistoryTrait
     public $allowUsedPassword = true;
     
     /**
-     * Get password history.
-     * @return boolean|PasswordHistory[] False if password history invalid.
+     * Get all password histories sorted by creation time in descending order.
+     * @return boolean|PasswordHistory[] False if password history class is invalid.
      */
     public function getPasswordHistories()
     {
@@ -53,7 +53,7 @@ trait UserPasswordHistoryTrait
      * This event is ONLY used for adding password to history.
      * You SHOULD NOT call this method directly, or you know the consequences of doing so
      * @param ModelEvent $event
-     * @return boolean
+     * @return boolean False if no password was added to history.
      */
     public function onAddPasswordToHistory($event)
     {
@@ -78,7 +78,7 @@ trait UserPasswordHistoryTrait
 
     /**
      * Add password to history.
-     * Note: Please specify password history model before using this method.
+     * Note: Please specify password history class before using this method.
      *
      * @param string $password the password to be added.
      * @return boolean whether the password added. False if password history class not specified.
@@ -95,7 +95,7 @@ trait UserPasswordHistoryTrait
     
     /**
      * Add password hash to history.
-     * Note: Please specify password history model before using this method.
+     * Note: Please specify password history class before using this method.
      *
      * @param string $pass_hash Password hash to be added.
      * @return boolean whether the password hash added. False if password history class not specified.
@@ -133,8 +133,10 @@ trait UserPasswordHistoryTrait
 
     /**
      * This method is only used for password hash attribute validation.
-     * @param type $attribute
-     * @param type $params
+     * If password is used, the `eventPasswordUsed` event will be triggered.
+     *
+     * @param string $attribute
+     * @param mixed $params
      * @param type $validator
      */
     public function checkPasswordNotUsed($attribute, $params, $validator)
