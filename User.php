@@ -21,9 +21,9 @@ use Yii;
  * Common User Model.
  * This model should be stored in a relational database. You can create a foreign
  * key constraint on other models and this model.
- * 
+ *
  * If you're using MySQL, we recommend that you create a data table using the following statement:
- * 
+ *
  * ```
  * CREATE TABLE `user` (
  *   `guid` varbinary(16) NOT NULL COMMENT 'GUID',
@@ -47,7 +47,7 @@ use Yii;
  *   KEY `user_create_time_normal` (`created_at`)
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
  * ```
- * 
+ *
  * The fields of User table in database are following:
  * @property string $guid User's GUID. This property is used to uniquely identify a user.
  * This property is automatically generated when the class is created, we do not
@@ -69,7 +69,7 @@ use Yii;
  * @property integer $status
  * @property integer $type
  * @property string $source
- * 
+ *
  * @property-read Profile $profile Profile. This magic property is read-only.
  * If you want to modify anyone property of Profile model, please get it first,
  * then change and save it, like following:
@@ -169,11 +169,11 @@ class User extends BaseUserModel
      * Get Profile query.
      * If you want to get profile model, please access this method in magic property way,
      * like following:
-     * 
+     *
      * ```php
      * $user->profile;
      * ```
-     * 
+     *
      * @return BaseBlameableQuery
      */
     public function getProfile()

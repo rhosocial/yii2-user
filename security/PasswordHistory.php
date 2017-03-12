@@ -102,38 +102,38 @@ class PasswordHistory extends BaseBlameableModel
             throw new InvalidParamException('Password existed.');
         }
         if (static::judgePasswordHash($password)) {
-            $p = $user->create(static::class);
-            $p->{$p->passwordHashAttribute} = $password;
+            $passwordHistory = $user->create(static::class);
+            $passwordHistory->{$passwordHistory->passwordHashAttribute} = $password;
         } else {
-            $p = $user->create(static::class, ['password' => $password]);
+            $passwordHistory = $user->create(static::class, ['password' => $password]);
         }
-        /* @var $p static */
-        return $p->save();
+        /* @var $passwordHistory static */
+        return $passwordHistory->save();
     }
     
-    public static function passHashIsUsed($pass_hash, $user = null)
+    public static function passHashIsUsed($passHash, $user = null)
     {
         if (!User::isValid($user)) {
             throw new InvalidParamException('User Invalid.');
         }
         $passwords = static::find()->createdBy($user)->all();
-        foreach ($passwords as $p) {
-            /* @var $p static */
-            if ($p->{$p->passwordHashAttribute} == $pass_hash) {
-                return $p;
+        foreach ($passwords as $passwordHistory) {
+            /* @var $passwordHistory static */
+            if ($passwordHistory->{$passwordHistory->passwordHashAttribute} == $passHash) {
+                return $passwordHistory;
             }
         }
         return false;
     }
     
-    public static function addHash($pass_hash, $user = null)
+    public static function addHash($passHash, $user = null)
     {
-        if (static::passHashIsUsed($pass_hash, $user)) {
+        if (static::passHashIsUsed($passHash, $user)) {
             throw new InvalidParamException('Password existed.');
         }
         $noInit = static::buildNoInitModel();
-        $p = $user->create(static::class, [$noInit->passwordHashAttribute => $pass_hash]);
-        return $p->save();
+        $passwordHistory = $user->create(static::class, [$noInit->passwordHashAttribute => $passHash]);
+        return $passwordHistory->save();
     }
     
     /**

@@ -97,15 +97,15 @@ trait UserPasswordHistoryTrait
      * Add password hash to history.
      * Note: Please specify password history class before using this method.
      *
-     * @param string $pass_hash Password hash to be added.
+     * @param string $passHash Password hash to be added.
      * @return boolean whether the password hash added. False if password history class not specified.
      * @throws InvalidParamException throw if password existed.
      */
-    public function addPasswordHashToHistory($pass_hash)
+    public function addPasswordHashToHistory($passHash)
     {
         if (!empty($this->passwordHistoryClass) && class_exists($this->passwordHistoryClass)) {
             $class = $this->passwordHistoryClass;
-            return $class::addHash($pass_hash, $this);
+            return $class::addHash($passHash, $this);
         }
         return false;
     }
@@ -117,15 +117,16 @@ trait UserPasswordHistoryTrait
     {
         $rules = parent::getPasswordHashRules();
         $rules[] = [
-            [$this->passwordHashAttribute], 'checkPasswordNotUsed', 'when' => function() {
-                return $this->isAttributeChanged($this->passwordHashAttribute) && !$this->allowUsedPassword && !$this->getIsNewRecord();
+            [$this->passwordHashAttribute], 'checkPasswordNotUsed', 'when' => function () {
+                return $this->isAttributeChanged($this->passwordHashAttribute)
+                        && !$this->allowUsedPassword && !$this->getIsNewRecord();
             }
         ];
         return $rules;
     }
     
     /**
-     * @var string The message for password used error. 
+     * @var string The message for password used error.
      */
     public $passwordUsedMessage = 'The password has been used.';
     
@@ -148,5 +149,4 @@ trait UserPasswordHistoryTrait
             $this->addError($attribute, $this->passwordUsedMessage);
         }
     }
-    
 }

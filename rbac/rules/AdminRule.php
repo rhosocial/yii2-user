@@ -13,8 +13,6 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use rhosocial\user\rbac\roles\Admin as AdminRoles;
-use Yii;
 use yii\rbac\Item;
 use yii\rbac\Rule;
 

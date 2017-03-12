@@ -27,6 +27,5 @@ class UserRule extends Rule
      * @return bool a value indicating whether the rule permits the auth item it is associated with.
      */
     public function execute($user, $item, $params) {
-        
     }
 }
