@@ -39,9 +39,23 @@ We do not have to force a user to be assigned a role or permission,
 nor do we check user roles or permissions when accessing `controller` and `action`.
 It all needs you to do it yourself, like following.
 
-## Assign Role or Permission
+### Application Configuration
 
-### When registering
+It needs to cooperate with our own `DbManager`:
+
+```
+    ...
+    'components' => [
+        'authManager' => [
+            'class' => 'rhosocial\user\rbac\DbManager',
+        ],
+    ],
+    ...
+```
+
+## Assign or Revoke Role / Permission
+
+### Assign a role when registering
 
 It allows to assign roles or permissions when registering:
 
@@ -58,6 +72,32 @@ try {
 }
 ...
 ```
+
+### Assign a role in general
+
+```php
+Yii::$app->authManager->assign((new UserRole())->name, $this->user);
+```
+
+By default, there is no deadline for each role given.
+If you want to set a validity period to above role, and make it failed after expiration, you can assign the third parameter:
+
+```php
+Yii::$app->authManager->assign((new UserRole())->name, $this->user, '2017-05-05 00:00:00");
+```
+
+The third parameter is formatted as 'Y-m-d H:i:s'.
+
+When you access a role or permission, it checks whether the role or permission has expired first.
+If it has expired, it is equivalent to not having this role or does not have this permission.
+
+### Revoke a role
+
+```php
+Yii::$app->authManager->revoke((new UserRole())->name, $this->user);
+```
+
+By default, when this user is deleted, all roles or permissions that are assigned will be revoked.
 
 ## References
 
