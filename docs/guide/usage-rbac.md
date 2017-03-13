@@ -37,7 +37,27 @@ And we also provide the following roles (and their respective permissions):
 
 We do not have to force a user to be assigned a role or permission,
 nor do we check user roles or permissions when accessing `controller` and `action`.
-It all needs you to do it yourself.
+It all needs you to do it yourself, like following.
+
+## Assign Role or Permission
+
+### When registering
+
+It allows to assign roles or permissions when registering:
+
+```php
+...
+use rhosocial\user\rbac\roles\User as UserRole;
+...
+$profile = $user->createProfile(['nickname' => 'vistart', 'first_name' => 'vistart', 'last_name' => 'zhao']);
+$role = new UserRole();
+try {
+    $user->register([$profile], [$role]);
+} catch (\Exception $ex) {
+    ...
+}
+...
+```
 
 ## References
 
