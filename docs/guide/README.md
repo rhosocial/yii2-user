@@ -13,5 +13,7 @@ This extension provides two common models:
 - [Using the User model](usage-user.md)
 - [Using the Profile model](usage-profile.md)
 - [Using the Password History model](usage-password-history.md)
+- [Using the Role-Based Authorization Control Features](usage-rbac.md)
+- [Using the Login Log model](usage-login-log.md)
 
 ## [Test](Test.md)
