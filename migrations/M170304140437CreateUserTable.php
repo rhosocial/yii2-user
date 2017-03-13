@@ -12,6 +12,8 @@
 
 namespace rhosocial\user\migrations;
 
+use rhosocial\user\User;
+
 /**
  * Create User Table.
  *
@@ -54,7 +56,7 @@ class M170304140437CreateUserTable extends Migration
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User'";
-            $this->createTable('{{%user}}', [
+            $this->createTable(User::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
                 'id' => $this->varchar(16)->notNull()->collate('utf8_unicode_ci')->comment('User ID No.'),
                 'pass_hash' => $this->varchar(80)->notNull()->collate('utf8_unicode_ci')->comment('Password Hash'),
@@ -70,17 +72,17 @@ class M170304140437CreateUserTable extends Migration
                 'source' => $this->varchar(255)->notNull()->defaultValue('')->collate('utf8_unicode_ci')->comment('Source'),
             ], $tableOptions);
         }
-        $this->addPrimaryKey('user_guid_pk', '{{%user}}', 'guid');
-        $this->createIndex('user_id_unique', '{{%user}}', 'id', true);
-        $this->createIndex('user_auth_key_normal', '{{%user}}', 'auth_key');
-        $this->createIndex('user_access_token_normal', '{{%user}}', 'access_token');
-        $this->createIndex('user_password_reset_token_normal', '{{%user}}', 'password_reset_token');
-        $this->createIndex('user_created_at_normal', '{{%user}}', 'created_at');
+        $this->addPrimaryKey('user_guid_pk', User::tableName(), 'guid');
+        $this->createIndex('user_id_unique', User::tableName(), 'id', true);
+        $this->createIndex('user_auth_key_normal', User::tableName(), 'auth_key');
+        $this->createIndex('user_access_token_normal', User::tableName(), 'access_token');
+        $this->createIndex('user_password_reset_token_normal', User::tableName(), 'password_reset_token');
+        $this->createIndex('user_created_at_normal', User::tableName(), 'created_at');
     }
 
     public function down()
     {
-        $this->dropTable('{{%user}}');
+        $this->dropTable(User::tableName());
     }
 
     /*

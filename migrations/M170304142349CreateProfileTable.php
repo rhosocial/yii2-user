@@ -12,6 +12,8 @@
 
 namespace rhosocial\user\migrations;
 
+use rhosocial\user\Profile;
+
 /**
  * Create Profile Table.
  *
@@ -45,7 +47,7 @@ class M170304142349CreateProfileTable extends Migration
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile'";
-            $this->createTable('{{%profile}}', [
+            $this->createTable(User::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
                 'nickname' => $this->varchar(255)->notNull()->comment('Nickname'),
                 'first_name' => $this->varchar(255)->notNull()->comment('First Name'),
@@ -57,13 +59,13 @@ class M170304142349CreateProfileTable extends Migration
 
             ], $tableOptions);
         }
-        $this->addPrimaryKey('user_guid_profile_pk', '{{%profile}}', 'guid');
-        $this->addForeignKey('user_profile_fk', '{{%profile}}', 'guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
+        $this->addPrimaryKey('user_guid_profile_pk', User::tableName(), 'guid');
+        $this->addForeignKey('user_profile_fk', User::tableName(), 'guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropTable('{{%profile}}');
+        $this->dropTable(User::tableName());
     }
 
     /*
