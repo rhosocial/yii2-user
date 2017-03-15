@@ -34,7 +34,7 @@ trait SchemaBuilderTrait
     public function blob()
     {
         if ($this->getDb()->driverName == 'mysql') {
-            return $this->getDb()->getSchema()->createColumnSchemaBuilder(MySQLSchema::TYPE_BLOB);
+            return (new MySQLSchema())->createColumnSchemaBuilder(MySQLSchema::TYPE_BLOB);
         }
     }
     
@@ -43,34 +43,34 @@ trait SchemaBuilderTrait
      */
     public function binary($length = null)
     {
-        return $this->getDb()->getSchema()->createColumnSchemaBuilder(Schema::TYPE_BINARY, $length);
+        return (new MySQLSchema())->createColumnSchemaBuilder(Schema::TYPE_BINARY, $length);
     }
     
     public function varbinary($length = null)
     {
         if ($this->getDb()->driverName == 'mysql') {
-            return $this->getDb()->getSchema()->createColumnSchemaBuilder(MySQLSchema::TYPE_VARBINARY, $length);
+            return (new MySQLSchema())->createColumnSchemaBuilder(MySQLSchema::TYPE_VARBINARY, $length);
         }
     }
     
     public function varchar($length = null)
     {
         if ($this->getDb()->driverName == 'mysql') {
-            return $this->getDb()->getSchema()->createColumnSchemaBuilder(MySQLSchema::TYPE_VARCHAR, $length);
+            return (new MySQLSchema())->createColumnSchemaBuilder(MySQLSchema::TYPE_VARCHAR, $length);
         }
     }
     
     public function binaryPk()
     {
         if ($this->getDb()->driverName == 'mysql') {
-            return $this->getDb()->getSchema()->createColumnSchemaBuilder(MySQLSchema::TYPE_BINARY_PK);
+            return (new MySQLSchema())->createColumnSchemaBuilder(MySQLSchema::TYPE_BINARY_PK);
         }
     }
     
     public function tinyInteger($length)
     {
         if ($this->getDb()->driverName == 'mysql') {
-            return $this->getDb()->getSchema()->createColumnSchemaBuilder(MySQLSchema::TYPE_TINYINT, $length);
+            return (new MySQLSchema())->createColumnSchemaBuilder(MySQLSchema::TYPE_TINYINT, $length);
         }
     }
 }
