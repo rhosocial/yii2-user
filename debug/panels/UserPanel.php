@@ -10,7 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-namespace yii\debug\panels;
+namespace rhosocial\user\debug\panels;
 
 use Yii;
 use yii\data\ArrayDataProvider;
