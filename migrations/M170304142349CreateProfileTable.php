@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\migrations;
 
+use rhosocial\user\User;
 use rhosocial\user\Profile;
 
 /**
@@ -47,7 +48,7 @@ class M170304142349CreateProfileTable extends Migration
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile'";
-            $this->createTable(User::tableName(), [
+            $this->createTable(Profile::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
                 'nickname' => $this->varchar(255)->notNull()->comment('Nickname'),
                 'first_name' => $this->varchar(255)->notNull()->comment('First Name'),
@@ -56,16 +57,15 @@ class M170304142349CreateProfileTable extends Migration
                 'individual_sign' => $this->text()->notNull()->comment('Individual Sign'),
                 'created_at' => $this->dateTime()->notNull()->defaultValue('1970-01-01 00:00:00')->comment('Created At'),
                 'updated_at' => $this->dateTime()->notNull()->defaultValue('1970-01-01 00:00:00')->comment('Updated At'),
-
             ], $tableOptions);
         }
-        $this->addPrimaryKey('user_guid_profile_pk', User::tableName(), 'guid');
-        $this->addForeignKey('user_profile_fk', User::tableName(), 'guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
+        $this->addPrimaryKey('user_guid_profile_pk', Profile::tableName(), 'guid');
+        $this->addForeignKey('user_profile_fk', Profile::tableName(), 'guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropTable(User::tableName());
+        $this->dropTable(Profile::tableName());
     }
 
     /*

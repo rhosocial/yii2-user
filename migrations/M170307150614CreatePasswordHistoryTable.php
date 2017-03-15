@@ -12,6 +12,9 @@
 
 namespace rhosocial\user\migrations;
 
+use rhosocial\user\User;
+use rhosocial\user\security\PasswordHistory;
+
 /**
  * Create Password History Table.
  *
@@ -42,20 +45,20 @@ class M170307150614CreatePasswordHistoryTable extends Migration
         if ($this->getDb()->driverName == 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History'";
-            $this->createTable('{{%password_history}}', [
+            $this->createTable(PasswordHistory::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('Password GUID'),
                 'user_guid' => $this->varbinary(16)->notNull()->comment('Created By'),
                 'created_at' => $this->dateTime()->notNull()->comment('Created At'),
                 'pass_hash' => $this->varchar(80)->notNull()->comment('Password Hash'),
             ], $tableOptions);
         }
-        $this->addPrimaryKey('password_guid_pk', '{{%password_history}}', 'guid');
-        $this->addForeignKey('user_password_fk', '{{%password_history}}', 'user_guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
+        $this->addPrimaryKey('password_guid_pk', PasswordHistory::tableName(), 'guid');
+        $this->addForeignKey('user_password_fk', PasswordHistory::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->dropTable('{{$password_history}}');
+        $this->dropTable(PasswordHistory::tableName());
     }
 
     /*
