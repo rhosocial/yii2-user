@@ -28,6 +28,8 @@ class UserController extends Controller
 {
     public $userClass;
     
+    public $defaultAction = 'show';
+    
     protected function checkUserClass()
     {
         $userClass = $this->userClass;
@@ -107,6 +109,28 @@ class UserController extends Controller
         $user = $this->getUser($user);
         echo Yii::t('app', 'User') . " (" . $user->getID() . "), " . Yii::t('app', 'registered at') . " (" . $user->getCreatedAt() . ")"
                 . ($user->getCreatedAt() == $user->getUpdatedAt() ? "" : ", " . Yii::t('app', 'last updated at') . " (" . $user->getUpdatedAt() . ")") .".\n";
+        return true;
+    }
+    
+    /**
+     * Show statistics.
+     * @param User|string|integer $user
+     * @return boolean
+     */
+    public function actionStat($user = null)
+    {
+        if ($user === null) {
+            $count = User::find()->count();
+            echo "Total number of user(s): " . $count . "\n";
+            if ($count == 0) {
+                return true;
+            }
+            $last = User::find()->orderByCreatedAt(SORT_DESC)->one();
+            /* @var $last User */
+            echo "Latest user (" . $last->getID() . ") registered at " . $last->getCreatedAt() . "\n";
+            return true;
+        }
+        $user = $this->getUser($user);
         return true;
     }
 }
