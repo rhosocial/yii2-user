@@ -16,4 +16,8 @@ This extension provides two common models:
 - [Using the Role-Based Authorization Control Features](usage-rbac.md)
 - [Using the Login Log model](usage-login-log.md)
 
+## Debug
+
+- [Using the debug panel](usage-debug.md)
+
 ## [Test](Test.md)

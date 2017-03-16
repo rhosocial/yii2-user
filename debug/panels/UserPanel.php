@@ -38,7 +38,7 @@ class UserPanel extends Panel
      */
     public function getSummary()
     {
-        return Yii::$app->view->render('panels/user/summary', ['panel' => $this]);
+        return Yii::$app->view->render('@rhosocial/user/debug/views/user/summary', ['panel' => $this]);
     }
 
     /**
@@ -46,7 +46,7 @@ class UserPanel extends Panel
      */
     public function getDetail()
     {
-        return Yii::$app->view->render('panels/user/detail', ['panel' => $this]);
+        return Yii::$app->view->render('@rhosocial/user/debug/views/user/detail', ['panel' => $this]);
     }
 
     /**
