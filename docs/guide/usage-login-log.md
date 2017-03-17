@@ -60,3 +60,32 @@ Then, you could add the above class to application components configuration:
     ],
     ...
 ```
+
+### Record limitation
+
+We allow you to set an upper limit for the number of logs per user.
+
+There are two types of upper limit, one is based on total number:
+
+```php
+$loginLog->limitType = Login::LIMIT_MAX;
+$loginLog->limitMax = 100; // The upper limit is one hundred.
+```
+
+and the other is based on the validity period:
+
+```php
+$loginLog->limitType = Login::LIMIT_DURATION;
+$loginLog->limitDuration = 90 * 86400; // Valid for 90 days.
+```
+
+While, you can set to enable both of above (default):
+```php
+$loginLog->limitType = Login::LIMIT_DURATION | Login::LIMIT_MAX;
+```
+
+and, the total number can also be unrestricted.
+
+```php
+$loginLog->limitType = Login::LIMIT_NO_LIMIT;
+```

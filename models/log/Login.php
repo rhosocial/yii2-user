@@ -13,6 +13,8 @@
 namespace rhosocial\user\models\log;
 
 use rhosocial\base\models\models\BaseBlameableModel;
+use Yii;
+use yii\base\ModelEvent;
 
 /**
  * Login log.
@@ -46,6 +48,102 @@ class Login extends BaseBlameableModel
     public $contentAttribute = false;
     public $updatedAtAttribute = false;
     public $updatedByAttribute = false;
+    
+    const LIMIT_NO_LIMIT = 0x0;
+    const LIMIT_MAX = 0x1;
+    const LIMIT_DURATION = 0x2;
+    
+    public $limitType = 0x3;
+    public $limitMax = 100;
+    public $limitDuration = 90 * 86400;
+    
+    public function init()
+    {
+        if ($this->limitType & static::LIMIT_MAX) {
+            $this->limitMax = 100;  // 100 records.
+        }
+        if ($this->limitType & static::LIMIT_DURATION) {
+            $this->limitDuration = 90 * 86400; // 90 Days.
+        }
+        if ($this->limitType > 0) {
+            $this->on(static::EVENT_AFTER_INSERT, [$this, 'onDeleteExtraRecords']);
+        }
+        parent::init();
+    }
+    
+    /**
+     * 
+     * @param ModelEvent $event
+     */
+    public function onDeleteExtraRecords($event)
+    {
+        $sender = $event->sender;
+        /* @var $sender static */
+        Yii::info('Login Log limit type:' . $sender->limitType, __METHOD__);
+        $result = 0;
+        if ($sender->limitType & static::LIMIT_MAX) {
+            $result += $sender->deleteExtraRecords();
+        }
+        if ($sender->limitType & static::LIMIT_DURATION) {
+            $result += $sender->deleteExpiredRecords();
+        }
+        return $result;
+    }
+    
+    /**
+     * Delete extra records.
+     * @return integer The total of rows deleted.
+     */
+    protected function deleteExtraRecords()
+    {
+        try {
+            $limit = (int)($this->limitMax);
+        } catch (\Exception $ex) {
+            Yii::error($ex->getMessage(), __METHOD__);
+        }
+        $host = $this->host;
+         /* @var $host \rhosocial\user\User */
+        $count = static::find()->createdBy($host)->count();
+        Yii::info($host->getReadableGUID() . " has $count login logs.", __METHOD__);
+        if ($count > $limit) {
+            foreach (static::find()->createdBy($host)->orderByCreatedAt()->limit($count - $limit)->all() as $login) {
+                /* @var $login static */
+                $result = $login->delete();
+                if (YII_ENV_DEV) {
+                    Yii::info($host->getReadableGUID() . ": ($result) login record created at (" . $login->getCreatedAt() . ") was just deleted.", __METHOD__);
+                }
+            }
+        }
+        return $count - $limit;
+    }
+    
+    /**
+     * Delete expired records.
+     * @return integer The total of rows deleted.
+     */
+    protected function deleteExpiredRecords()
+    {
+        try {
+            $limit = (int)($this->limitDuration);
+        } catch (\Exception $ex) {
+            Yii::error($ex->getMessage(), __METHOD__);
+        }
+        $count = 0;
+        $host = $this->host;
+        /* @var $host \rhosocial\user\User */
+        foreach (static::find()
+                ->createdBy($host)
+                ->andWhere(['<=', $this->createdAtAttribute, $this->offsetDatetime(null, -$limit)])
+                ->all() as $login) {
+            /* @var $login static */
+            $result = $login->delete();
+            $count += $result;
+            if (YII_ENV_DEV) {
+                Yii::info($host->getReadableGUID() . ": ($result) login record created at (" . $login->getCreatedAt() . ") was just deleted.", __METHOD__);
+            }
+        }
+        return $count;
+    }
     
     public static $statuses = [
         0x000 => 'Normal',
