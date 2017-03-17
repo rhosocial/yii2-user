@@ -133,4 +133,84 @@ class UserController extends Controller
         $user = $this->getUser($user);
         return true;
     }
+    
+    /**
+     * Assign a role to user or revoke a role.
+     * @param User|string|integer $user
+     * @param string $operation Only `assign` and `revoke` are acceptable.
+     * @param string $role
+     */
+    public function actionRole($user, $operation, $role)
+    {
+        $user = $this->getUser($user);
+        $role = Yii::$app->authManager->getRole($role);
+        if ($operation == 'assign') {
+            try {
+                $assignment = Yii::$app->authManager->assign($role, $user);
+            } catch (\yii\db\IntegrityException $ex) {
+                echo "Failed to assign `" . $role->name . "`.\n";
+                echo "Maybe the role has been assigned.\n";
+                return false;
+            }
+            if ($assignment) {
+                echo "`$role->name`" . " has been assigned to User (" . $user->getID() . ").\n";
+            } else {
+                echo "Failed to assign `" . $role->name . "`.\n";
+            }
+            return true;
+        }
+        if ($operation == 'revoke') {
+            $assignment = Yii::$app->authManager->revoke($role, $user);
+            if ($assignment) {
+                echo "`$role->name`" . " has been revoked from User (" . $user->getID() . ").\n";
+            } else {
+                echo "Failed to revoke `" . $role->name . "`.\n";
+                echo "Maybe the role has not been assigned yet.\n";
+            }
+            return true;
+        }
+        echo "Unrecognized operation: $operation.\n";
+        echo "The accepted operations are `assign` and `revoke`.\n";
+        return false;
+    }
+    
+    /**
+     * Assign a permission to user or revoke a permission.
+     * @param User|string|integer $user
+     * @param string $operation Only `assign` and `revoke` are acceptable.
+     * @param string $permission
+     */
+    public function actionPermission($user, $operation, $permission)
+    {
+        $user = $this->getUser($user);
+        $permission = Yii::$app->authManager->getPermission($permission);
+        if ($operation == 'assign') {
+            try {
+                $assignment = Yii::$app->authManager->assign($permission, $user);
+            } catch (\yii\db\IntegrityException $ex) {
+                echo "Failed to assign `" . $role->name . "`.\n";
+                echo "Maybe the permission has been assigned.\n";
+                return false;
+            }
+            if ($assignment) {
+                echo "`$permission->name`" . " has been assigned to User (" . $user->getID() . ").\n";
+            } else {
+                echo "Failed to assign `" . $permission->name . "`.\n";
+            }
+            return true;
+        }
+        if ($operation == 'revoke') {
+            $assignment = Yii::$app->authManager->revoke($permission, $user);
+            if ($assignment) {
+                echo "`$permission->name`" . " has been revoked from User (" . $user->getID() . ").\n";
+            } else {
+                echo "Failed to revoke `" . $permission->name . "`.\n";
+                echo "Maybe the permission has not been assigned yet.\n";
+            }
+            return true;
+        }
+        echo "Unrecognized operation: $operation.\n";
+        echo "The accepted operations are `assign` and `revoke`.\n";
+        return false;
+    }
 }
