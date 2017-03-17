@@ -17,6 +17,24 @@ use rhosocial\base\models\models\BaseBlameableModel;
 /**
  * Login log.
  *
+ * If you're using MySQL, we recommend that you create a data table using the following statement:
+ ```SQL
+CREATE TABLE `log_login` (
+  `guid` varbinary(16) NOT NULL,
+  `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `user_guid` varbinary(16) NOT NULL,
+  `ip` varbinary(16) NOT NULL,
+  `ip_type` smallint(6) NOT NULL DEFAULT '4',
+  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+  `status` int(11) NOT NULL DEFAULT '0',
+  `device` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`guid`),
+  UNIQUE KEY `login_log_id_unique` (`guid`,`id`),
+  KEY `login_log_creator_fk` (`user_guid`),
+  CONSTRAINT `login_log_creator_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+ ```
+ *
  * @property integer $status Login status.
  * @property integer $device Login device. 
  *
@@ -61,8 +79,8 @@ class Login extends BaseBlameableModel
     public function getLoginRules()
     {
         return [
-            ['status', 'range', array_keys(static::$statuses)],
-            ['device', 'range', array_keys(static::$devices)],
+            ['status', 'in', 'range' => array_keys(static::$statuses)],
+            ['device', 'in', 'range' => array_keys(static::$devices)],
         ];
     }
     

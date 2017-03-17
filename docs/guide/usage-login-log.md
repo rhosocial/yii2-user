@@ -1,8 +1,21 @@
 # Using Login Log
 
+We have provided you with login log function.
+
+This feature is not turned on by default, you need to follow the following tips to enable:
+
 ## Preparation
 
-## Implement event triggered when logging in
+### Migration
+
+Please execute the following migration:
+```
+yii migrate --migrationPath=@vendor --migrationNamespaces=rhosocial\user\models\log\migrations --interactive=0
+```
+
+Or create the data table yourself according to the database table schema listed in the `\rhosocial\user\models\log\Login` model comment.
+
+### Implement event triggered when logging in
 
 For example:
 
@@ -21,10 +34,14 @@ class User extends \rhosocial\base\models\web\User
      */
     public function onRecordLogon($event)
     {
-        $sender = $event->sender;
-        /* @var $sender static */
-        $log = $sender->create(Login::class, ['device' => 0x011]); // PC (Windows, Browser)
-        return $log->save();
+        $user = $event->sender->identity;
+        /* @var $user \app\models\User */
+        $log = $user->create(Login::class, ['device' => 0x011]); // PC (Windows, Browser)
+        try {
+            return $log->save();
+        } catch (\Exception $ex) {
+            Yii::error($ex->getMessage());
+        }
     }
     ...
 }
