@@ -14,6 +14,7 @@ namespace rhosocial\user;
 
 use rhosocial\base\models\models\BaseUserModel;
 use rhosocial\base\models\queries\BaseBlameableQuery;
+use rhosocial\user\models\log\UserLoginTrait;
 use rhosocial\user\security\UserPasswordHistoryTrait;
 use Yii;
 
@@ -84,7 +85,7 @@ use Yii;
  */
 class User extends BaseUserModel
 {
-    use UserPasswordHistoryTrait;
+    use UserPasswordHistoryTrait, UserLoginTrait;
 
     /**
      * @inheritdoc

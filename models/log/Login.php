@@ -217,6 +217,10 @@ class Login extends BaseBlameableModel
      */
     public static function getLatests(User $user, $limit = 1)
     {
-        return static::find()->createdBy($user)->orderByCreatedAt(SORT_DESC)->limit($limit)->all();
+        $query = static::find()->createdBy($user)->orderByCreatedAt(SORT_DESC);
+        if ($limit == 'all' || !is_int($limit) || $limit < 1) {
+            return $query->all();
+        }
+        return $query->limit($limit)->all();
     }
 }
