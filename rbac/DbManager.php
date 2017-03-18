@@ -14,7 +14,6 @@ namespace rhosocial\user\rbac;
 
 use rhosocial\user\User;
 use yii\db\Query;
-use yii\rbac\Item;
 
 /**
  * This DbManager replaces the UserID of original DbManager with the UserGUID.
@@ -385,5 +384,30 @@ class DbManager extends \yii\rbac\DbManager
         return (new Query)->select('[[user_guid]]')
             ->from($this->assignmentTable)
             ->where(['item_name' => $roleName])->column($this->db);
+    }
+
+    /**
+     * Populates an auth item with the data fetched from database
+     * @param array $row the data from the auth item table
+     * @return Item the populated auth item instance (either Role or Permission)
+     */
+    protected function populateItem($row)
+    {
+        $class = $row['type'] == Item::TYPE_PERMISSION ? Permission::class : Role::class;
+
+        if (!isset($row['data']) || ($data = @unserialize($row['data'])) === false) {
+            $data = null;
+        }
+
+        return new $class([
+            'name' => $row['name'],
+            'type' => $row['type'],
+            'description' => $row['description'],
+            'ruleName' => $row['rule_name'],
+            'data' => $data,
+            'color' => $row['color'],
+            'createdAt' => $row['created_at'],
+            'updatedAt' => $row['updated_at'],
+        ]);
     }
 }

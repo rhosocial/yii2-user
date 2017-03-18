@@ -16,7 +16,7 @@ namespace rhosocial\user\rbac;
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class Permission extends \yii\rbac\Permission
+class Permission extends Item
 {
     public $type = self::TYPE_PERMISSION;
 }

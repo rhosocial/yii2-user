@@ -3,6 +3,7 @@
 /* @var $panel yii\debug\panels\UserPanel */
 
 use rhosocial\user\User;
+use rhosocial\user\rbac\Item;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 
@@ -39,6 +40,32 @@ $identity = $panel->data['identity'];
         echo GridView::widget([
             'dataProvider' => $panel->data['rolesProvider'],
             'columns' => [
+                'color' => [
+                    'class' => 'yii\grid\Column',
+                    'header' => 'Color',
+                    'content' => function($model, $key, $index, $column) {
+                        /* @var $model Item */
+                        if (!is_numeric($model->color)) {
+                            return null;
+                        }
+                        $model->color = (int)($model->color);
+                        if ($model->color < 0 || $model->color > 0xffffff) {
+                            return null;
+                        }
+                        return "<font color=\"#fff\">" . dechex($model->color) . "</font>";
+                    },
+                    'contentOptions' => function($model, $key, $index, $column) {
+                        /* @var $model Item */
+                        if (!is_numeric($model->color)) {
+                            return [];
+                        }
+                        $model->color = (int)($model->color);
+                        if ($model->color < 0 || $model->color > 0xffffff) {
+                            return [];
+                        }
+                        return ['bgcolor' => '#' . dechex($model->color)];
+                    },
+                ],
                 'name',
                 'description',
                 'ruleName',
@@ -55,6 +82,32 @@ $identity = $panel->data['identity'];
         echo GridView::widget([
             'dataProvider' => $panel->data['permissionsProvider'],
             'columns' => [
+                'color' => [
+                    'class' => 'yii\grid\Column',
+                    'header' => 'Color',
+                    'content' => function($model, $key, $index, $column) {
+                        /* @var $model Item */
+                        if (!is_numeric($model->color)) {
+                            return null;
+                        }
+                        $model->color = (int)($model->color);
+                        if ($model->color < 0 || $model->color > 0xffffff) {
+                            return null;
+                        }
+                        return "<font color=\"#fff\">" . dechex($model->color) . "</font>";
+                    },
+                    'contentOptions' => function($model, $key, $index, $column) {
+                        /* @var $model Item */
+                        if (!is_numeric($model->color)) {
+                            return [];
+                        }
+                        $model->color = (int)($model->color);
+                        if ($model->color < 0 || $model->color > 0xffffff) {
+                            return [];
+                        }
+                        return ['bgcolor' => '#' . dechex($model->color)];
+                    },
+                ],
                 'name',
                 'description',
                 'ruleName',
@@ -65,5 +118,4 @@ $identity = $panel->data['identity'];
         ]);
     }
 
-} ?>
-
+}

@@ -153,7 +153,7 @@ class UserController extends Controller
                 return false;
             }
             if ($assignment) {
-                echo "`$role->name`" . " has been assigned to User (" . $user->getID() . ").\n";
+                echo "`$role->name`" . " assigned to User (" . $user->getID() . ") successfully.\n";
             } else {
                 echo "Failed to assign `" . $role->name . "`.\n";
             }
@@ -162,7 +162,7 @@ class UserController extends Controller
         if ($operation == 'revoke') {
             $assignment = Yii::$app->authManager->revoke($role, $user);
             if ($assignment) {
-                echo "`$role->name`" . " has been revoked from User (" . $user->getID() . ").\n";
+                echo "`$role->name`" . " revoked from User (" . $user->getID() . ").\n";
             } else {
                 echo "Failed to revoke `" . $role->name . "`.\n";
                 echo "Maybe the role has not been assigned yet.\n";
@@ -193,7 +193,7 @@ class UserController extends Controller
                 return false;
             }
             if ($assignment) {
-                echo "`$permission->name`" . " has been assigned to User (" . $user->getID() . ").\n";
+                echo "`$permission->name`" . " assigned to User (" . $user->getID() . ") successfully.\n";
             } else {
                 echo "Failed to assign `" . $permission->name . "`.\n";
             }
@@ -202,7 +202,7 @@ class UserController extends Controller
         if ($operation == 'revoke') {
             $assignment = Yii::$app->authManager->revoke($permission, $user);
             if ($assignment) {
-                echo "`$permission->name`" . " has been revoked from User (" . $user->getID() . ").\n";
+                echo "`$permission->name`" . " revoked from User (" . $user->getID() . ").\n";
             } else {
                 echo "Failed to revoke `" . $permission->name . "`.\n";
                 echo "Maybe the permission has not been assigned yet.\n";

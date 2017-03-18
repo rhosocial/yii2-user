@@ -16,7 +16,7 @@ namespace rhosocial\user\rbac;
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class Role extends \yii\rbac\Role
+class Role extends Item
 {
     public $type = self::TYPE_ROLE;
 }
