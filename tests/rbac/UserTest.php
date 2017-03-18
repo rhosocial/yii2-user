@@ -24,10 +24,10 @@ use rhosocial\user\rbac\permissions\DeleteUser;
 use rhosocial\user\rbac\permissions\UpdateAdminUser;
 use rhosocial\user\rbac\permissions\UpdateMyself;
 use rhosocial\user\rbac\permissions\UpdateUser;
+use rhosocial\user\rbac\Role;
 use rhosocial\user\rbac\roles\Admin as AdminRole;
 use rhosocial\user\rbac\roles\User as UserRole;
 use Yii;
-use yii\rbac\Role;
 
 /**
  * @version 1.0
