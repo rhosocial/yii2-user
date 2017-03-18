@@ -40,27 +40,28 @@ use yii\rbac\DbManager;
  * `{{%auth_assignment}}`
  *
  ```SQL
- CREATE TABLE `auth_rule` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `auth_rule` (
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Rule Name',
   `data` blob,
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Rule';
 
 CREATE TABLE `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `type` smallint(6) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci COMMENT 'Description',
+  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Rule Name',
   `data` blob,
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
+  `color` int(11) NOT NULL DEFAULT '-1' COMMENT 'Color',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   PRIMARY KEY (`name`),
   KEY `rule_name_fk` (`rule_name`),
   KEY `idx-auth_item-type` (`type`),
   CONSTRAINT `rule_name_fk` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Item';
 
 CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
@@ -69,16 +70,17 @@ CREATE TABLE `auth_item_child` (
   KEY `child_name_fk` (`child`),
   CONSTRAINT `child_name_fk` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `parent_name_fk` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Item Child';
 
 CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_guid` varbinary(16) NOT NULL,
-  `created_at` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `failed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`item_name`,`user_guid`),
   KEY `user_assignment_fk` (`user_guid`),
   CONSTRAINT `user_assignment_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Assignment';
 ```
  * 
  * @version 1.0
@@ -110,22 +112,23 @@ class M170310150337CreateAuthTables extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
 
             $this->createTable($authManager->ruleTable, [
-                'name' => $this->varchar(64)->notNull(),
+                'name' => $this->varchar(64)->notNull()->comment('Rule Name'),
                 'data' => $this->blob(),
                 'created_at' => $this->dateTime()->notNull(),
                 'updated_at' => $this->dateTime()->notNull(),
-            ], $tableOptions);
+            ], $tableOptions . " COMMENT 'Auth Rule'");
             $this->addPrimaryKey('rule_name_pk', $authManager->ruleTable, 'name');
 
             $this->createTable($authManager->itemTable, [
                 'name' => $this->varchar(64)->notNull(),
                 'type' => $this->smallInteger()->notNull(),
-                'description' => $this->text(),
-                'rule_name' => $this->varchar(64),
+                'description' => $this->text()->comment('Description'),
+                'rule_name' => $this->varchar(64)->comment('Rule Name'),
                 'data' => $this->blob(),
+                'color' => $this->integer()->defaultValue(-1)->notNull()->comment('Color'),
                 'created_at' => $this->dateTime()->notNull(),
                 'updated_at' => $this->dateTime()->notNull(),
-            ], $tableOptions);
+            ], $tableOptions . " COMMENT 'Auth Item'");
             $this->addPrimaryKey('item_name_pk', $authManager->itemTable, 'name');
             $this->addForeignKey('rule_name_fk', $authManager->itemTable, 'rule_name', $authManager->ruleTable, 'name', 'CASCADE', 'CASCADE');
             $this->createIndex('idx-auth_item-type', $authManager->itemTable, 'type');
@@ -133,7 +136,7 @@ class M170310150337CreateAuthTables extends Migration
             $this->createTable($authManager->itemChildTable, [
                 'parent' => $this->varchar(64)->notNull(),
                 'child' => $this->varchar(64)->notNull(),
-            ], $tableOptions);
+            ], $tableOptions . " COMMENT 'Auth Item Child'");
             $this->addPrimaryKey('parent_child_pk', $authManager->itemChildTable, ['parent', 'child']);
             $this->addForeignKey('parent_name_fk', $authManager->itemChildTable, 'parent', $authManager->itemTable, 'name', 'CASCADE', 'CASCADE');
             $this->addForeignKey('child_name_fk', $authManager->itemChildTable, 'child', $authManager->itemTable, 'name', 'CASCADE', 'CASCADE');
@@ -143,7 +146,7 @@ class M170310150337CreateAuthTables extends Migration
                 'user_guid' => $this->varbinary(16)->notNull(),
                 'created_at' => $this->dateTime()->notNull(),
                 'failed_at' => $this->dateTime(),
-            ], $tableOptions);
+            ], $tableOptions . " COMMENT 'Auth Assignment'");
             $this->addPrimaryKey('user_item_name_pk', $authManager->assignmentTable, ['item_name', 'user_guid']);
             $this->addForeignKey('user_assignment_fk', $authManager->assignmentTable, 'user_guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
         }

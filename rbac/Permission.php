@@ -10,23 +10,13 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\rbac\permissions;
-
-use rhosocial\user\rbac\Permission;
+namespace rhosocial\user\rbac;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class DeleteAdminUser extends Permission
+class Permission extends \yii\rbac\Permission
 {
-    /**
-     * @inheritdoc
-     */
-    public $name = 'deleteAdminUser';
-    
-    /**
-     * @inheritdoc
-     */
-    public $description = 'Delete an administrator user';
+    public $type = self::TYPE_PERMISSION;
 }

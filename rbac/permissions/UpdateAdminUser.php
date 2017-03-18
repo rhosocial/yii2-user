@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use yii\rbac\Permission;
+use rhosocial\user\rbac\Permission;
 
 /**
  * @version 1.0

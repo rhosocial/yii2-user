@@ -10,23 +10,17 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\rbac\permissions;
-
-use rhosocial\user\rbac\Permission;
+namespace rhosocial\user\rbac;
 
 /**
+ * 
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class DeleteAdminUser extends Permission
+class Item extends \yii\rbac\Item
 {
     /**
-     * @inheritdoc
+     * @var int Color in RGB. -1 means transparent (no color).
      */
-    public $name = 'deleteAdminUser';
-    
-    /**
-     * @inheritdoc
-     */
-    public $description = 'Delete an administrator user';
+    public $color = -1;
 }

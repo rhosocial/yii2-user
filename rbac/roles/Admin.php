@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\rbac\roles;
 
-use yii\rbac\Role;
+use rhosocial\user\rbac\Role;
 
 /**
  * @version 1.0
