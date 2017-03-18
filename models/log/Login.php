@@ -13,6 +13,7 @@
 namespace rhosocial\user\models\log;
 
 use rhosocial\base\models\models\BaseBlameableModel;
+use rhosocial\user\User;
 use Yii;
 use yii\base\ModelEvent;
 
@@ -59,10 +60,10 @@ class Login extends BaseBlameableModel
     
     public function init()
     {
-        if ($this->limitType & static::LIMIT_MAX) {
+        if (($this->limitType & static::LIMIT_MAX) && ($this->limitMax < 2 || !is_int($this->limitMax))) { // at least 2 records.
             $this->limitMax = 100;  // 100 records.
         }
-        if ($this->limitType & static::LIMIT_DURATION) {
+        if (($this->limitType & static::LIMIT_DURATION) && ($this->limitDuration < 86400 || !is_int($this->limitDuration))) { // at least one day.
             $this->limitDuration = 90 * 86400; // 90 Days.
         }
         if ($this->limitType > 0) {
@@ -206,5 +207,16 @@ class Login extends BaseBlameableModel
     public static function tableName()
     {
         return '{{%log_login}}';
+    }
+    
+    /**
+     * Get latest ones.
+     * @param User $user
+     * @param integer $limit
+     * @return static[]
+     */
+    public static function getLatests(User $user, $limit = 1)
+    {
+        return static::find()->createdBy($user)->orderByCreatedAt(SORT_DESC)->limit($limit)->all();
     }
 }
