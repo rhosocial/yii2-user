@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017-03-12 16:33:52
+-- Generation Time: 2017-03-19 01:15:17
 -- 服务器版本： 8.0.0-dmr
--- PHP Version: 7.1.2
+-- PHP Version: 7.1.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,7 +27,7 @@ USE `rhosocial_yii2_user`;
 --
 -- 表的结构 `auth_assignment`
 --
--- 创建时间： 2017-03-12 08:29:24
+-- 创建时间： 2017-03-18 08:39:05
 --
 
 DROP TABLE IF EXISTS `auth_assignment`;
@@ -38,52 +38,53 @@ CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `failed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`item_name`,`user_guid`),
   KEY `user_assignment_fk` (`user_guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Assignment';
 
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `auth_item`
 --
--- 创建时间： 2017-03-12 08:29:25
+-- 创建时间： 2017-03-18 08:39:04
 --
 
 DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE IF NOT EXISTS `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `type` smallint(6) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci COMMENT 'Description',
+  `rule_name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Rule Name',
   `data` blob,
+  `color` int(11) NOT NULL DEFAULT '-1' COMMENT 'Color',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`name`),
   KEY `rule_name_fk` (`rule_name`),
   KEY `idx-auth_item-type` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Item';
 
 --
 -- 转存表中的数据 `auth_item`
 --
 
-INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('admin', 1, 'Administrator', NULL, NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('createAdminUser', 2, 'Create an administrator user', NULL, NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('createUser', 2, 'Create a user', 'canCreateUser', NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('deleteAdminUser', 2, 'Delete an administrator user', NULL, NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('deleteMyself', 2, 'Delete myself', 'canDeleteMyself', NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('deleteUser', 2, 'Delete a user', 'canDeleteUser', NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('updateAdminUser', 2, 'Update an administrator user', NULL, NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('updateMyself', 2, 'Update myself', 'canUpdateMyself', NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('updateUser', 2, 'Update a user', 'canUpdateUser', NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('user', 1, 'User', NULL, NULL, '2017-03-12 16:26:32', '2017-03-12 16:26:32');
+INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `color`, `created_at`, `updated_at`) VALUES
+('admin', 1, 'Administrator', NULL, NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('createAdminUser', 2, 'Create an administrator user', NULL, NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('createUser', 2, 'Create a user', 'canCreateUser', NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('deleteAdminUser', 2, 'Delete an administrator user', NULL, NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('deleteMyself', 2, 'Delete myself', 'canDeleteMyself', NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('deleteUser', 2, 'Delete a user', 'canDeleteUser', NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('updateAdminUser', 2, 'Update an administrator user', NULL, NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('updateMyself', 2, 'Update myself', 'canUpdateMyself', NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('updateUser', 2, 'Update a user', 'canUpdateUser', NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('user', 1, 'User', NULL, NULL, -1, '2017-03-18 16:39:05', '2017-03-18 16:39:05');
 
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `auth_item_child`
 --
--- 创建时间： 2017-03-12 08:29:25
+-- 创建时间： 2017-03-18 08:39:05
 --
 
 DROP TABLE IF EXISTS `auth_item_child`;
@@ -92,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`parent`,`child`),
   KEY `child_name_fk` (`child`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Item Child';
 
 --
 -- 转存表中的数据 `auth_item_child`
@@ -111,35 +112,35 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 --
 -- 表的结构 `auth_rule`
 --
--- 创建时间： 2017-03-12 08:29:25
+-- 创建时间： 2017-03-18 08:39:04
 --
 
 DROP TABLE IF EXISTS `auth_rule`;
 CREATE TABLE IF NOT EXISTS `auth_rule` (
-  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Rule Name',
   `data` blob,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Rule';
 
 --
 -- 转存表中的数据 `auth_rule`
 --
 
 INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
-('canCreateUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c4372656174655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e43726561746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b733a393a22757064617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b7d, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('canDeleteMyself', 0x4f3a34323a2272686f736f6369616c5c757365725c726261635c72756c65735c44656c6574654d7973656c6652756c65223a333a7b733a343a226e616d65223b733a31353a2263616e44656c6574654d7973656c66223b733a393a22637265617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b733a393a22757064617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b7d, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('canDeleteUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c44656c6574655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e44656c65746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b733a393a22757064617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b7d, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('canUpdateMyself', 0x4f3a34323a2272686f736f6369616c5c757365725c726261635c72756c65735c5570646174654d7973656c6652756c65223a333a7b733a343a226e616d65223b733a31353a2263616e5570646174654d7973656c66223b733a393a22637265617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b733a393a22757064617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b7d, '2017-03-12 16:26:32', '2017-03-12 16:26:32'),
-('canUpdateUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c5570646174655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e55706461746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b733a393a22757064617465644174223b733a31393a22323031372d30332d31322031363a32363a3332223b7d, '2017-03-12 16:26:32', '2017-03-12 16:26:32');
+('canCreateUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c4372656174655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e43726561746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b733a393a22757064617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b7d, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('canDeleteMyself', 0x4f3a34323a2272686f736f6369616c5c757365725c726261635c72756c65735c44656c6574654d7973656c6652756c65223a333a7b733a343a226e616d65223b733a31353a2263616e44656c6574654d7973656c66223b733a393a22637265617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b733a393a22757064617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b7d, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('canDeleteUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c44656c6574655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e44656c65746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b733a393a22757064617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b7d, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('canUpdateMyself', 0x4f3a34323a2272686f736f6369616c5c757365725c726261635c72756c65735c5570646174654d7973656c6652756c65223a333a7b733a343a226e616d65223b733a31353a2263616e5570646174654d7973656c66223b733a393a22637265617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b733a393a22757064617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b7d, '2017-03-18 16:39:05', '2017-03-18 16:39:05'),
+('canUpdateUser', 0x4f3a34303a2272686f736f6369616c5c757365725c726261635c72756c65735c5570646174655573657252756c65223a333a7b733a343a226e616d65223b733a31333a2263616e55706461746555736572223b733a393a22637265617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b733a393a22757064617465644174223b733a31393a22323031372d30332d31382031363a33393a3035223b7d, '2017-03-18 16:39:05', '2017-03-18 16:39:05');
 
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `password_history`
 --
--- 创建时间： 2017-03-08 05:23:13
+-- 创建时间： 2017-03-18 08:37:42
 --
 
 DROP TABLE IF EXISTS `password_history`;
@@ -150,14 +151,14 @@ CREATE TABLE IF NOT EXISTS `password_history` (
   `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
   PRIMARY KEY (`guid`),
   KEY `user_password_fk` (`user_guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Profile';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History';
 
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `profile`
 --
--- 创建时间： 2017-03-06 10:54:24
+-- 创建时间： 2017-03-18 08:37:41
 --
 
 DROP TABLE IF EXISTS `profile`;
@@ -178,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `profile` (
 --
 -- 表的结构 `user`
 --
--- 创建时间： 2017-03-06 10:54:15
+-- 创建时间： 2017-03-18 08:37:41
 --
 
 DROP TABLE IF EXISTS `user`;
@@ -212,26 +213,26 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- 限制表 `auth_assignment`
 --
 ALTER TABLE `auth_assignment`
-  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_assignment_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `auth_item`
 --
 ALTER TABLE `auth_item`
-  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `rule_name_fk` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `auth_item_child`
 --
 ALTER TABLE `auth_item_child`
-  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `child_name_fk` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `parent_name_fk` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `password_history`
 --
 ALTER TABLE `password_history`
-  ADD CONSTRAINT `password_history_ibfk_1` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_password_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `profile`
