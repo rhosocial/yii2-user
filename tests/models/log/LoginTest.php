@@ -13,6 +13,8 @@
 namespace rhosocial\user\tests\models\log;
 
 use rhosocial\user\tests\data\models\log\Login;
+use rhosocial\user\tests\data\models\log\LoginDeleteExtra;
+use rhosocial\user\tests\data\models\log\LoginDeleteExpired;
 use rhosocial\user\tests\data\User;
 use rhosocial\user\tests\TestCase;
 use Yii;
@@ -139,23 +141,52 @@ class LoginTest extends TestCase
      */
     public function testDeleteExtraRecords()
     {
-        $this->user->loginLogClass = Login::class;
+        $this->user->loginLogClass = LoginDeleteExtra::class;
         $this->assertCount(0, $this->user->loginLogs);
         $this->assertNull($this->user->latestLoginLog);
         
         $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
         $this->assertCount(1, $this->user->loginLogs);
-        $this->assertInstanceOf(Login::class, $this->user->latestLoginLog);
+        $this->assertInstanceOf($this->user->loginLogClass, $this->user->latestLoginLog);
         $this->assertTrue(Yii::$app->user->logout());
         
         $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
         $this->assertCount(2, $this->user->loginLogs);
-        $this->assertInstanceOf(Login::class, $this->user->latestLoginLog);
+        $this->assertInstanceOf($this->user->loginLogClass, $this->user->latestLoginLog);
         $this->assertTrue(Yii::$app->user->logout());
         
         $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
         $this->assertCount(2, $this->user->loginLogs);
-        $this->assertInstanceOf(Login::class, $this->user->latestLoginLog);
+        $this->assertInstanceOf($this->user->loginLogClass, $this->user->latestLoginLog);
         $this->assertTrue(Yii::$app->user->logout());
+    }
+    
+    /**
+     * @group user
+     * @group log
+     * @group login
+     */
+    public function testDeleteExpiredRecords()
+    {
+        $this->user->loginLogClass = LoginDeleteExpired::class;
+        $this->assertCount(0, $this->user->loginLogs);
+        $this->assertNull($this->user->latestLoginLog);
+        
+        $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
+        $this->assertTrue(Yii::$app->user->logout());
+        $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
+        $this->assertTrue(Yii::$app->user->logout());
+        
+        $this->assertCount(2, $this->user->loginLogs);
+        $this->assertInstanceOf($this->user->loginLogClass, $this->user->latestLoginLog);
+        sleep(2);
+        
+        $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
+        $this->assertTrue(Yii::$app->user->logout());
+        $this->assertTrue(Yii::$app->user->login($this->user, 24 * 86400));
+        $this->assertTrue(Yii::$app->user->logout());
+        sleep(2);
+        $this->assertCount(2, $this->user->loginLogs);
+        $this->assertInstanceOf($this->user->loginLogClass, $this->user->latestLoginLog);
     }
 }

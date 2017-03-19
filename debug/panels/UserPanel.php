@@ -76,6 +76,14 @@ class UserPanel extends Panel
             ]);
         }
 
+        if (!class_exists($data->loginLogClass)) {
+            $loginLogProvider = 'Login Log Class Not Specified.';
+        } else {
+            $loginLogProvider = new ArrayDataProvider([
+                'allModels' => $data->getLoginLogs(),
+            ]);
+        }
+
         $attributes = array_keys(get_object_vars($data));
         if ($data instanceof ActiveRecord) {
             $attributes = array_keys($data->getAttributes());
@@ -86,6 +94,7 @@ class UserPanel extends Panel
             'attributes' => $attributes,
             'rolesProvider' => $rolesProvider,
             'permissionsProvider' => $permissionsProvider,
+            'loginLogProvider' => $loginLogProvider,
         ];
     }
 }

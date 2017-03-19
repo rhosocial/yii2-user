@@ -118,4 +118,62 @@ use yii\widgets\DetailView;
         ]);
     }
 
+    if ($panel->data['loginLogProvider']) {
+        echo '<h2>Login Logs</h2>';
+        if (is_string($panel->data['loginLogProvider'])) {
+            echo $panel->data['loginLogProvider'];
+        } else {
+            echo GridView::widget([
+                'dataProvider' => $panel->data['loginLogProvider'],
+                'columns' => [
+                    'guid' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'GUID',
+                        'content' => function ($model, $key, $index, $column) {
+                            return $model->getReadableGUID();
+                        },
+                    ],
+                    'id' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'ID',
+                        'content' => function ($model, $key, $index, $column) {
+                            return $model->getID();
+                        },
+                    ],
+                    'ip' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'IP Address',
+                        'content' => function ($model, $key, $index, $column) {
+                            return $model->getIPAddress();
+                        },
+                    ],
+                    'time' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'Time',
+                        'content' => function ($model, $key, $index, $column) {
+                            return $model->getCreatedAt();
+                        },
+                    ],
+                    'device' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'Device',
+                        'content' => function ($model, $key, $index, $column) {
+                            return $model->getDeviceDesc();
+                        },
+                    ],
+                    'status' => [
+                        'class' => 'yii\grid\Column',
+                        'header' => 'Status',
+                        'content' => function ($model, $key, $index, $column) {
+                            $content = $model->getStatusDesc();
+                            if ($model->status > 0) {
+                                $content = "<font color=\"#f00\">" . $content . "</font>";
+                            }
+                            return $content;
+                        },
+                    ],
+                ],
+            ]);
+        }
+    }
 }
