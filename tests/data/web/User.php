@@ -12,9 +12,6 @@
 
 namespace rhosocial\user\tests\data\web;
 
-use rhosocial\user\models\log\Login;
-use Yii;
-
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
@@ -35,7 +32,7 @@ class User extends \rhosocial\base\models\web\User
     {
         $user = $event->sender->identity;
         /* @var $user \rhosocial\user\tests\data\User */
-        $log = $user->create(Login::class, ['device' => 0x011]); // PC (Windows, Browser)
+        $log = $user->create($user->loginLogClass, ['device' => 0x011]); // PC (Windows, Browser)
         try {
             return $log->save();
         } catch (\Exception $ex) {

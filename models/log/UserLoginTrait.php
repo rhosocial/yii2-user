@@ -13,6 +13,7 @@
 namespace rhosocial\user\models\log;
 
 use rhosocial\user\User;
+use Yii;
 
 /**
  * This trait provides login log access methods.
@@ -25,6 +26,8 @@ use rhosocial\user\User;
  */
 trait UserLoginTrait
 {
+    public $loginLogClass = Login::class;
+    
     /**
      * Get login logs.
      * @return Login[]
@@ -32,9 +35,11 @@ trait UserLoginTrait
     public function getLoginLogs()
     {
         /* @var $this User */
+        $class = $this->loginLogClass;
         try {
-            return Login::getLatests($this, 'all');
+            return $class::getLatests($this, 'all');
         } catch (\Exception $ex) {
+            Yii::error($ex->getMessage(), __METHOD__);
             return [];
         }
     }
@@ -45,9 +50,12 @@ trait UserLoginTrait
      */
     public function getLatestLoginLog()
     {
+        /* @var $this User */
+        $class = $this->loginLogClass;
         try {
-            return Login::getLatests($this, 1)[0];
+            return $class::getLatests($this, 1)[0];
         } catch (\Exception $ex) {
+            Yii::error($ex->getMessage(), __METHOD__);
             return null;
         }
     }

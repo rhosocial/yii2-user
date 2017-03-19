@@ -101,6 +101,7 @@ class Login extends BaseBlameableModel
             $limit = (int)($this->limitMax);
         } catch (\Exception $ex) {
             Yii::error($ex->getMessage(), __METHOD__);
+            return 0;
         }
         $host = $this->host;
          /* @var $host \rhosocial\user\User */
@@ -128,6 +129,7 @@ class Login extends BaseBlameableModel
             $limit = (int)($this->limitDuration);
         } catch (\Exception $ex) {
             Yii::error($ex->getMessage(), __METHOD__);
+            return 0;
         }
         $count = 0;
         $host = $this->host;
@@ -188,7 +190,7 @@ class Login extends BaseBlameableModel
         return array_merge($this->getLoginRules(), parent::rules());
     }
     
-    public function getStatus()
+    public function getStatusDesc()
     {
         if (array_key_exists($this->status, static::$statuses)) {
             return static::$statuses[$this->status];
@@ -196,7 +198,7 @@ class Login extends BaseBlameableModel
         return null;
     }
     
-    public function getDevice()
+    public function getDeviceDesc()
     {
         if (array_key_exists($this->device, static::$devices)) {
             return static::$devices[$this->device];
