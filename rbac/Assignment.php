@@ -26,7 +26,7 @@ class Assignment extends \yii\rbac\Assignment
     public $userGuid;
     
     /**
-     * @var string the time of invalidation of this Assignment. (Format: Y-m-d H:i:s) 
+     * @var string the time of invalidation of this Assignment. (Format: Y-m-d H:i:s)
      */
     public $failedAt;
     
@@ -34,8 +34,10 @@ class Assignment extends \yii\rbac\Assignment
     {
         if ($this->failedAt !== null && strtotime($this->failedAt) < strtotime(date('Y-m-d H:i:s'))) {
             return \Yii::$app->db->createCommand()
-                ->delete(\Yii::$app->authManager->assignmentTable, ['user_guid' => (string) $this->userGuid, 'item_name' => $this->roleName])
-                ->execute() > 0;
+                ->delete(\Yii::$app->authManager->assignmentTable, [
+                    'user_guid' => (string) $this->userGuid,
+                    'item_name' => $this->roleName
+                ])->execute() > 0;
         }
     }
 }

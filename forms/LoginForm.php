@@ -14,6 +14,10 @@ namespace rhosocial\user\forms;
 
 use yii\base\Model;
 
+/**
+ * @version 1.0
+ * @author vistart <i@vistart.me>
+ */
 class LoginForm extends Model
 {
     public $id;

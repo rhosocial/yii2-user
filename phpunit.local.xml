@@ -24,6 +24,8 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <file>User.php</file>
             <file>Profile.php</file>
+            <directory>console</directory>
+            <directory>models</directory>
             <directory>security</directory>
             <directory>rbac</directory>
         </whitelist>

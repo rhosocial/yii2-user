@@ -184,6 +184,7 @@ class User extends BaseUserModel
             return null;
         }
         $profileModel = $profileClass::buildNoInitModel();
-        return $this->hasOne($profileClass, [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
+        return $this->hasOne($profileClass,
+                [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
     }
 }

@@ -39,7 +39,7 @@ CREATE TABLE `log_login` (
  ```
  *
  * @property integer $status Login status.
- * @property integer $device Login device. 
+ * @property integer $device Login device.
  *
  * @version 1.0
  * @author vistart <i@vistart.me>
@@ -73,7 +73,7 @@ class Login extends BaseBlameableModel
     }
     
     /**
-     * 
+     *
      * @param ModelEvent $event
      */
     public function onDeleteExtraRecords($event)

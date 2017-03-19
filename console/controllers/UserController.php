@@ -65,16 +65,20 @@ class UserController extends Controller
      * Register new User.
      * @param string $password Password.
      * @param string $nickname If profile contains this property, this parameter is required.
-     * @param string $first_name If profile contains this property, this parameter is required.
-     * @param string $last_name If profile contains this propery, this parameter is required.
+     * @param string $firstName If profile contains this property, this parameter is required.
+     * @param string $lastName If profile contains this propery, this parameter is required.
      */
-    public function actionRegister($password, $nickname = null, $first_name = null, $last_name = null)
+    public function actionRegister($password, $nickname = null, $firstName = null, $lastName = null)
     {
         $userClass = $this->checkUserClass();
         
         $user = new $userClass(['password' => $password]);
         /* @var $user User */
-        $profile = $user->createProfile(['nickname' => $nickname, 'first_name' => $first_name, 'last_name' => $last_name]);
+        $profile = $user->createProfile([
+            'nickname' => $nickname,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+        ]);
         /* @var $profile Profile */
         try {
             is_null($profile) ? $user->register(): $user->register([$profile]);
@@ -103,12 +107,28 @@ class UserController extends Controller
     /**
      * Show User Information.
      * @param User|string|integer $user
+     * @param boolean $guid
+     * @param boolean $passHash
+     * @param boolean $accessToken
+     * @param boolean $authKey
      */
-    public function actionShow($user, $guid = false, $pass_hash = false, $access_token = false, $auth_key = false)
+    public function actionShow($user, $guid = false, $passHash = false, $accessToken = false, $authKey = false)
     {
         $user = $this->getUser($user);
         echo Yii::t('app', 'User') . " (" . $user->getID() . "), " . Yii::t('app', 'registered at') . " (" . $user->getCreatedAt() . ")"
                 . ($user->getCreatedAt() == $user->getUpdatedAt() ? "" : ", " . Yii::t('app', 'last updated at') . " (" . $user->getUpdatedAt() . ")") .".\n";
+        if ($guid) {
+            echo "GUID: " . $user->getGUID() . "\n";
+        }
+        if ($passHash) {
+            echo "Password Hash: " . $user->{$user->passwordHashAttribute} . "\n";
+        }
+        if ($accessToken) {
+            echo "Access Token: " . $user->getAccessToken() . "\n";
+        }
+        if ($authKey) {
+            echo "Authentication Key: " . $user->getAuthKey() . "\n";
+        }
         return true;
     }
     

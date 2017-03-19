@@ -17,6 +17,7 @@ use rhosocial\user\models\log\Login;
 use rhosocial\user\migrations\Migration;
 
 /**
+ * @codeCoverageIgnore
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
@@ -24,7 +25,6 @@ class m170313_071528_createLoginLogTable extends Migration
 {
     public function up()
     {
-
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
@@ -33,7 +33,7 @@ class m170313_071528_createLoginLogTable extends Migration
                 'guid' => $this->varbinary(16)->notNull(),
                 'id' => $this->varchar(4)->notNull(),
                 'user_guid' => $this->varbinary(16)->notNull(),
-                'ip' => $this->varbinary(16)->notNull(),
+                'ip' => $this->varbinary(16)->defaultValue(0)->notNull(),
                 'ip_type' => $this->smallInteger()->defaultValue(4)->notNull(),
                 'created_at' => $this->dateTime()->defaultValue('1970-01-01 00:00:00')->notNull(),
                 'status' => $this->integer()->defaultValue(0)->notNull(),

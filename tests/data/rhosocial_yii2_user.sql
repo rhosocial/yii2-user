@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2017-03-19 01:15:17
+-- Generation Time: 2017-03-19 13:12:52
 -- 服务器版本： 8.0.0-dmr
 -- PHP Version: 7.1.3
 
@@ -138,6 +138,29 @@ INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `log_login`
+--
+-- 创建时间： 2017-03-19 05:11:46
+--
+
+DROP TABLE IF EXISTS `log_login`;
+CREATE TABLE IF NOT EXISTS `log_login` (
+  `guid` varbinary(16) NOT NULL,
+  `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `user_guid` varbinary(16) NOT NULL,
+  `ip` varbinary(16) NOT NULL DEFAULT '0',
+  `ip_type` smallint(6) NOT NULL DEFAULT '4',
+  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+  `status` int(11) NOT NULL DEFAULT '0',
+  `device` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`guid`),
+  UNIQUE KEY `login_log_id_unique` (`guid`,`id`),
+  KEY `login_log_creator_fk` (`user_guid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `password_history`
 --
 -- 创建时间： 2017-03-18 08:37:42
@@ -227,6 +250,12 @@ ALTER TABLE `auth_item`
 ALTER TABLE `auth_item_child`
   ADD CONSTRAINT `child_name_fk` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `parent_name_fk` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 限制表 `log_login`
+--
+ALTER TABLE `log_login`
+  ADD CONSTRAINT `login_log_creator_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `password_history`

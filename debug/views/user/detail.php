@@ -13,8 +13,8 @@ use yii\widgets\DetailView;
 
 
 <?php if (!Yii::$app->user->isGuest) {
-$identity = $panel->data['identity'];
-/* @var $identity User */
+    $identity = $panel->data['identity'];
+    /* @var $identity User */
     echo DetailView::widget([
         'model' => $panel->data['identity'],
         'attributes' => [
@@ -43,7 +43,7 @@ $identity = $panel->data['identity'];
                 'color' => [
                     'class' => 'yii\grid\Column',
                     'header' => 'Color',
-                    'content' => function($model, $key, $index, $column) {
+                    'content' => function ($model, $key, $index, $column) {
                         /* @var $model Item */
                         if (!is_numeric($model->color)) {
                             return null;
@@ -54,7 +54,7 @@ $identity = $panel->data['identity'];
                         }
                         return "<font color=\"#fff\">" . dechex($model->color) . "</font>";
                     },
-                    'contentOptions' => function($model, $key, $index, $column) {
+                    'contentOptions' => function ($model, $key, $index, $column) {
                         /* @var $model Item */
                         if (!is_numeric($model->color)) {
                             return [];
@@ -85,7 +85,7 @@ $identity = $panel->data['identity'];
                 'color' => [
                     'class' => 'yii\grid\Column',
                     'header' => 'Color',
-                    'content' => function($model, $key, $index, $column) {
+                    'content' => function ($model, $key, $index, $column) {
                         /* @var $model Item */
                         if (!is_numeric($model->color)) {
                             return null;
@@ -96,7 +96,7 @@ $identity = $panel->data['identity'];
                         }
                         return "<font color=\"#fff\">" . dechex($model->color) . "</font>";
                     },
-                    'contentOptions' => function($model, $key, $index, $column) {
+                    'contentOptions' => function ($model, $key, $index, $column) {
                         /* @var $model Item */
                         if (!is_numeric($model->color)) {
                             return [];

@@ -140,11 +140,12 @@ class DbManager extends \yii\rbac\DbManager
     }
     
     /**
-     * 
+     * Get roles by user.
      * @param string|User $userGuid
      * @return array
      */
-    public function getRolesByUser($userGuid) {
+    public function getRolesByUser($userGuid)
+    {
         if (!isset($userGuid) || $userGuid === '') {
             return [];
         }

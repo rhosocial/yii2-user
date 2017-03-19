@@ -17,7 +17,7 @@ use rhosocial\base\models\models\BaseBlameableModel;
 /**
  * Simple Profile Model.
  * One Profile corresponds to only one [[User]].
- * 
+ *
  * If you're using MySQL, we recommend that you create a data table using the following statement:
  * ```
  * CREATE TABLE `profile` (
@@ -32,12 +32,12 @@ use rhosocial\base\models\models\BaseBlameableModel;
  *   CONSTRAINT `user_profile_fkey` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
  * ```
- * 
+ *
  * @property string $nickname
  * @property string $first_name
  * @property string $last_name
  * @property string $individual_sign
- * 
+ *
  * @property-read User $user
  *
  * @version 1.0

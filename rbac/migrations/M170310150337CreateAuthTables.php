@@ -82,7 +82,8 @@ CREATE TABLE `auth_assignment` (
   CONSTRAINT `user_assignment_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Assignment';
 ```
- * 
+ *
+ * @codeCoverageIgnore
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
