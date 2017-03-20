@@ -27,8 +27,9 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
+            [['nickname', 'password', 'password_repeat'], 'required'],
             ['nickname', 'string', 'max' => 32],
-            [['password', 'repeatPassword'], 'string', 'min' => 8, 'max' => 32],
+            [['password', 'repeatPassword'], 'string', 'min' => 6, 'max' => 32],
             ['password', 'compare'],
         ];
     }

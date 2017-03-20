@@ -11,9 +11,8 @@
  */
 
 use rhosocial\user\forms\RegisterForm;
-use Yii;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $model RegisterForm */
 ?>

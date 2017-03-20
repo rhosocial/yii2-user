@@ -32,6 +32,6 @@ class LoginFormWidget extends Widget
     
     public function run()
     {
-        $this->render('login-form-widget', ['model' => $this->model]);
+        return $this->render('login-form-widget', ['model' => $this->model]);
     }
 }

@@ -32,6 +32,6 @@ class RegisterFormWidget extends Widget
     
     public function run()
     {
-        $this->render('register-form-widget', ['model' => $this->model]);
+        return $this->render('register-form-widget', ['model' => $this->model]);
     }
 }

@@ -15,6 +15,8 @@ This extension provides two common models:
 - [Using the Password History model](usage-password-history.md)
 - [Using the Role-Based Authorization Control Features](usage-rbac.md)
 - [Using the Login Log model](usage-login-log.md)
+- [Using the Login widget](usage-login-widget.md)
+- [Using the Register widget](usage-register-widget.md)
 
 ## Console commands
 
