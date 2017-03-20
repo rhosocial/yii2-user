@@ -33,10 +33,11 @@ use rhosocial\base\models\models\BaseBlameableModel;
  * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
  * ```
  *
- * @property string $nickname
- * @property string $first_name
- * @property string $last_name
- * @property string $individual_sign
+ * @property string $nickname Nickname
+ * @property string $first_name First Name
+ * @property string $last_name Last Name
+ * @property string $gender Gender
+ * @property string $individual_sign Individual Signature
  *
  * @property-read User $user
  *
@@ -88,13 +89,32 @@ class Profile extends BaseBlameableModel
             [['first_name', 'last_name'], 'default', 'value' => true],
         ];
     }
+    
+    public static $genders = [
+        0x0 => 'Unspecified',
+        0x1 => 'Male',
+        0x2 => 'Female',
+    ];
+    
+    /**
+     * Get rules associated with gender attribute.
+     * You can override this method if current rules do not satisfy your needs.
+     * If you do not use gender attribute, please override this method and return empty array.
+     * @return array Rules associated with gender.
+     */
+    public function getGenderRules()
+    {
+        return [
+           ['gender', 'in', 'range' => array_keys(static::$genders)], 
+        ];
+    }
 
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        return array_merge($this->getNameRules(), $this->getIndividualSignRules(), parent::rules());
+        return array_merge($this->getNameRules(), $this->getGenderRules(), $this->getIndividualSignRules(), parent::rules());
     }
     
     /**

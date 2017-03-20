@@ -51,8 +51,8 @@ class M170304142349CreateProfileTable extends Migration
             $this->createTable(Profile::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
                 'nickname' => $this->varchar(255)->notNull()->comment('Nickname'),
-                'first_name' => $this->varchar(255)->notNull()->comment('First Name'),
-                'last_name' => $this->varchar(255)->notNull()->comment('Last Name'),
+                'first_name' => $this->varchar(255)->notNull()->defaultValue('')->comment('First Name'),
+                'last_name' => $this->varchar(255)->notNull()->defaultValue('')->comment('Last Name'),
                 'gender' => $this->tinyInteger(1)->notNull()->defaultValue(1)->comment('Gender'),
                 'individual_sign' => $this->text()->notNull()->comment('Individual Sign'),
                 'created_at' => $this->dateTime()->notNull()->defaultValue('1970-01-01 00:00:00')->comment('Created At'),

@@ -3,6 +3,7 @@
 /* @var $panel yii\debug\panels\UserPanel */
 
 use rhosocial\user\User;
+use rhosocial\user\Profile;
 use rhosocial\user\rbac\Item;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
@@ -33,6 +34,20 @@ use yii\widgets\DetailView;
             'Source' => $identity->sourceAttribute,
         ],
     ]);
+    
+    if (class_exists($identity->profileClass) && ($profile = $identity->profile)) {
+        /* @var $profile Profile */
+        echo DetailView::widget([
+            'model' => $profile,
+            'attributes' => [
+                'nickname' => 'nickname',
+                'first_name' => 'first_name',
+                'last_name' => 'last_name',
+                'gender' => 'gender',
+                'individual_sign' => 'individual_sign',
+            ],
+        ]);
+    }
 
     if ($panel->data['rolesProvider']) {
         echo '<h2>Roles</h2>';

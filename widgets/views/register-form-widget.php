@@ -34,9 +34,15 @@ use yii\bootstrap\ActiveForm;
 
         <?= $form->field($model, 'password_repeat')->passwordInput() ?>
 
+        <?= $form->field($model, 'first_name')->textInput() ?>
+
+        <?= $form->field($model, 'last_name')->textInput() ?>
+
+        <?= $form->field($model, 'gender')->dropDownList(\rhosocial\user\Profile::$genders) ?>
+
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('app', 'Register'), ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
             </div>
         </div>
 
