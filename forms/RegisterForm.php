@@ -18,18 +18,18 @@ use yii\base\Model;
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class LoginForm extends Model
+class RegisterForm extends Model
 {
-    public $id;
+    public $nickname;
     public $password;
-    public $rememberMe = true;
+    public $password_repeat;
     
     public function rules()
     {
         return [
-            ['id', 'integer', 'min' => 10000, 'max' => 9999999999],
-            ['password', 'string', 'min'],
-            ['rememberMe', 'boolean'],
+            ['nickname', 'string', 'max' => 32],
+            [['password', 'repeatPassword'], 'string', 'min' => 8, 'max' => 32],
+            ['password', 'compare'],
         ];
     }
 }

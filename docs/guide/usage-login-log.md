@@ -89,3 +89,6 @@ and, the total number can also be unrestricted.
 ```php
 $loginLog->limitType = Login::LIMIT_NO_LIMIT;
 ```
+
+> Note: The total limit can not be less than 2, the duration limit can not be less than 1 day.
+If you really need to break through these restrictions, you can implement the Login log model yourself and override the `init` method.

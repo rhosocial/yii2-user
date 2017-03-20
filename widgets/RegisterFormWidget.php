@@ -12,26 +12,26 @@
 
 namespace rhosocial\user\widgets;
 
-use rhosocial\user\forms\LoginForm;
+use rhosocial\user\forms\RegisterForm;
 use yii\base\Widget;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class LoginFormWidget extends Widget
+class RegisterFormWidget extends Widget
 {
     public $model;
     
     public function init()
     {
-        if (is_null($this->model) || !($this->model instanceof LoginForm)) {
-            $this->model = new LoginForm();
+        if (is_null($this->model) || !($this->model instanceof RegisterForm)) {
+            $this->model = new RegisterForm();
         }
     }
     
     public function run()
     {
-        $this->render('login-form-widget', ['model' => $this->model]);
+        $this->render('register-form-widget', ['model' => $this->model]);
     }
 }
