@@ -47,13 +47,13 @@ use rhosocial\base\models\models\BaseBlameableModel;
 class Profile extends BaseBlameableModel
 {
     public $createdByAttribute = 'guid';
-    
+
     // The host of Profile is only permitted to modify it.
     public $updatedByAttribute = false;
-    
+
     // Profile do not have its identifier.
     public $idAttribute = false;
-    
+
     // Profile do not need to record IP address.
     public $enableIP = 0;
 
@@ -61,7 +61,7 @@ class Profile extends BaseBlameableModel
      * @var string Specify the nickname as the content attribute.
      */
     public $contentAttribute = 'nickname';
-    
+
     /**
      * Get rules associated with individual sign attribute.
      * You can override this method if current rules do not satisfy your needs.
@@ -89,13 +89,17 @@ class Profile extends BaseBlameableModel
             [['first_name', 'last_name'], 'default', 'value' => true],
         ];
     }
-    
+
+    const GENDER_UNSPECIFIED = 0;
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+
     public static $genders = [
-        0x0 => 'Unspecified',
-        0x1 => 'Male',
-        0x2 => 'Female',
+        self::GENDER_UNSPECIFIED => 'Unspecified',
+        self::GENDER_MALE => 'Male',
+        self::GENDER_FEMALE => 'Female',
     ];
-    
+
     /**
      * Get rules associated with gender attribute.
      * You can override this method if current rules do not satisfy your needs.
@@ -105,7 +109,26 @@ class Profile extends BaseBlameableModel
     public function getGenderRules()
     {
         return [
-           ['gender', 'in', 'range' => array_keys(static::$genders)], 
+            ['gender', 'default', 'value' => 0],
+            ['gender', 'in', 'range' => array_keys(static::$genders)],
+        ];
+    }
+
+    public function getGravatarRules()
+    {
+        return [
+            ['gravatar_type', 'default', 'value' => 0],
+            ['gravatar_type', 'integer'],
+            ['gravatar', 'default', 'value' => ''],
+            ['gravatar', 'string', 'max' => 255],
+        ];
+    }
+
+    public function getTimezoneRules()
+    {
+        return [
+            ['timezone', 'default', 'value' => 'UTC'],
+            ['timezone', 'string'],
         ];
     }
 
@@ -114,9 +137,14 @@ class Profile extends BaseBlameableModel
      */
     public function rules()
     {
-        return array_merge($this->getNameRules(), $this->getGenderRules(), $this->getIndividualSignRules(), parent::rules());
+        return array_merge($this->getNameRules(),
+                $this->getGenderRules(),
+                $this->getGravatarRules(),
+                $this->getTimezoneRules(),
+                $this->getIndividualSignRules(),
+                parent::rules());
     }
-    
+
     /**
      * @inheritdoc
      */

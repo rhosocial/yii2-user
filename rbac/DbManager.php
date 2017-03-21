@@ -13,6 +13,7 @@
 namespace rhosocial\user\rbac;
 
 use rhosocial\user\User;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -410,5 +411,23 @@ class DbManager extends \yii\rbac\DbManager
             'createdAt' => $row['created_at'],
             'updatedAt' => $row['updated_at'],
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getChildren($name)
+    {
+        $query = (new Query)
+            ->select(['name', 'type', 'description', 'rule_name', 'data', 'color', 'created_at', 'updated_at'])
+            ->from([$this->itemTable, $this->itemChildTable])
+            ->where(['parent' => $name, 'name' => new Expression('[[child]]')]);
+
+        $children = [];
+        foreach ($query->all($this->db) as $row) {
+            $children[$row['name']] = $this->populateItem($row);
+        }
+
+        return $children;
     }
 }

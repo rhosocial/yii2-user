@@ -4,7 +4,9 @@
 
 use rhosocial\user\User;
 use rhosocial\user\Profile;
+use rhosocial\user\security\PasswordHistory;
 use rhosocial\user\rbac\Item;
+use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
 
@@ -45,6 +47,28 @@ use yii\widgets\DetailView;
                 'last_name' => 'last_name',
                 'gender' => 'gender',
                 'individual_sign' => 'individual_sign',
+            ],
+        ]);
+    }
+    
+    $history = $identity->passwordHistories;
+    if (!empty($history)) {
+        /* @var $history PasswordHistory[] */
+        echo '<h2>Password History</h2>';
+        
+        echo GridView::widget([
+            'dataProvider' => new ArrayDataProvider([
+                'allModels' => $history
+            ]),
+            'columns' => [
+                'guid' => [
+                    'class' => 'yii\grid\Column',
+                    'content' => function ($model, $key, $index, $column) {
+                        return $model->getReadableGUID();
+                    }
+                ],
+                'pass_hash',
+                'createdAt:datetime',
             ],
         ]);
     }

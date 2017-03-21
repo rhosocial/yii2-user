@@ -63,7 +63,7 @@ class ColumnSchemaBuilder extends \yii\db\mysql\ColumnSchemaBuilder
                 $format = '{type}{length}{unsigned}{notnull}{unique}{default}{check}{comment}{append}{pos}';
                 break;
             default:
-                $format = '{type}{length}{notnull}{charset}{collate}{unique}{default}{check}{comment}{append}{pos}';
+                $format = '{type}{length}{charset}{collate}{notnull}{unique}{default}{check}{comment}{append}{pos}';
         }
         return $this->buildCompleteString($format);
     }
