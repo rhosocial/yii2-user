@@ -233,4 +233,37 @@ class UserController extends Controller
         echo "The accepted operations are `assign` and `revoke`.\n";
         return false;
     }
+
+    /**
+     * Validate password.
+     * @param User|string|integer $user
+     * @param password $password
+     */
+    public function actionValidatePassword($user, $password)
+    {
+        $user = $this->getUser($user);
+        $result = $user->validatePassword($password);
+        if ($result) {
+            echo "Correct.\n";
+        } else {
+            echo "Incorrect.\n";
+        }
+    }
+
+    /**
+     * Change password directly.
+     * @param User|string|integer $user
+     * @param string $password
+     */
+    public function actionPassword($user, $password)
+    {
+        $user = $this->getUser($user);
+        $user->applyForNewPassword();
+        $result = $user->resetPassword($password, $user->getPasswordResetToken());
+        if ($result) {
+            echo "Password changed.\n";
+        } else {
+            echo "Password not changed.\n";
+        }
+    }
 }
