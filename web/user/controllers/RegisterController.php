@@ -15,8 +15,8 @@ namespace rhosocial\user\web\user\controllers;
 use rhosocial\user\forms\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 /**
  * @version 1.0
@@ -25,21 +25,27 @@ use yii\web\Controller;
 class RegisterController extends Controller
 {
     const SESSION_KEY_REGISTER_USER_ID = 'session_key_register_user_id';
-    const SESSION_KEY_REGISTER_FAILED_MESSAGE = 'session_key_register_failed_message';    
-    /**
-     * @inheritdoc
-     */
+    const SESSION_KEY_REGISTER_FAILED_MESSAGE = 'session_key_register_failed_message';
+
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['index', 'success', 'failed'],
+                'only' => ['index'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'success', 'failed'],
+                        'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => false,
+                        'roles' => ['@'],
+                        'denyCallback' => function ($rule, $action) {
+                            throw new ForbiddenHttpException('You must log out current user before registering new one.');
+                        },
                     ],
                 ],
             ],
@@ -63,11 +69,7 @@ class RegisterController extends Controller
     }
 
     public function actionIndex()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        
+    {        
         $model = new RegisterForm();
         if ($model->load(Yii::$app->request->post())) {
             try {
@@ -84,16 +86,13 @@ class RegisterController extends Controller
             }
             return $this->redirect(['failed']);
         }
-        return $this->render('register', [
+        return $this->render('index', [
             'model' => $model,
         ]);
     }
 
     public function actionSuccess()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
         $id = Yii::$app->session->getFlash(self::SESSION_KEY_REGISTER_USER_ID);
         if ($id === null) {
             return $this->redirect(['index']);
@@ -103,6 +102,10 @@ class RegisterController extends Controller
 
     public function actionFailed()
     {
-        return $this->render('failed', ['message' => Yii::$app->session->getFlash(self::SESSION_KEY_REGISTER_FAILED_MESSAGE)]);
+        $message = Yii::$app->session->getFlash(self::SESSION_KEY_REGISTER_FAILED_MESSAGE);
+        if ($message === null) {
+            return $this->redirect(['index']);
+        }
+        return $this->render('failed', ['message' => $message]);
     }
 }

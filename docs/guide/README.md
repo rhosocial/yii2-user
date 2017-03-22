@@ -22,6 +22,10 @@ This extension provides two common models:
 
 - [Using the `user` commands](usage-console-user-commands.md)
 
+## User Module
+
+- [Integrate `user` module into your web application](integrate-user-module.md)
+
 ## Debug
 
 - [Using the debug panel](usage-debug.md)
