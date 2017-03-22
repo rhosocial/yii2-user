@@ -72,7 +72,7 @@ class Profile extends BaseBlameableModel
     {
         return [
             ['individual_sign', 'string', 'skipOnEmpty' => true],
-            ['individual_sign', 'default', 'value' => true],
+            ['individual_sign', 'default', 'value' => ''],
         ];
     }
 
@@ -86,7 +86,7 @@ class Profile extends BaseBlameableModel
     {
         return [
             [['first_name', 'last_name'], 'string', 'max' => 255, 'skipOnEmpty' => true],
-            [['first_name', 'last_name'], 'default', 'value' => true],
+            [['first_name', 'last_name'], 'default', 'value' => ''],
         ];
     }
 

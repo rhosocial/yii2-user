@@ -39,7 +39,7 @@ use yii\rbac\DbManager;
  * `{{%auth_item_child}}`
  * `{{%auth_assignment}}`
  *
- ```SQL
+```SQL
 CREATE TABLE `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Rule Name',
   `data` blob,
@@ -81,7 +81,7 @@ CREATE TABLE `auth_assignment` (
   KEY `user_assignment_fk` (`user_guid`),
   CONSTRAINT `user_assignment_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Auth Assignment';
-```
+``
  *
  * @codeCoverageIgnore
  * @version 1.0

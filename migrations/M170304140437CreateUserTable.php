@@ -42,8 +42,9 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
 ```
  *
- * If you want to go back, please execute `yii migrate/down rhosocial\user\migrations\M170304140437CreateUserTable`,
+ * If you want to go back, please execute `yii migrate/to rhosocial\user\migrations\M170304140437CreateUserTable`,
  * instead of droping user table yourself.
+ * Note: this execution will reverse all the migrations after this migration.
  * 
  * @version 1.0
  * @author vistart <i@vistart.me>

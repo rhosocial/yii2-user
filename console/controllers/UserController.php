@@ -30,6 +30,11 @@ class UserController extends Controller
     
     public $defaultAction = 'show';
     
+    /**
+     * Check and get valid User.
+     * @return User
+     * @throws Exception throw if User is not an instance inherited from `\rhosocial\user\User`.
+     */
     protected function checkUserClass()
     {
         $userClass = $this->userClass;
@@ -44,7 +49,7 @@ class UserController extends Controller
     
     /**
      * Get user from database.
-     * @param User|string|integer $user
+     * @param User|string|integer $user User ID.
      * @return User
      */
     protected function getUser($user)
@@ -92,7 +97,6 @@ class UserController extends Controller
     /**
      * Deregister user.
      * @param User|string|integer $user The user to be deregistered.
-     * @return boolean
      */
     public function actionDeregister($user)
     {
@@ -106,11 +110,11 @@ class UserController extends Controller
     
     /**
      * Show User Information.
-     * @param User|string|integer $user
-     * @param boolean $guid
-     * @param boolean $passHash
-     * @param boolean $accessToken
-     * @param boolean $authKey
+     * @param User|string|integer $user User ID.
+     * @param boolean $guid Show GUID?
+     * @param boolean $passHash Show PasswordH Hash?
+     * @param boolean $accessToken Show Access Token?
+     * @param boolean $authKey Show Authentication Key?
      */
     public function actionShow($user, $guid = false, $passHash = false, $accessToken = false, $authKey = false)
     {
@@ -134,8 +138,7 @@ class UserController extends Controller
     
     /**
      * Show statistics.
-     * @param User|string|integer $user
-     * @return boolean
+     * @param User|string|integer $user User ID.
      */
     public function actionStat($user = null)
     {
@@ -156,9 +159,9 @@ class UserController extends Controller
     
     /**
      * Assign a role to user or revoke a role.
-     * @param User|string|integer $user
+     * @param User|string|integer $user User ID.
      * @param string $operation Only `assign` and `revoke` are acceptable.
-     * @param string $role
+     * @param string $role Role name.
      */
     public function actionRole($user, $operation, $role)
     {
@@ -196,9 +199,9 @@ class UserController extends Controller
     
     /**
      * Assign a permission to user or revoke a permission.
-     * @param User|string|integer $user
+     * @param User|string|integer $user User ID.
      * @param string $operation Only `assign` and `revoke` are acceptable.
-     * @param string $permission
+     * @param string $permission Permission name.
      */
     public function actionPermission($user, $operation, $permission)
     {
@@ -236,8 +239,8 @@ class UserController extends Controller
 
     /**
      * Validate password.
-     * @param User|string|integer $user
-     * @param password $password
+     * @param User|string|integer $user User ID.
+     * @param password $password Password.
      */
     public function actionValidatePassword($user, $password)
     {
@@ -252,8 +255,8 @@ class UserController extends Controller
 
     /**
      * Change password directly.
-     * @param User|string|integer $user
-     * @param string $password
+     * @param User|string|integer $user User ID.
+     * @param string $password Password.
      */
     public function actionPassword($user, $password)
     {
@@ -265,5 +268,29 @@ class UserController extends Controller
         } else {
             echo "Password not changed.\n";
         }
+    }
+
+    /**
+     * Confirm password in history.
+     * This command will list all matching passwords in reverse order.
+     * @param User|string|integer $user User ID.
+     * @param string $password Password.
+     */
+    public function actionConfirmPasswordHistory($user, $password)
+    {
+        $user = $this->getUser($user);
+        $passwordHistory = $user->passwordHistories;
+        $passwordInHistory = false;
+        foreach ($passwordHistory as $pass) {
+            if ($pass->validatePassword($password)) {
+                $passwordInHistory = true;
+                echo "This password was created at " . $pass->getCreatedAt() . ".\n";
+            }
+        }
+        if ($passwordInHistory) {
+            return true;
+        }
+        echo "No password matched.\n";
+        return false;
     }
 }

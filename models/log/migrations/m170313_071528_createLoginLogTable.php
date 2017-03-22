@@ -17,6 +17,23 @@ use rhosocial\user\models\log\Login;
 use rhosocial\user\migrations\Migration;
 
 /**
+ * Create Login Log Table.
+ * This migration is equivalent to:
+```SQL
+CREATE TABLE IF NOT EXISTS `log_login` (
+  `guid` varbinary(16) NOT NULL,
+  `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `user_guid` varbinary(16) NOT NULL,
+  `ip` varbinary(16) NOT NULL DEFAULT '0',
+  `ip_type` smallint(6) NOT NULL DEFAULT '4',
+  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+  `status` int(11) NOT NULL DEFAULT '0',
+  `device` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`guid`),
+  UNIQUE KEY `login_log_id_unique` (`guid`,`id`),
+  KEY `login_log_creator_fk` (`user_guid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+```
  * @codeCoverageIgnore
  * @version 1.0
  * @author vistart <i@vistart.me>
