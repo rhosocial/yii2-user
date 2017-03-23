@@ -27,6 +27,11 @@ This extension provides two common models:
 - [Integrate `user` module into your web application](integrate-user-module.md)
 - [Register new user](user-module-register-new-user.md)
 
+## Admin Module
+
+- [Integrate `admin` module into your web application](integrate-admin-module.md)
+- [Manage users](admin-module-manage-users.md)
+
 ## Debug
 
 - [Using the debug panel](usage-debug.md)

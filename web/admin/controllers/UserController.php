@@ -12,12 +12,15 @@
 
 namespace rhosocial\user\web\admin\controllers;
 
+use rhosocial\user\User;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
 
 /**
@@ -85,6 +88,25 @@ class UserController extends Controller
     }
 
     /**
+     * Get user by ID.
+     * @param string $id User ID.
+     * @return User
+     * @throws BadRequestHttpException throw if user not found.
+     */
+    protected function getUser($id)
+    {
+        $class = Yii::$app->user->identityClass;
+        if (!class_exists($class)) {
+            return null;
+        }
+        $user = $class::find()->id($id)->one();
+        if (empty($user) || !($user instanceof User)) {
+            throw new BadRequestHttpException('User Not Found.');
+        }
+        return $user;
+    }
+
+    /**
      * Deregister User.
      * @param string $id User ID.
      * @return string
@@ -94,6 +116,18 @@ class UserController extends Controller
         $id = (int)$id;
         if (Yii::$app->user->identity->getID() == $id) {
             throw new ForbiddenHttpException('You cannot deregister yourself.');
+        }
+        $user = $this->getUser($id);
+        try {
+            $result = $user->deregister();
+            if ($result instanceof \Exception) {
+                throw $result;
+            }
+        } catch (\Exception $ex) {
+            throw new ServerErrorHttpException($ex->getMessage());
+        }
+        if ($result !== true) {
+            throw new ServerErrorHttpException('Failed to deregister user.');
         }
         return $this->redirect(['index']);
     }
