@@ -23,11 +23,16 @@ use yii\web\Controller;
  */
 class SecurityController extends Controller
 {
+    const SESSION_KEY_CHANGE_PASSWORD_RESULT = 'session_key_change_password_result';
     const SESSION_KEY_CHANGE_PASSWORD_MESSAGE = 'session_key_change_password_message';
+    const CHANGE_PASSWORD_SUCCESS = 'success';
+    const CHANGE_PASSWORD_FAILED = 'failed';
 
     public $changePasswordSuccessMessage = 'Password Changed.';
 
     public $changePasswordFailedMessage = 'Password Not Changed.';
+
+    public $layout = 'security';
 
     public function behaviors()
     {
@@ -55,9 +60,12 @@ class SecurityController extends Controller
         $model = new ChangePasswordForm(['user' => Yii::$app->user->identity]);
         if ($model->load(Yii::$app->request->post())) {
             if ($model->changePassword()) {
+                Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_RESULT, self::CHANGE_PASSWORD_SUCCESS);
                 Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_MESSAGE, $this->changePasswordSuccessMessage);
                 return $this->redirect(['change-password']);
             }
+            Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_RESULT, self::CHANGE_PASSWORD_FAILED);
+            Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_MESSAGE, $this->changePasswordFailedMessage);
             $model->clearAttributes();
         }
         return $this->render('change-password', ['model' => $model]);

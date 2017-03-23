@@ -25,6 +25,7 @@ This extension provides two common models:
 ## User Module
 
 - [Integrate `user` module into your web application](integrate-user-module.md)
+- [Register new user](user-module-register-new-user.md)
 
 ## Debug
 

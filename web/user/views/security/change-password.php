@@ -13,11 +13,34 @@
 /* @var $this yii\web\View */
 /* @var $model rhosocial\user\forms\ChangePasswordForm */
 use rhosocial\user\web\user\controllers\SecurityController;
+use yii\bootstrap\Alert;
 
 $this->title = 'Change Password';
 $this->params['breadcrumbs'][] = $this->title;
-if (!empty($message) || (($message = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_MESSAGE)) !== null)) {
-    echo $message;
+if (($result = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_RESULT)) !== null) {
+    $message = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_MESSAGE);
+    if ($result == SecurityController::CHANGE_PASSWORD_SUCCESS) {
+        echo Alert::widget([
+            'options' => [
+                'class' => 'alert-success',
+            ],
+            'body' => $message
+        ]);
+    } elseif ($result == SecurityController::CHANGE_PASSWORD_FAILED) {
+        echo Alert::widget([
+            'options' => [
+                'class' => 'alert-failed',
+            ],
+            'body' => $message
+        ]);
+    } elseif ($message !== null) {
+        echo Alert::widget([
+            'options' => [
+                'class' => 'alert-info',
+            ],
+            'body' => $message
+        ]);
+    }
 }
 ?>
 <?= $result = \rhosocial\user\widgets\ChangePasswordFormWidget::widget(['model' => $model]); ?>
