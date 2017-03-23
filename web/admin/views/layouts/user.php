@@ -10,14 +10,12 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\web\user;
-
-/**
- * User Module.
- * @version 1.0
- * @author vistart <i@vistart.me>
- */
-class Module extends \yii\base\Module
-{
-    
-}
+/* @var $this yii\web\View */
+$this->params['breadcrumbs'][] = [
+    'label' => 'Admin',
+    'url' => ['user/index'],
+];
+$this->params['breadcrumbs'] = array_reverse($this->params['breadcrumbs']);
+$this->beginContent('@app/views/layouts/main.php');
+echo $content;
+$this->endContent();

@@ -10,10 +10,10 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\web\user;
+namespace rhosocial\user\web\admin;
 
 /**
- * User Module.
+ * Admin Module.
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
