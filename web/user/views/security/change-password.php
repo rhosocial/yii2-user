@@ -12,8 +12,12 @@
 
 /* @var $this yii\web\View */
 /* @var $model rhosocial\user\forms\ChangePasswordForm */
+use rhosocial\user\web\user\controllers\SecurityController;
 
 $this->title = 'Change Password';
 $this->params['breadcrumbs'][] = $this->title;
+if (!empty($message) || (($message = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_MESSAGE)) !== null)) {
+    echo $message;
+}
 ?>
 <?= $result = \rhosocial\user\widgets\ChangePasswordFormWidget::widget(['model' => $model]); ?>

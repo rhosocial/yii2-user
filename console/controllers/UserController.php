@@ -280,14 +280,15 @@ class UserController extends Controller
     {
         $user = $this->getUser($user);
         $passwordHistory = $user->passwordHistories;
-        $passwordInHistory = false;
+        $passwordInHistory = 0;
         foreach ($passwordHistory as $pass) {
             if ($pass->validatePassword($password)) {
-                $passwordInHistory = true;
+                $passwordInHistory++;
                 echo "This password was created at " . $pass->getCreatedAt() . ".\n";
             }
         }
         if ($passwordInHistory) {
+            echo "$passwordInHistory matched.\n";
             return true;
         }
         echo "No password matched.\n";

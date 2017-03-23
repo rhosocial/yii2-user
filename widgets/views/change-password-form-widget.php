@@ -20,7 +20,7 @@ use yii\bootstrap\ActiveForm;
     <p>Please fill out the following fields to change password:</p>
 
     <?php $form = ActiveForm::begin([
-        'id' => 'register-form',
+        'id' => 'change-password-form',
         'layout' => 'horizontal',
         'fieldConfig' => [
             'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",

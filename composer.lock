@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "040c06170c7adac7fca97fa1d1577fa2",
+    "content-hash": "82d51d38ed81046c312c7057bc70f754",
     "packages": [
         {
             "name": "bower-asset/jquery",
@@ -307,12 +307,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rhosocial/yii2-base-models.git",
-                "reference": "226c19a283d82fddc7cfffc77a4c6f52d3a976a5"
+                "reference": "e46bc37ada1bb00f9c9c05878ceb384cbb4e02b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rhosocial/yii2-base-models/zipball/226c19a283d82fddc7cfffc77a4c6f52d3a976a5",
-                "reference": "226c19a283d82fddc7cfffc77a4c6f52d3a976a5",
+                "url": "https://api.github.com/repos/rhosocial/yii2-base-models/zipball/e46bc37ada1bb00f9c9c05878ceb384cbb4e02b9",
+                "reference": "e46bc37ada1bb00f9c9c05878ceb384cbb4e02b9",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +352,7 @@
                 "rhosocial",
                 "yii2"
             ],
-            "time": "2017-03-18 17:51:45"
+            "time": "2017-03-21 08:04:29"
         },
         {
             "name": "yiisoft/yii2",

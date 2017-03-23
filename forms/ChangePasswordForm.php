@@ -12,25 +12,19 @@
 
 namespace rhosocial\user\forms;
 
-use rhosocial\helpers\Number;
 use rhosocial\user\User;
-use Yii;
 use yii\base\Model;
 
+/**
+ * @version 1.0
+ * @author vistart <i@vistart.me>
+ */
 class ChangePasswordForm extends Model
 {
     public $password;
     public $new_password;
     public $new_password_repeat;
-    public $userClass;
     private $_user = false;
-    
-    public function init()
-    {
-        if (empty($this->userClass)) {
-            $this->userClass = Yii::$app->user->identityClass;
-        }
-    }
     
     public function rules()
     {
@@ -40,6 +34,13 @@ class ChangePasswordForm extends Model
             ['password', 'validatePassword'],
             ['new_password', 'compare'],
         ];
+    }
+
+    public function clearAttributes()
+    {
+        $this->password = '';
+        $this->new_password = '';
+        $this->new_password_repeat = '';
     }
 
     /**
@@ -55,7 +56,7 @@ class ChangePasswordForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Incorrect password.');
             }
         }
     }
@@ -84,19 +85,11 @@ class ChangePasswordForm extends Model
      */
     public function setUser($user)
     {
-        $class = $this->userClass;
         if ($user instanceof User) {
-            $this->_user = $class::find()->guid($user->getGUID())->one();
+            $this->_user = $user;
             return true;
         }
-        if (is_string($user) && preg_mapreg_match(Number::GUID_REGEX, $user)) {
-            $this->_user = $class::find()->guid($user)->one();
-            return true;
-        }
-        if (is_numeric($user) || is_int($user)) {
-            $this->_user = $class::find()->id($user)->one();
-            return true;
-        }
+        $this->_user = null;
         return false;
     }
 

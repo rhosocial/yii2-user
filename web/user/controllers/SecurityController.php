@@ -37,7 +37,7 @@ class SecurityController extends Controller
                 'rules' => [
                     [
                         'actions' => ['index', 'change-password', 'login-log'],
-                        'allow' => allow,
+                        'allow' => true,
                         'roles' => ['@'],
                     ]
                 ],
@@ -52,14 +52,13 @@ class SecurityController extends Controller
 
     public function actionChangePassword()
     {
-        $model = new ChangePasswordForm();
-        if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
-            $model = new ChangePasswordForm();
-            Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_MESSAGE, $this->changePasswordSuccessMessage);
-        } else {
-            $model = new ChangePasswordForm();
-            Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_MESSAGE, $this->changePasswordFailedMessage);
-            
+        $model = new ChangePasswordForm(['user' => Yii::$app->user->identity]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->changePassword()) {
+                Yii::$app->session->setFlash(self::SESSION_KEY_CHANGE_PASSWORD_MESSAGE, $this->changePasswordSuccessMessage);
+                return $this->redirect(['change-password']);
+            }
+            $model->clearAttributes();
         }
         return $this->render('change-password', ['model' => $model]);
     }
