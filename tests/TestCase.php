@@ -100,6 +100,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
         if ($params === null) {
             $this->markTestSkipped('No mysql server connection configured.');
         }
+        if (array_key_exists('class', $params)) {
+            unset($params['class']);
+        }
         $connection = new Connection($params);
         $cacheParams = self::getParam('cache');/*
         if ($cacheParams === null) {

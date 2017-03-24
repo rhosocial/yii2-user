@@ -24,6 +24,7 @@
 $config = [
     'databases' => [
         'mysql' => [
+            'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=rhosocial_yii2_user',
             'username' => 'root',
             'password' => '',

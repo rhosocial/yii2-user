@@ -14,12 +14,15 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
 require(__DIR__ . '/vendor/autoload.php');
 require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
+$db = require(__DIR__ . '/tests/data/config.php');
+
 $config = [
     'id' => 'testapp',
     'basePath' => __DIR__,
+    'components' => [
+        'db' => $db['databases']['mysql'],
+    ],
 ];
-$testConfig = require(__DIR__ . '/tests/data/config.php');
-$config['components']['db'] = $testConfig['databases']['mysql'];
 
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
