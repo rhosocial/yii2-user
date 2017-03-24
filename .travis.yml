@@ -5,6 +5,7 @@ php:
     - 7.1
     - nightly
 
+sudo: required
 matrix:
     allow_failures:
         - php: nightly
@@ -37,6 +38,7 @@ install:
         fi
     - export PATH="$HOME/.composer/vendor/bin/:$PATH"
     - travis_retry composer install --prefer-dist --no-interaction
+    - sudo chmod +x yii
     
 before_script:
     - mysql --version
