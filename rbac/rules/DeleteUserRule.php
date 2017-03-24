@@ -13,7 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use yii\rbac\Rule;
+use rhosocial\user\rbac\Rule;
 
 class DeleteUserRule extends Rule
 {

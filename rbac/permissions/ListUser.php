@@ -12,28 +12,22 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\UpdateUserRule;
+use rhosocial\user\rbac\rules\ListUserRule;
 use rhosocial\user\rbac\Permission;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class UpdateUser extends Permission
+class ListUser extends Permission
 {
-    /**
-     * @inheritdoc
-     */
-    public $name = 'updateUser';
-    
-    /**
-     * @inheritdoc
-     */
-    public $description = 'Update a user';
+    public $name = 'listUser';
+
+    public $description = 'List user';
 
     public function init()
     {
         parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new UpdateUserRule())->name : $this->ruleName;
+        $this->ruleName = empty($this->ruleName) ? (new ListUserRule())->name : $this->ruleName;
     }
 }

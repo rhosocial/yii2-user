@@ -13,8 +13,8 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use yii\rbac\Item;
-use yii\rbac\Rule;
+use rhosocial\user\rbac\Item;
+use rhosocial\user\rbac\Rule;
 
 class AdminRule extends Rule
 {
@@ -31,9 +31,9 @@ class AdminRule extends Rule
      */
     public function execute($user, $item, $params) {
         if (is_string($user)) {
-            $user = User::find()->guid($user)->one();
+            $user = User::find()->guid($user)->exists();
         }
-        if (empty($user)) {
+        if ($user == false) {
             return false;
         }
     }

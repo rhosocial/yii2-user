@@ -38,7 +38,12 @@ class UserController extends Controller
                         'allow' => false,
                         'roles' => ['?'],
                     ],
-                    [ // Disallow non-admin user to access this controller.
+                    [ // Allow the user who has the `listUser` permission to access the `index` action.
+                        'actions' => ['index'],
+                        'allow' => true,
+                        'roles' => ['listUser'],
+                    ],
+                    [ // Disallow other non-admin users to access this controller.
                         'allow' => false,
                         'matchCallback' => function ($rule, $action) {
                             return !Yii::$app->authManager->checkAccess(Yii::$app->user->identity, 'admin');
@@ -47,7 +52,7 @@ class UserController extends Controller
                             throw new UnauthorizedHttpException('You are not an administrator and have no access to this page.');
                         },
                     ],
-                    [ // Disallow admin user to access deregister action directly, only `POST` accepted.
+                    [ // Disallow admin users to access deregister action directly, only `POST` accepted.
                         'actions' => ['deregister'],
                         'allow' => false,
                         'matchCallback' => function ($rule, $action) {
@@ -60,7 +65,7 @@ class UserController extends Controller
                     [ // Allow admin user to access other views.
                       // This is a final rule, if you want to add other rules, please put it before this rule.
                         'allow' => true,
-                        'roles' => ['admin'],
+                        'roles' => ['admin'], // Administrator can access this controller.
                     ],
                 ],
             ],

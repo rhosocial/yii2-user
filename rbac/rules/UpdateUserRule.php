@@ -13,7 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use yii\rbac\Rule;
+use rhosocial\user\rbac\Rule;
 
 /**
  * @version 1.0
@@ -22,7 +22,7 @@ use yii\rbac\Rule;
 class UpdateUserRule extends Rule
 {
     public $name = 'canUpdateUser';
-    
+
     /**
      * Executes the rule.
      *

@@ -13,7 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use yii\rbac\Rule;
+use rhosocial\user\rbac\Rule;
 
 class UserRule extends Rule
 {
@@ -27,5 +27,6 @@ class UserRule extends Rule
      * @return bool a value indicating whether the rule permits the auth item it is associated with.
      */
     public function execute($user, $item, $params) {
+        return true;
     }
 }

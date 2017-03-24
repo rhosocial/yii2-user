@@ -41,8 +41,8 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'value' => function ($data) {
                 /* @var $data User */
                 $profile = $data->profile;
-                if (empty($profile) || !($profile instanceof Profile)) {
-                    return '';
+                if (empty($profile) || !($profile instanceof Profile) || empty($profile->nickname)) {
+                    return null;
                 }
                 return $profile->nickname;
             },
@@ -62,7 +62,12 @@ echo empty($dataProvider) ? '' : GridView::widget([
                     return Url::to(['deregister', 'id' => $model->getID()]);
                 }
                 return '#';
-            }
+            },
+            'visibleButtons' => [
+                'view' => Yii::$app->user->can('listUser'),
+                'update' => Yii::$app->user->can('updateUser'),
+                'delete' => Yii::$app->user->can('deleteUser'),
+            ],
         ],
     ],
 ]);
