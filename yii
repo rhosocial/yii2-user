@@ -18,6 +18,8 @@ $config = [
     'id' => 'testapp',
     'basePath' => __DIR__,
 ];
+$testConfig = require(__DIR__ . '/tests/data/config.php');
+$config['components']['db'] = $testConfig['databases']['mysql'];
 
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
