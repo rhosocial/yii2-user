@@ -21,9 +21,12 @@ $config = [
     'basePath' => __DIR__,
     'components' => [
         'db' => $db['databases']['mysql'],
+        'authManager' => [
+            'class' => 'rhosocial\user\rbac\DbManager',
+        ],
     ],
 ];
-
+Yii::setAlias('@rhosocial/user', __DIR__);
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
 exit($exitCode);
