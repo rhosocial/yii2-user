@@ -9,11 +9,11 @@ use rhosocial\user\rbac\Item;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
+use yii\widgets\Pjax;
 
 ?>
 
 <h1>User Info</h1>
-
 
 <?php if (!Yii::$app->user->isGuest) {
     $identity = $panel->data['identity'];
@@ -36,7 +36,7 @@ use yii\widgets\DetailView;
             'Source' => $identity->sourceAttribute,
         ],
     ]);
-    
+
     if (class_exists($identity->profileClass) && ($profile = $identity->profile)) {
         /* @var $profile Profile */
         echo DetailView::widget([
@@ -50,19 +50,21 @@ use yii\widgets\DetailView;
             ],
         ]);
     }
-    
+
     $history = $identity->passwordHistories;
     if (!empty($history)) {
         /* @var $history PasswordHistory[] */
         echo '<h2>Password History</h2>';
-        
+
         $historyProvider = new ArrayDataProvider([
             'allModels' => $history,
         ]);
         $historyProvider->pagination->pageSize = 20;
         $historyProvider->pagination->pageParam = 'password-history-page';
         $historyProvider->sort->sortParam = 'password-history-sort';
-        
+        Pjax::begin([
+            'id' => 'password-history-pjax',
+        ]);
         echo GridView::widget([
             'dataProvider' => $historyProvider,
             'columns' => [
@@ -76,11 +78,14 @@ use yii\widgets\DetailView;
                 'createdAt:datetime',
             ],
         ]);
+        Pjax::end();
     }
 
     if ($panel->data['rolesProvider']) {
         echo '<h2>Roles</h2>';
-
+        Pjax::begin([
+            'id' => 'role-pjax',
+        ]);
         echo GridView::widget([
             'dataProvider' => $panel->data['rolesProvider'],
             'columns' => [
@@ -118,11 +123,14 @@ use yii\widgets\DetailView;
                 'updatedAt:datetime'
             ]
         ]);
+        Pjax::end();
     }
 
     if ($panel->data['permissionsProvider']) {
         echo '<h2>Permissions</h2>';
-
+        Pjax::begin([
+            'id' => 'permission-pjax',
+        ]);
         echo GridView::widget([
             'dataProvider' => $panel->data['permissionsProvider'],
             'columns' => [
@@ -160,6 +168,7 @@ use yii\widgets\DetailView;
                 'updatedAt:datetime'
             ]
         ]);
+        Pjax::end();
     }
 
     if ($panel->data['loginLogProvider']) {
@@ -167,6 +176,9 @@ use yii\widgets\DetailView;
         if (is_string($panel->data['loginLogProvider'])) {
             echo $panel->data['loginLogProvider'];
         } else {
+            Pjax::begin([
+                'id' => 'login-log-pjax',
+            ]);
             echo GridView::widget([
                 'dataProvider' => $panel->data['loginLogProvider'],
                 'columns' => [
@@ -192,11 +204,11 @@ use yii\widgets\DetailView;
                         },
                     ],
                     'time' => [
-                        'class' => 'yii\grid\Column',
                         'header' => 'Time',
-                        'content' => function ($model, $key, $index, $column) {
+                        'value' => function ($model, $key, $index, $column) {
                             return $model->getCreatedAt();
                         },
+                        'format' => 'datetime',
                     ],
                     'device' => [
                         'class' => 'yii\grid\Column',
@@ -218,6 +230,7 @@ use yii\widgets\DetailView;
                     ],
                 ],
             ]);
+            Pjax::end();
         }
     }
 }
