@@ -13,7 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use rhosocial\user\rbac\Rule;
+use yii\rbac\Rule;
 
 class UserRule extends Rule
 {

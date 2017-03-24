@@ -13,7 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use rhosocial\user\rbac\Rule;
+use yii\rbac\Rule;
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>

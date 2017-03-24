@@ -18,7 +18,7 @@ use rhosocial\user\rbac\roles\User;
 use rhosocial\user\rbac\rules\CreateUserRule;
 use rhosocial\user\rbac\rules\DeleteMyselfRule;
 use rhosocial\user\rbac\rules\DeleteUserRule;
-use rhosocial\user\rbac\rules\ListUserRule;
+use rhosocial\user\rbac\rules\ViewUserRule;
 use rhosocial\user\rbac\rules\UpdateMyselfRule;
 use rhosocial\user\rbac\rules\UpdateUserRule;
 use rhosocial\user\rbac\permissions\CreateAdminUser;
@@ -26,7 +26,7 @@ use rhosocial\user\rbac\permissions\CreateUser;
 use rhosocial\user\rbac\permissions\DeleteAdminUser;
 use rhosocial\user\rbac\permissions\DeleteMyself;
 use rhosocial\user\rbac\permissions\DeleteUser;
-use rhosocial\user\rbac\permissions\ListUser;
+use rhosocial\user\rbac\permissions\ViewUser;
 use rhosocial\user\rbac\permissions\UpdateAdminUser;
 use rhosocial\user\rbac\permissions\UpdateMyself;
 use rhosocial\user\rbac\permissions\UpdateUser;
@@ -175,14 +175,14 @@ class M170310150337CreateAuthTables extends Migration
         $createUserRule = new CreateUserRule();
         $deleteMyselfRule = new DeleteMyselfRule();
         $deleteUserRule = new DeleteUserRule();
-        $listUserRule = new ListUserRule();
+        $viewUserRule = new ViewUserRule();
         $updateMyselfRule = new UpdateMyselfRule();
         $updateUserRule = new UpdateUserRule();
         
         $authManager->add($createUserRule);
         $authManager->add($deleteMyselfRule);
         $authManager->add($deleteUserRule);
-        $authManager->add($listUserRule);
+        $authManager->add($viewUserRule);
         $authManager->add($updateMyselfRule);        
         $authManager->add($updateUserRule);
     }
@@ -193,7 +193,7 @@ class M170310150337CreateAuthTables extends Migration
         $this->db = $authManager->db;
         
         $createUser = new CreateUser();
-        $listUser = new ListUser();
+        $viewUser = new ViewUser();
         $updateUser = new UpdateUser();
         $deleteUser = new DeleteUser();
         $updateMyself = new UpdateMyself();
@@ -203,7 +203,7 @@ class M170310150337CreateAuthTables extends Migration
         $deleteAdminUser = new DeleteAdminUser();
         
         $authManager->add($createUser);
-        $authManager->add($listUser);
+        $authManager->add($viewUser);
         $authManager->add($updateUser);
         $authManager->add($deleteUser);
         $authManager->add($updateMyself);
@@ -223,7 +223,7 @@ class M170310150337CreateAuthTables extends Migration
         $authManager->addChild($admin, $user);
         
         $authManager->addChild($admin, $createUser);
-        $authManager->addChild($admin, $listUser);
+        $authManager->addChild($admin, $viewUser);
         $authManager->addChild($admin, $updateUser);
         $authManager->addChild($admin, $deleteUser);
     }

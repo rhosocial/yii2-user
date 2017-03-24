@@ -13,15 +13,15 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
-use rhosocial\user\rbac\Rule;
+use yii\rbac\Rule;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class ListUserRule extends Rule
+class ViewUserRule extends Rule
 {
-    public $name = 'canListUser';
+    public $name = 'canViewUser';
 
     /**
      * Executes the rule.

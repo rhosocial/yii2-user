@@ -12,14 +12,14 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\ListUserRule;
+use rhosocial\user\rbac\rules\ViewUserRule;
 use rhosocial\user\rbac\Permission;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class ListUser extends Permission
+class ViewUser extends Permission
 {
     public $name = 'listUser';
 
@@ -28,6 +28,6 @@ class ListUser extends Permission
     public function init()
     {
         parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new ListUserRule())->name : $this->ruleName;
+        $this->ruleName = empty($this->ruleName) ? (new ViewUserRule())->name : $this->ruleName;
     }
 }

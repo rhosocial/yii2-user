@@ -56,10 +56,15 @@ use yii\widgets\DetailView;
         /* @var $history PasswordHistory[] */
         echo '<h2>Password History</h2>';
         
+        $historyProvider = new ArrayDataProvider([
+            'allModels' => $history,
+        ]);
+        $historyProvider->pagination->pageSize = 20;
+        $historyProvider->pagination->pageParam = 'password-history-page';
+        $historyProvider->sort->sortParam = 'password-history-sort';
+        
         echo GridView::widget([
-            'dataProvider' => new ArrayDataProvider([
-                'allModels' => $history
-            ]),
+            'dataProvider' => $historyProvider,
             'columns' => [
                 'guid' => [
                     'class' => 'yii\grid\Column',

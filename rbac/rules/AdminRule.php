@@ -14,7 +14,7 @@ namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
 use rhosocial\user\rbac\Item;
-use rhosocial\user\rbac\Rule;
+use yii\rbac\Rule;
 
 class AdminRule extends Rule
 {

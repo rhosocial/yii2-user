@@ -69,11 +69,16 @@ class UserPanel extends Panel
             $rolesProvider = new ArrayDataProvider([
                 'allModels' => $authManager->getRolesByUser($data),
             ]);
+            $rolesProvider->pagination->pageSize = 20;
+            $rolesProvider->pagination->pageParam = 'role-page';
+            $rolesProvider->sort->sortParam = 'role-sort';
 
             $permissionsProvider = new ArrayDataProvider([
                 'allModels' => $authManager->getPermissionsByUser($data),
-
             ]);
+            $permissionsProvider->pagination->pageSize = 20;
+            $permissionsProvider->pagination->pageParam = 'permission-page';
+            $permissionsProvider->sort->sortParam = 'permission-sort';
         }
 
         if (!class_exists($data->loginLogClass)) {
@@ -82,6 +87,9 @@ class UserPanel extends Panel
             $loginLogProvider = new ArrayDataProvider([
                 'allModels' => $data->getLoginLogs(),
             ]);
+            $loginLogProvider->pagination->pageSize = 20;
+            $loginLogProvider->pagination->pageParam = 'login-log-page';
+            $loginLogProvider->sort->sortParam = 'login-log-sort';
         }
 
         $attributes = array_keys(get_object_vars($data));
