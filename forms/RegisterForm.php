@@ -29,14 +29,26 @@ class RegisterForm extends Model
     public $gender = 1;
     public $userClass;
     public $model = null;
-    
+
+    public function attributeLabels()
+    {
+        return [
+            'nickname' => Yii::t('user', 'Nickname'),
+            'password' => Yii::t('user', 'Password'),
+            'password_repeat' => Yii::t('user', 'Password Repeat'),
+            'first_name' => Yii::t('user', 'First Name'),
+            'last_name' => Yii::t('user', 'Last Name'),
+            'gender' => Yii::t('user', 'Gender'),
+        ];
+    }
+
     public function init()
     {
         if (empty($this->userClass)) {
             $this->userClass = Yii::$app->user->identityClass;
         }
     }
-    
+
     public function rules()
     {
         return [
@@ -48,7 +60,7 @@ class RegisterForm extends Model
             ['gender', 'in', 'range' => array_keys(\rhosocial\user\Profile::$genders)],
         ];
     }
-    
+
     public function register()
     {
         if ($this->validate()) {

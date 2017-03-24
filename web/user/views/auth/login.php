@@ -13,7 +13,7 @@
 /* @var $this yii\web\View */
 /* @var $model rhosocial\user\forms\LoginForm */
 
-$this->title = 'Login';
+$this->title = Yii::t('user', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $result = \rhosocial\user\widgets\LoginFormWidget::widget(['model' => $model]); ?>

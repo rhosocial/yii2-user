@@ -29,6 +29,8 @@ use yii\web\UnauthorizedHttpException;
  */
 class UserController extends Controller
 {
+    public $layout = 'user';
+
     public function behaviors() {
         return [
             'access' => [
@@ -49,7 +51,7 @@ class UserController extends Controller
                             return !Yii::$app->authManager->checkAccess(Yii::$app->user->identity, 'admin');
                         },
                         'denyCallback' => function ($rule, $action) {
-                            throw new UnauthorizedHttpException('You are not an administrator and have no access to this page.');
+                            throw new UnauthorizedHttpException(Yii::t('user', 'You are not an administrator and have no access to this page.'));
                         },
                     ],
                     [ // Disallow admin users to access deregister action directly, only `POST` accepted.
@@ -59,7 +61,7 @@ class UserController extends Controller
                             return strtoupper(Yii::$app->request->getMethod()) != 'POST';
                         },
                         'denyCallback' => function ($rule, $action) {
-                            throw new MethodNotAllowedHttpException('You cannot access this page directly.');
+                            throw new MethodNotAllowedHttpException(Yii::t('user', 'You cannot access this page directly.'));
                         },
                     ],
                     [ // Allow admin user to access other views.
@@ -106,7 +108,7 @@ class UserController extends Controller
         }
         $user = $class::find()->id($id)->one();
         if (empty($user) || !($user instanceof User)) {
-            throw new BadRequestHttpException('User Not Found.');
+            throw new BadRequestHttpException(Yii::t('user', 'User Not Found.'));
         }
         return $user;
     }
@@ -120,7 +122,7 @@ class UserController extends Controller
     {
         $id = (int)$id;
         if (Yii::$app->user->identity->getID() == $id) {
-            throw new ForbiddenHttpException('You cannot deregister yourself.');
+            throw new ForbiddenHttpException(Yii::t('user', 'You cannot deregister yourself.'));
         }
         $user = $this->getUser($id);
         try {
@@ -132,7 +134,7 @@ class UserController extends Controller
             throw new ServerErrorHttpException($ex->getMessage());
         }
         if ($result !== true) {
-            throw new ServerErrorHttpException('Failed to deregister user.');
+            throw new ServerErrorHttpException(Yii::t('user', 'Failed to deregister user.'));
         }
         return $this->redirect(['index']);
     }

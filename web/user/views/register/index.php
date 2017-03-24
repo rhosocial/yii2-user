@@ -13,7 +13,7 @@
 /* @var $this yii\web\View */
 /* @var $model rhosocial\user\forms\RegisterForm */
 
-$this->title = 'Register';
+$this->title = Yii::t('user', 'Register');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $result = \rhosocial\user\widgets\RegisterFormWidget::widget(['model' => $model]); ?>

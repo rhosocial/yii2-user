@@ -17,6 +17,7 @@ This extension provides two common models:
 - [Using the Login Log model](usage-login-log.md)
 - [Using the Login widget](usage-login-widget.md)
 - [Using the Register widget](usage-register-widget.md)
+- [Internationalization](usage-i18n.md)
 
 ## Console commands
 

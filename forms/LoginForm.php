@@ -26,14 +26,23 @@ class LoginForm extends Model
     public $rememberMe = true;
     public $userClass;
     private $_user = false;
-    
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('user', 'ID'),
+            'password' => Yii::t('user', 'Password'),
+            'rememberMe' => Yii::t('user', 'Remember Me'),
+        ];
+    }
+
     public function init()
     {
         if (empty($this->userClass)) {
             $this->userClass = Yii::$app->user->identityClass;
         }
     }
-    
+
     public function rules()
     {
         return [

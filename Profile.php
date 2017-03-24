@@ -13,30 +13,38 @@
 namespace rhosocial\user;
 
 use rhosocial\base\models\models\BaseBlameableModel;
+use Yii;
 
 /**
  * Simple Profile Model.
  * One Profile corresponds to only one [[User]].
  *
  * If you're using MySQL, we recommend that you create a data table using the following statement:
- * ```
- * CREATE TABLE `profile` (
- *   `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
- *   `nickname` varchar(255) NOT NULL COMMENT 'Nickname',
- *   `first_name` varchar(255) NOT NULL COMMENT 'First Name',
- *   `last_name` varchar(255) NOT NULL COMMENT 'Last Name',
- *   `individual_sign` text NOT NULL COMMENT 'Individual Sign',
- *   `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Create Time',
- *   `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Update Time',
- *   PRIMARY KEY (`guid`),
- *   CONSTRAINT `user_profile_fkey` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
- * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
- * ```
+```SQL
+CREATE TABLE `profile` (
+  `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
+  `nickname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Nickname',
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'First Name',
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Last Name',
+  `gravatar_type` smallint(6) NOT NULL DEFAULT '0' COMMENT 'Gravatar Type',
+  `gravatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Gravatar',
+  `gender` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Gender',
+  `timezone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC' COMMENT 'Timezone',
+  `individual_sign` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Individual Sign',
+  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Created At',
+  `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
+  PRIMARY KEY (`guid`),
+  CONSTRAINT `user_profile_fk` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
+```
  *
  * @property string $nickname Nickname
  * @property string $first_name First Name
  * @property string $last_name Last Name
  * @property string $gender Gender
+ * @property string $gravatar_type Gravatar Type
+ * @property string $gravatar Gravatar
+ * @property string $timezone Timezone
  * @property string $individual_sign Individual Signature
  *
  * @property-read User $user
@@ -61,6 +69,22 @@ class Profile extends BaseBlameableModel
      * @var string Specify the nickname as the content attribute.
      */
     public $contentAttribute = 'nickname';
+
+    public function attributeLabels()
+    {
+        return [
+            'nickname' => Yii::t('user', 'nickname'),
+            'first_name' => Yii::t('user', 'First Name'),
+            'last_name' => Yii::t('user', 'Last Name'),
+            'gender' => Yii::t('user', 'Gender'),
+            'gravatar_type' => Yii::t('user', 'Gravatar Type'),
+            'gravatar' => Yii::t('user', 'Gravatar'),
+            'timezone' => Yii::t('user', 'Timezone'),
+            'individual_sign' => Yii::t('user', 'Individual Signature'),
+            'created_at' => Yii::t('user', 'Creation Time'),
+            'updated_at' => Yii::t('user', 'Last Updated Time'),
+        ];
+    }
 
     /**
      * Get rules associated with individual sign attribute.

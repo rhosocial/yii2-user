@@ -12,7 +12,7 @@
 
 /* @var $message string */
 
-$this->title = 'Register Failed';
+$this->title = Yii::t('user', 'Register Failed');
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $message;

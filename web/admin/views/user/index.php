@@ -20,6 +20,8 @@ use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider ActiveDataProvider */
+$this->title = Yii::t('user', 'User List');
+$this->params['breadcrumbs'][] = $this->title;
 Pjax::begin();
 echo empty($dataProvider) ? '' : GridView::widget([
     'dataProvider' => $dataProvider,
@@ -27,7 +29,7 @@ echo empty($dataProvider) ? '' : GridView::widget([
         ['class' => 'yii\grid\SerialColumn'],
         'guid' => [
             'class' => 'yii\grid\DataColumn',
-            'header' => 'GUID',
+            'header' => Yii::t('user', 'GUID'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
                 return $model->getReadableGUID();
@@ -37,7 +39,7 @@ echo empty($dataProvider) ? '' : GridView::widget([
         'id',
         'nickname' => [
             'class' => 'yii\grid\DataColumn',
-            'header' => 'nickname',
+            'header' => Yii::t('user', 'Nickname'),
             'value' => function ($data) {
                 /* @var $data User */
                 $profile = $data->profile;
@@ -51,7 +53,7 @@ echo empty($dataProvider) ? '' : GridView::widget([
         'updated_at:datetime',
         [
             'class' => ActionColumn::class,
-            'header' => 'Action',
+            'header' => Yii::t('user', 'Action'),
             'urlCreator' => function (string $action, $model, $key, $index, ActionColumn $column) {
                 /* @var $model User */
                 if ($action == 'view') {

@@ -26,3 +26,5 @@
 composer.lock     export-ignore
 phpunit.local.xml export-ignore
 phpunit.xml.dist  export-ignore
+yii               export-ignore
+yii.bat           export-ignore

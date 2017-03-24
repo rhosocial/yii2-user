@@ -13,6 +13,7 @@
 namespace rhosocial\user\forms;
 
 use rhosocial\user\User;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -25,7 +26,16 @@ class ChangePasswordForm extends Model
     public $new_password;
     public $new_password_repeat;
     private $_user = false;
-    
+
+    public function attributeLabels()
+    {
+        return [
+            'password' => Yii::t('user', 'Password'),
+            'new_password' => Yii::t('user', 'New Password'),
+            'new_password_repeat' => Yii::t('user', 'New Password Repeat'),
+        ];
+    }
+
     public function rules()
     {
         return [
@@ -60,7 +70,7 @@ class ChangePasswordForm extends Model
             }
         }
     }
-    
+
     /**
      * Change password.
      * @return boolean Whether the password changed.

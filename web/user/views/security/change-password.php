@@ -15,7 +15,7 @@
 use rhosocial\user\web\user\controllers\SecurityController;
 use yii\bootstrap\Alert;
 
-$this->title = 'Change Password';
+$this->title = Yii::t('user', 'Change Password');
 $this->params['breadcrumbs'][] = $this->title;
 if (($result = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_RESULT)) !== null) {
     $message = Yii::$app->session->getFlash(SecurityController::SESSION_KEY_CHANGE_PASSWORD_MESSAGE);

@@ -93,19 +93,19 @@ class User extends BaseUserModel
     public function attributeLabels()
     {
         return [
-            'guid' => Yii::t('app', 'GUID'),
-            'id' => Yii::t('app', 'ID'),
-            'pass_hash' => Yii::t('app', 'Password Hash'),
-            'ip' => Yii::t('app', 'IP'),
-            'ip_type' => Yii::t('app', 'IP Address Type'),
-            'created_at' => Yii::t('app', 'Create Time'),
-            'updated_at' => Yii::t('app', 'Update Time'),
-            'auth_key' => Yii::t('app', 'Authentication Key'),
-            'access_token' => Yii::t('app', 'Access Token'),
-            'password_reset_token' => Yii::t('app', 'Password Reset Token'),
-            'status' => Yii::t('app', 'Status'),
-            'type' => Yii::t('app', 'Type'),
-            'source' => Yii::t('app', 'Source'),
+            'guid' => Yii::t('user', 'GUID'),
+            'id' => Yii::t('user', 'ID'),
+            'pass_hash' => Yii::t('user', 'Password Hash'),
+            'ip' => Yii::t('user', 'IP Address'),
+            'ip_type' => Yii::t('user', 'IP Address Type'),
+            'created_at' => Yii::t('user', 'Creation Time'),
+            'updated_at' => Yii::t('user', 'Last Updated Time'),
+            'auth_key' => Yii::t('user', 'Authentication Key'),
+            'access_token' => Yii::t('user', 'Access Token'),
+            'password_reset_token' => Yii::t('user', 'Password Reset Token'),
+            'status' => Yii::t('user', 'Status'),
+            'type' => Yii::t('user', 'Type'),
+            'source' => Yii::t('user', 'Source'),
         ];
     }
 

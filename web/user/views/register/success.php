@@ -12,7 +12,7 @@
 
 /* @var $id string */
 
-$this->title = 'Register Successfully';
+$this->title = Yii::t('user', 'Register Successfully');
 $this->params['breadcrumbs'][] = $this->title;
 
 echo $id;

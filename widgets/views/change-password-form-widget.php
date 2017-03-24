@@ -36,7 +36,7 @@ use yii\bootstrap\ActiveForm;
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton(Yii::t('app', 'Change Password'), ['class' => 'btn btn-primary', 'name' => 'change-password-button']) ?>
+                <?= Html::submitButton(Yii::t('user', 'Change Password'), ['class' => 'btn btn-primary', 'name' => 'change-password-button']) ?>
             </div>
         </div>
 

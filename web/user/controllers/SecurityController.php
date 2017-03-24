@@ -28,11 +28,27 @@ class SecurityController extends Controller
     const CHANGE_PASSWORD_SUCCESS = 'success';
     const CHANGE_PASSWORD_FAILED = 'failed';
 
-    public $changePasswordSuccessMessage = 'Password Changed.';
+    public $changePasswordSuccessMessage;
 
-    public $changePasswordFailedMessage = 'Password Not Changed.';
+    public $changePasswordFailedMessage;
 
     public $layout = 'security';
+
+    protected function initMessages()
+    {
+        if (empty($this->changePasswordFailedMessage)) {
+            $this->changePasswordFailedMessage = Yii::t('user', 'Password Not Changed.');
+        }
+        if (empty($this->changePasswordSuccessMessage)) {
+            $this->changePasswordSuccessMessage = Yii::t('user', 'Password Changed.');
+        }
+    }
+
+    public function init()
+    {
+        $this->initMessages();
+        parent::init();
+    }
 
     public function behaviors()
     {

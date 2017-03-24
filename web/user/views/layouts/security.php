@@ -12,7 +12,7 @@
 
 /* @var $this yii\web\View */
 $this->params['breadcrumbs'][] = [
-    'label' => 'Security',
+    'label' => Yii::t('user', 'Security'),
     'url' => ['security/index'],
 ];
 $this->params['breadcrumbs'] = array_reverse($this->params['breadcrumbs']);
