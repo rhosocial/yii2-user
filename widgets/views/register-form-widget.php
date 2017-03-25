@@ -10,6 +10,7 @@
  * @license https://vistart.me/license/
  */
 
+use rhosocial\user\Profile;
 use rhosocial\user\forms\RegisterForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -38,7 +39,7 @@ use yii\bootstrap\ActiveForm;
 
         <?= $form->field($model, 'last_name')->textInput() ?>
 
-        <?= $form->field($model, 'gender')->dropDownList(\rhosocial\user\Profile::$genders) ?>
+        <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">

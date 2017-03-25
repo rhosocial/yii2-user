@@ -138,6 +138,23 @@ class Profile extends BaseBlameableModel
         ];
     }
 
+    public static function getGenderDesc($gender = null)
+    {
+        if (array_key_exists($gender, self::$genders)) {
+            return Yii::t('user', self::$genders[$gender]);
+        }
+        return null;
+    }
+
+    public static function getGenderDescs()
+    {
+        $genders = [];
+        foreach (self::$genders as $key => $gender) {
+            $genders[$key] = static::getGenderDesc($key);
+        }
+        return $genders;
+    }
+
     public function getGravatarRules()
     {
         return [

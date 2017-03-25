@@ -48,7 +48,15 @@ use yii\widgets\Pjax;
                 'nickname' => 'nickname',
                 'first_name' => 'first_name',
                 'last_name' => 'last_name',
-                'gender' => 'gender',
+                'gender' => [
+                    'attribute' => 'gender',
+                    'label' => Yii::t('user', 'Gender'),
+                    'value' => function ($model, $widget) {
+                        /* @var $model Profile */
+                        /* @var $widget DetailView */
+                        return $model->getGenderDesc($model->gender);
+                    },
+                ],
                 'gravatar_type' => 'gravatar_type',
                 'gravatar' => 'gravatar',
                 'timezone' => 'timezone',
