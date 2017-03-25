@@ -40,9 +40,10 @@ return [
     'Gravatar Type' => '头像类型',
     'Gravatar' => '头像',
     'Timezone' => '时区',
+    'Individual Signature' => '个人签名',
     'User Registered.' => '用户已注册。',
     'Register Failed' => '注册失败',
-    'Admin' => '管理员',
+    'Admin' => '管理',
     'User Not Found.' => '用户未找到。',
     'You cannot deregister yourself.' => '您不能删除自己。',
     'Failed to deregister user.' => '未能注销用户。',
@@ -56,4 +57,6 @@ return [
     'User Deregistered.' => '用户已注销。',
     'Failed to Deregister User.' => '未能注销用户。',
     'Register New User' => '注册新用户',
+    'View User' => '查看用户',
+    'Update User' => '更新用户',
 ];

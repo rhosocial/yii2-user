@@ -118,7 +118,11 @@ class UserController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => $class::find(),
             'pagination' => [
+                'pageParam' => 'user-page',
                 'pageSize' => 20,
+            ],
+            'sort' => [
+                'sortParam' => 'user-sort',
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);
@@ -195,11 +199,13 @@ class UserController extends Controller
 
     public function actionView($id)
     {
-        return $this->render('view');
+        $user = $this->getUser($id);
+        return $this->render('view', ['user' => $user]);
     }
 
     public function actionUpdate($id)
     {
-        return $this->render('update');
+        $user = $this->getUser($id);
+        return $this->render('update', ['user' => $user]);
     }
 }

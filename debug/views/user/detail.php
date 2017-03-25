@@ -24,7 +24,10 @@ use yii\widgets\Pjax;
             'GUID' => 'readableGUID',
             'ID' => $identity->idAttribute,
             'Password Hash' => $identity->passwordHashAttribute,
-            'IP' => $identity->ipAttribute,
+            'IP' => [
+                'attribute' => 'ipAddress',
+                'label' => Yii::t('user', 'IP Address'),
+            ],
             'IP Type' => $identity->ipTypeAttribute,
             'Created At' => $identity->createdAtAttribute,
             'Updated At' => $identity->updatedAtAttribute,
@@ -46,6 +49,9 @@ use yii\widgets\Pjax;
                 'first_name' => 'first_name',
                 'last_name' => 'last_name',
                 'gender' => 'gender',
+                'gravatar_type' => 'gravatar_type',
+                'gravatar' => 'gravatar',
+                'timezone' => 'timezone',
                 'individual_sign' => 'individual_sign',
             ],
         ]);

@@ -9,10 +9,9 @@
  * @copyright Copyright (c) 2016 - 2017 vistart
  * @license https://vistart.me/license/
  */
-use rhosocial\user\forms\RegisterForm;
-use rhosocial\user\widgets\RegisterFormWidget;
+use rhosocial\user\User;
+use rhosocial\user\Profile;
 /* @var $this yii\web\View */
-/* @var $model RegisterForm */
-$this->title = Yii::t('user', 'Register New User');
-$this->params['breadcrumbs'][] = $this->title;
-echo RegisterFormWidget::widget(['model' => $model]);
+/* @var $user User */
+$this->title = Yii::t('user', 'Update User') . ' (' . $user->getID() . ')';
+$this->params['breadcrumbs'][] = Yii::t('user', 'Update User');

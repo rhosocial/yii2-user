@@ -23,7 +23,9 @@ use yii\widgets\Pjax;
 /* @var $dataProvider ActiveDataProvider */
 $this->title = Yii::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
-Pjax::begin();
+Pjax::begin([
+    'id' => 'user-pjax',
+]);
 echo empty($dataProvider) ? '' : GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [

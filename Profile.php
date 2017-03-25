@@ -73,7 +73,7 @@ class Profile extends BaseBlameableModel
     public function attributeLabels()
     {
         return [
-            'nickname' => Yii::t('user', 'nickname'),
+            'nickname' => Yii::t('user', 'Nickname'),
             'first_name' => Yii::t('user', 'First Name'),
             'last_name' => Yii::t('user', 'Last Name'),
             'gender' => Yii::t('user', 'Gender'),
