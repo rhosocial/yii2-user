@@ -40,6 +40,7 @@ return [
     'Gravatar Type' => '头像类型',
     'Gravatar' => '头像',
     'Timezone' => '时区',
+    'User Registered.' => '用户已注册。',
     'Register Failed' => '注册失败',
     'Admin' => '管理员',
     'User Not Found.' => '用户未找到。',
@@ -52,5 +53,7 @@ return [
     'Password Not Changed.' => '密码未修改。',
     'Password Changed.' => '密码已修改',
     'User List' => '用户列表',
-    'User deregistered.' => '用户已注销。',
+    'User Deregistered.' => '用户已注销。',
+    'Failed to Deregister User.' => '未能注销用户。',
+    'Register New User' => '注册新用户',
 ];

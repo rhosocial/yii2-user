@@ -15,6 +15,7 @@ use rhosocial\user\Profile;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -74,3 +75,9 @@ echo empty($dataProvider) ? '' : GridView::widget([
     ],
 ]);
 Pjax::end();
+?>
+<div class="row">
+    <div class="col-md-3">
+        <?= Html::a(Yii::t('user', 'Register New User'), ['register-new-user'], ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>

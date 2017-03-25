@@ -13,6 +13,7 @@
 namespace rhosocial\user\web\admin\controllers;
 
 use rhosocial\user\User;
+use rhosocial\user\forms\RegisterForm;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -30,21 +31,32 @@ use yii\web\UnauthorizedHttpException;
 class UserController extends Controller
 {
     public $layout = 'user';
+    const RESULT_SUCCESS = 'success';
+    const RESULT_FAILED = 'failed';
+
+    public $registerSuccessMessage;
+    public $registerFailedMessage;
+    const SESSION_KEY_REGISTER_MESSAGE = 'session_key_register_message';
+    const SESSION_KEY_REGISTER_RESULT = 'session_key_register_result';
 
     public $deregisterSuccessMessage;
     public $deregisterFailedMessage;
     const SESSION_KEY_DEREGISTER_MESSAGE = 'session_key_deregister_message';
     const SESSION_KEY_DEREGISTER_RESULT = 'session_key_deregister_result';
-    const DEREGISTER_SUCCESS = 'success';
-    const DEREGISTER_FAILED = 'failed';
 
     protected function initMessages()
     {
+        if (!is_string($this->registerSuccessMessage)) {
+            $this->registerSuccessMessage = Yii::t('user' ,'User Registered.');
+        }
+        if (!is_string($this->registerFailedMessage)) {
+            $this->registerFailedMessage = Yii::t('user', 'Register Failed.');
+        }
         if (!is_string($this->deregisterSuccessMessage)) {
-            $this->deregisterSuccessMessage = Yii::t('user', 'User deregistered.');
+            $this->deregisterSuccessMessage = Yii::t('user', 'User Deregistered.');
         }
         if (!is_string($this->deregisterFailedMessage)) {
-            $this->deregisterFailedMessage = Yii::t('user', 'User not deregistered.');
+            $this->deregisterFailedMessage = Yii::t('user', 'Failed to Deregister User.');
         }
     }
 
@@ -114,7 +126,24 @@ class UserController extends Controller
 
     public function actionRegisterNewUser()
     {
-        return $this->render('register-new-user');
+        $model = new RegisterForm();
+        if ($model->load(Yii::$app->request->post())) {
+            try {
+                if (($result = $model->register()) === true) {
+                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_RESULT, self::RESULT_SUCCESS);
+                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
+                    return $this->redirect(['index']);
+                }
+                if ($result instanceof \Exception) {
+                    throw $result;
+                }
+            } catch (\Exception $ex) {
+                Yii::error($ex->getMessage(), __METHOD__);
+                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_RESULT, self::RESULT_FAILED);
+                Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_MESSAGE, $ex->getMessage());
+            }
+        }
+        return $this->render('register-new-user', ['model' => $model]);
     }
 
     /**
@@ -159,8 +188,8 @@ class UserController extends Controller
         if ($result !== true) {
             throw new ServerErrorHttpException(Yii::t('user', 'Failed to deregister user.'));
         }
-        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_RESULT, self::DEREGISTER_SUCCESS);
-        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_MESSAGE, $this->deregisterSuccessMessage);
+        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_RESULT, self::RESULT_SUCCESS);
+        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_MESSAGE, '(' . $user->getID() . ') ' . $this->deregisterSuccessMessage);
         return $this->redirect(['index']);
     }
 
