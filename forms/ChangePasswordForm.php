@@ -27,6 +27,8 @@ class ChangePasswordForm extends Model
     public $new_password_repeat;
     private $_user = false;
 
+    const SCENARIO_ADMIN = 'admin';
+
     public function attributeLabels()
     {
         return [
@@ -39,9 +41,11 @@ class ChangePasswordForm extends Model
     public function rules()
     {
         return [
-            [['password', 'new_password', 'new_password_repeat'], 'required'],
-            [['password', 'new_password', 'new_password_repeat'], 'string', 'min' => 6, 'max' => 32],
-            ['password', 'validatePassword'],
+            ['password', 'required', 'on' =>self::SCENARIO_DEFAULT],
+            [['new_password', 'new_password_repeat'], 'required'],
+            ['password', 'string', 'min' => 6, 'max' => 32, 'on' => self::SCENARIO_DEFAULT],
+            [['new_password', 'new_password_repeat'], 'string', 'min' => 6, 'max' => 32],
+            ['password', 'validatePassword', 'on' => self::SCENARIO_DEFAULT],
             ['new_password', 'compare'],
         ];
     }
@@ -91,7 +95,7 @@ class ChangePasswordForm extends Model
 
     /**
      * Set user.
-     * @param User|string|integer $user
+     * @param User $user
      */
     public function setUser($user)
     {
@@ -111,5 +115,12 @@ class ChangePasswordForm extends Model
     public function getUser()
     {
         return $this->_user;
+    }
+
+    public function scenarios()
+    {
+        return array_merge(parent::scenarios(), [
+            self::SCENARIO_ADMIN => ['new_password', 'new_password_repeat'],
+        ]);
     }
 }

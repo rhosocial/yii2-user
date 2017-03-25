@@ -14,6 +14,7 @@ namespace rhosocial\user\web\admin\controllers;
 
 use rhosocial\user\User;
 use rhosocial\user\Profile;
+use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -34,16 +35,17 @@ class UserController extends Controller
     public $layout = 'user';
     const RESULT_SUCCESS = 'success';
     const RESULT_FAILED = 'failed';
+    const SESSION_KEY_MESSAGE = 'session_key_message';
+    const SESSION_KEY_RESULT = 'session_key_result';
 
     public $registerSuccessMessage;
     public $registerFailedMessage;
-    const SESSION_KEY_REGISTER_MESSAGE = 'session_key_register_message';
-    const SESSION_KEY_REGISTER_RESULT = 'session_key_register_result';
 
     public $deregisterSuccessMessage;
     public $deregisterFailedMessage;
-    const SESSION_KEY_DEREGISTER_MESSAGE = 'session_key_deregister_message';
-    const SESSION_KEY_DEREGISTER_RESULT = 'session_key_deregister_result';
+    
+    public $updateSuccessMessage;
+    public $updateFailedMessage;
 
     protected function initMessages()
     {
@@ -58,6 +60,12 @@ class UserController extends Controller
         }
         if (!is_string($this->deregisterFailedMessage)) {
             $this->deregisterFailedMessage = Yii::t('user', 'Failed to Deregister User.');
+        }
+        if (!is_string($this->updateSuccessMessage)) {
+            $this->updateSuccessMessage = Yii::t('user', 'Updated.');
+        }
+        if (!is_string($this->updateFailedMessage)) {
+            $this->updateFailedMessage = Yii::t('user', 'Failed to Update.');
         }
     }
 
@@ -79,7 +87,7 @@ class UserController extends Controller
                     [ // Allow the user who has the `listUser` permission to access the `index` action.
                         'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['listUser'],
+                        'roles' => ['viewUser'],
                     ],
                     [ // Disallow other non-admin users to access this controller.
                         'allow' => false,
@@ -135,8 +143,8 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if (($result = $model->register()) === true) {
-                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_RESULT, self::RESULT_SUCCESS);
-                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
+                    Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
+                    Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
                     return $this->redirect(['index']);
                 }
                 if ($result instanceof \Exception) {
@@ -144,8 +152,8 @@ class UserController extends Controller
                 }
             } catch (\Exception $ex) {
                 Yii::error($ex->getMessage(), __METHOD__);
-                    Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_RESULT, self::RESULT_FAILED);
-                Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_MESSAGE, $ex->getMessage());
+                    Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
+                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, $ex->getMessage());
             }
         }
         return $this->render('register-new-user', ['model' => $model]);
@@ -193,8 +201,8 @@ class UserController extends Controller
         if ($result !== true) {
             throw new ServerErrorHttpException(Yii::t('user', 'Failed to deregister user.'));
         }
-        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_RESULT, self::RESULT_SUCCESS);
-        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_MESSAGE, '(' . $user->getID() . ') ' . $this->deregisterSuccessMessage);
+        Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
+        Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->deregisterSuccessMessage);
         return $this->redirect(['index']);
     }
 
@@ -217,9 +225,30 @@ class UserController extends Controller
                 throw new BadRequestHttpException(Yii::t('user', 'Please do not forge parameters.'));
             }
             if ($model->save()) {
-                return $this->redirect(['update']);
+                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
+                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
+                return $this->redirect(['update', 'id' => $id]);
             }
+            Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
+            Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
         }
         return $this->render('update', ['user' => $user, 'model' => $model]);
+    }
+
+    public function actionChangePassword($id)
+    {
+        $user = $this->getUser($id);
+        $model = new ChangePasswordForm(['user' => $user, 'scenario' => ChangePasswordForm::SCENARIO_ADMIN]);
+        if ($model->load(Yii::$app->request->post())){
+            if ($model->changePassword()) {
+                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
+                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
+                return $this->redirect(['index', 'id' => $id]);
+            } else {
+                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
+                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
+            }
+        }
+        return $this->render('change-password', ['model' => $model]);
     }
 }

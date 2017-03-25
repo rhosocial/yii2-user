@@ -64,6 +64,8 @@ return [
     'Update' => '更新',
     'Update User' => '更新用户',
     'Reset' => '重置',
+    'Updated.' => '已更新。',
+    'Failed to Update.' => '未能更新。',
     'Please do not forge parameters.' => '请勿伪造参数',
     'Other operations' => '其它操作',
 ];

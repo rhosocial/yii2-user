@@ -27,9 +27,9 @@ use yii\bootstrap\ActiveForm;
             'labelOptions' => ['class' => 'col-lg-1 control-label'],
         ],
     ]); ?>
-
+<?php if ($model->scenario == ChangePasswordForm::SCENARIO_DEFAULT): ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
-
+<?php endif; ?>
         <?= $form->field($model, 'new_password')->passwordInput() ?>
 
         <?= $form->field($model, 'new_password_repeat')->passwordInput() ?>

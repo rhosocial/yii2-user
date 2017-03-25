@@ -21,9 +21,9 @@ use rhosocial\user\rbac\Permission;
  */
 class ViewUser extends Permission
 {
-    public $name = 'listUser';
+    public $name = 'viewUser';
 
-    public $description = 'List user';
+    public $description = 'View user';
 
     public function init()
     {

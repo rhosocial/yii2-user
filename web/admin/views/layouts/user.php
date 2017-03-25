@@ -18,10 +18,8 @@ $this->params['breadcrumbs'][] = [
 ];
 $this->params['breadcrumbs'] = array_reverse($this->params['breadcrumbs']);
 $this->beginContent('@app/views/layouts/main.php');
-if (
-    (($result = Yii::$app->session->getFlash(UserController::SESSION_KEY_REGISTER_RESULT)) !== null && ($message = Yii::$app->session->getFlash(UserController::SESSION_KEY_REGISTER_MESSAGE)) !== null) ||
-    (($result = Yii::$app->session->getFlash(UserController::SESSION_KEY_DEREGISTER_RESULT)) !== null && ($message = Yii::$app->ssssion->getFlash(UserController::SESSION_KEY_DEREGISTER_MESSAGE)) !== null)    
-        ) {
+if (($result = Yii::$app->session->getFlash(UserController::SESSION_KEY_RESULT)) !== null) {
+    $message = Yii::$app->session->getFlash(UserController::SESSION_KEY_MESSAGE);
     if ($result == UserController::RESULT_SUCCESS) {
         echo Alert::widget([
             'options' => [
@@ -32,7 +30,7 @@ if (
     } elseif ($result == UserController::RESULT_FAILED) {
         echo Alert::widget([
             'options' => [
-                'class' => 'alert-failed',
+                'class' => 'alert-danger',
             ],
             'body' => $message
         ]);
