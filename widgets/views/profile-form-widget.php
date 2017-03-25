@@ -10,17 +10,17 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\forms\LoginForm;
+use rhosocial\user\Profile;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-/* @var $model LoginForm */
+/* @var $model Profile */
 ?>
 <div class="site-login">
-    <p>Please fill out the following fields to login:</p>
+    <p>Please fill out the following fields to update profile:</p>
 
     <?php $form = ActiveForm::begin([
-        'id' => 'login-form',
+        'id' => 'profile-form',
         'layout' => 'horizontal',
         'fieldConfig' => [
             'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
@@ -28,17 +28,18 @@ use yii\bootstrap\ActiveForm;
         ],
     ]); ?>
 
-        <?= $form->field($model, 'id')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'nickname')->textInput(['autofocus' => true]) ?>
 
-        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'first_name')->textInput() ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
+        <?= $form->field($model, 'last_name')->textInput() ?>
+
+        <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton(Yii::t('user', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('user', 'Update'), ['class' => 'btn btn-primary', 'name' => 'update-button']) ?>
+                <?= Html::resetButton(Yii::t('user', 'Reset'), ['class' => 'btn btn-default', 'name' => 'reset-button']) ?>
             </div>
         </div>
 

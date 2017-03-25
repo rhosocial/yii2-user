@@ -27,8 +27,14 @@ echo DetailView::widget([
             'label' => Yii::t('user', 'IP Address'),
         ],
         'IP Type' => $user->ipTypeAttribute,
-        'Created At' => $user->createdAtAttribute,
-        'Updated At' => $user->updatedAtAttribute,
+        'created_at' => [
+            'attribute' => $user->createdAtAttribute,
+            'format' => 'datetime',
+        ],
+        'updated_at' => [
+            'attribute' => $user->updatedAtAttribute,
+            'format' => 'datetime',
+         ],
         'Authentication Key' => $user->authKeyAttribute,
         'Access Token' => $user->accessTokenAttribute,
         'Password Reset Token' => $user->passwordResetTokenAttribute,
@@ -43,7 +49,7 @@ if (class_exists($user->profileClass) && ($profile = $user->profile)) {
     echo DetailView::widget([
         'model' => $profile,
         'attributes' => [
-            'nickname' => 'nickname',
+            'nickname' => $profile->contentAttribute,
             'first_name' => 'first_name',
             'last_name' => 'last_name',
             'gender' => [
@@ -59,6 +65,14 @@ if (class_exists($user->profileClass) && ($profile = $user->profile)) {
             'gravatar' => 'gravatar',
             'timezone' => 'timezone',
             'individual_sign' => 'individual_sign',
+            'created_at' => [
+                'attribute' => $profile->createdAtAttribute,
+                'format' => 'datetime',
+            ],
+            'updated_at' => [
+                'attribute' => $profile->updatedAtAttribute,
+                'format' => 'datetime',
+             ],
         ],
     ]);
 }

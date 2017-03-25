@@ -61,5 +61,9 @@ return [
     'Failed to Deregister User.' => '未能注销用户。',
     'Register New User' => '注册新用户',
     'View User' => '查看用户',
+    'Update' => '更新',
     'Update User' => '更新用户',
+    'Reset' => '重置',
+    'Please do not forge parameters.' => '请勿伪造参数',
+    'Other operations' => '其它操作',
 ];

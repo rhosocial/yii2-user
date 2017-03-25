@@ -13,6 +13,7 @@
 namespace rhosocial\user\web\admin\controllers;
 
 use rhosocial\user\User;
+use rhosocial\user\Profile;
 use rhosocial\user\forms\RegisterForm;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -206,6 +207,19 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $user = $this->getUser($id);
-        return $this->render('update', ['user' => $user]);
+        $model = $user->profile;
+        if (empty($model)) {
+            $model = $user->createProfile();
+        }
+        $model->scenario = Profile::SCENARIO_UPDATE;
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->getGUID() != $user->getGUID()) {
+                throw new BadRequestHttpException(Yii::t('user', 'Please do not forge parameters.'));
+            }
+            if ($model->save()) {
+                return $this->redirect(['update']);
+            }
+        }
+        return $this->render('update', ['user' => $user, 'model' => $model]);
     }
 }

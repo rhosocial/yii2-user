@@ -41,11 +41,12 @@ use yii\widgets\Pjax;
     ]);
 
     if (class_exists($identity->profileClass) && ($profile = $identity->profile)) {
+        echo '<h2>Profile</h2>';
         /* @var $profile Profile */
         echo DetailView::widget([
             'model' => $profile,
             'attributes' => [
-                'nickname' => 'nickname',
+                'nickname' => $profile->contentAttribute,
                 'first_name' => 'first_name',
                 'last_name' => 'last_name',
                 'gender' => [
@@ -61,6 +62,14 @@ use yii\widgets\Pjax;
                 'gravatar' => 'gravatar',
                 'timezone' => 'timezone',
                 'individual_sign' => 'individual_sign',
+                'created_at' => [
+                    'attribute' => $profile->createdAtAttribute,
+                    'format' => 'datetime',
+                ],
+                'updated_at' => [
+                    'attribute' => $profile->updatedAtAttribute,
+                    'format' => 'datetime',
+                 ],
             ],
         ]);
     }
@@ -83,7 +92,8 @@ use yii\widgets\Pjax;
             'dataProvider' => $historyProvider,
             'columns' => [
                 'guid' => [
-                    'class' => 'yii\grid\Column',
+                    'class' => 'yii\grid\DataColumn',
+                    'header' => 'Readable GUID',
                     'content' => function ($model, $key, $index, $column) {
                         return $model->getReadableGUID();
                     }

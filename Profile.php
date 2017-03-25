@@ -70,6 +70,8 @@ class Profile extends BaseBlameableModel
      */
     public $contentAttribute = 'nickname';
 
+    const SCENARIO_UPDATE = 'update';
+
     public function attributeLabels()
     {
         return [
@@ -192,5 +194,12 @@ class Profile extends BaseBlameableModel
     public static function tableName()
     {
         return '{{%profile}}';
+    }
+
+    public function scenarios()
+    {
+        return array_merge(parent::scenarios(), [
+            self::SCENARIO_UPDATE => [$this->contentAttribute, 'first_name', 'last_name', 'gender', 'gravatar_type', 'gravatar', 'timezone', 'individual_sign'],
+        ]);
     }
 }

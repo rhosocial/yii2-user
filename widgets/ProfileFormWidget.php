@@ -12,26 +12,29 @@
 
 namespace rhosocial\user\widgets;
 
-use rhosocial\user\forms\RegisterForm;
+use rhosocial\user\Profile;
 use yii\base\Widget;
 
 /**
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class RegisterFormWidget extends Widget
+class ProfileFormWidget extends Widget
 {
+    /**
+     * @var Profile 
+     */
     public $model;
-    
+
     public function init()
     {
-        if (is_null($this->model) || !($this->model instanceof RegisterForm)) {
-            $this->model = new RegisterForm();
+        if (is_null($this->model) || !($this->model instanceof Profile)) {
+            $this->model = Yii::$app->user->identity->createProfile(['scenario' => Profile::SCENARIO_UPDATE]);
         }
     }
-    
+
     public function run()
     {
-        return $this->render('register-form-widget', ['model' => $this->model]);
+        return $this->render('profile-form-widget', ['model' => $this->model]);
     }
 }
