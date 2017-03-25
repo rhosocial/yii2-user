@@ -44,7 +44,7 @@ class RegisterController extends Controller
                         'allow' => false,
                         'roles' => ['@'],
                         'denyCallback' => function ($rule, $action) {
-                            throw new ForbiddenHttpException('You must log out current user before registering new one.');
+                            throw new ForbiddenHttpException(Yii::t('user', 'You must log out current user before registering new one.'));
                         },
                     ],
                 ],

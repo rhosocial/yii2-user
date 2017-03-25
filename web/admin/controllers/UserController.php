@@ -31,6 +31,29 @@ class UserController extends Controller
 {
     public $layout = 'user';
 
+    public $deregisterSuccessMessage;
+    public $deregisterFailedMessage;
+    const SESSION_KEY_DEREGISTER_MESSAGE = 'session_key_deregister_message';
+    const SESSION_KEY_DEREGISTER_RESULT = 'session_key_deregister_result';
+    const DEREGISTER_SUCCESS = 'success';
+    const DEREGISTER_FAILED = 'failed';
+
+    protected function initMessages()
+    {
+        if (!is_string($this->deregisterSuccessMessage)) {
+            $this->deregisterSuccessMessage = Yii::t('user', 'User deregistered.');
+        }
+        if (!is_string($this->deregisterFailedMessage)) {
+            $this->deregisterFailedMessage = Yii::t('user', 'User not deregistered.');
+        }
+    }
+
+    public function init()
+    {
+        $this->initMessages();
+        parent::init();
+    }
+
     public function behaviors() {
         return [
             'access' => [
@@ -136,6 +159,8 @@ class UserController extends Controller
         if ($result !== true) {
             throw new ServerErrorHttpException(Yii::t('user', 'Failed to deregister user.'));
         }
+        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_RESULT, self::DEREGISTER_SUCCESS);
+        Yii::$app->session->setFlash(self::SESSION_KEY_DEREGISTER_MESSAGE, $this->deregisterSuccessMessage);
         return $this->redirect(['index']);
     }
 

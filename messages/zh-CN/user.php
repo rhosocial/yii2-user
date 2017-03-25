@@ -52,4 +52,5 @@ return [
     'Password Not Changed.' => '密码未修改。',
     'Password Changed.' => '密码已修改',
     'User List' => '用户列表',
+    'User deregistered.' => '用户已注销。',
 ];
