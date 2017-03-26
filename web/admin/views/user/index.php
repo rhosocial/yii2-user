@@ -69,7 +69,7 @@ echo empty($dataProvider) ? '' : GridView::widget([
                 return '#';
             },
             'visibleButtons' => [
-                'view' => Yii::$app->user->can('listUser'),
+                'view' => Yii::$app->user->can('viewUser'),
                 'update' => Yii::$app->user->can('updateUser'),
                 'delete' => Yii::$app->user->can('deleteUser'),
             ],

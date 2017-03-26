@@ -84,7 +84,7 @@ class UserController extends Controller
                         'allow' => false,
                         'roles' => ['?'],
                     ],
-                    [ // Allow the user who has the `listUser` permission to access the `index` action.
+                    [ // Allow the user who has the `viewUser` permission to access the `index` action.
                         'actions' => ['index'],
                         'allow' => true,
                         'roles' => ['viewUser'],
