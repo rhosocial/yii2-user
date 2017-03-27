@@ -60,11 +60,14 @@ trait UserPasswordHistoryTrait
         $password = $event->data;
         $sender = $event->sender;
         /* @var $sender static */
+        if (empty($sender->passwordHistoryClass) ||
+                !class_exists($sender->passwordHistoryClass) ||
+                empty($sender->passwordHashAttribute) ||
+                !is_string($sender->passwordHashAttribute)) {
+            return false;
+        }
         if (empty($password)) {
             $password = ['pass_hash' => $sender->{$sender->passwordHashAttribute}];
-        }
-        if (empty($sender->passwordHistoryClass) || !class_exists($sender->passwordHistoryClass)) {
-            return false;
         }
         $class = $sender->passwordHistoryClass;
         if (array_key_exists('pass_hash', $password)) {
@@ -115,6 +118,9 @@ trait UserPasswordHistoryTrait
      */
     public function getPasswordHashRules()
     {
+        if (empty($this->passwordHashAttribute) || !is_string($this->passwordHashAttribute)) {
+            return [];
+        }
         $rules = parent::getPasswordHashRules();
         $rules[] = [
             [$this->passwordHashAttribute], 'checkPasswordNotUsed', 'when' => function () {
