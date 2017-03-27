@@ -136,7 +136,7 @@ class Login extends BaseBlameableModel
         /* @var $host \rhosocial\user\User */
         foreach (static::find()
                 ->createdBy($host)
-                ->andWhere(['<=', $this->createdAtAttribute, $this->offsetDatetime(null, -$limit)])
+                ->andWhere(['<=', $this->createdAtAttribute, $this->offsetDatetime($this->currentUtcDatetime(), -$limit)])
                 ->all() as $login) {
             /* @var $login static */
             $result = $login->delete();
