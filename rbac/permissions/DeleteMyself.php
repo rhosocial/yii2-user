@@ -29,7 +29,7 @@ class DeleteMyself extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Delete myself';
+    public $description = 'Delete myself.';
     
     public function init()
     {

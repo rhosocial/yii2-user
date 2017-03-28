@@ -28,5 +28,5 @@ class UpdateAdminUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Update an administrator user';
+    public $description = 'Update an administrator user.';
 }

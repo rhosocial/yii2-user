@@ -28,5 +28,5 @@ class CreateAdminUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Create an administrator user';
+    public $description = 'Create an administrator user.';
 }

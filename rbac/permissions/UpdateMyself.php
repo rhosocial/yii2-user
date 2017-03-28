@@ -29,7 +29,7 @@ class UpdateMyself extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Update myself';
+    public $description = 'Update myself.';
     
     public function init()
     {

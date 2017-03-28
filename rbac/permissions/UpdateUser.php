@@ -29,7 +29,7 @@ class UpdateUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Update a user';
+    public $description = 'Update a user.';
 
     public function init()
     {

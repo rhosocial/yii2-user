@@ -29,7 +29,7 @@ class DeleteUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Delete a user';
+    public $description = 'Delete a user.';
     
     public function init()
     {

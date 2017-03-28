@@ -152,7 +152,7 @@ class UserController extends Controller
                 }
             } catch (\Exception $ex) {
                 Yii::error($ex->getMessage(), __METHOD__);
-                    Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
+                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
                 Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, $ex->getMessage());
             }
         }

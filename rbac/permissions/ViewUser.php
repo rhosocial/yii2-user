@@ -23,7 +23,7 @@ class ViewUser extends Permission
 {
     public $name = 'viewUser';
 
-    public $description = 'View user';
+    public $description = 'View user.';
 
     public function init()
     {

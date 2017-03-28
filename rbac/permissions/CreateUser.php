@@ -29,7 +29,7 @@ class CreateUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Create a user';
+    public $description = 'Create a user.';
     
     public function init()
     {

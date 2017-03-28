@@ -28,5 +28,5 @@ class DeleteAdminUser extends Permission
     /**
      * @inheritdoc
      */
-    public $description = 'Delete an administrator user';
+    public $description = 'Delete an administrator user.';
 }
