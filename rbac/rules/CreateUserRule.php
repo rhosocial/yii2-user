@@ -13,6 +13,7 @@
 namespace rhosocial\user\rbac\rules;
 
 use rhosocial\user\User;
+use rhosocial\user\rbac\permissions\CreateUser;
 use yii\rbac\Rule;
 
 /**
@@ -28,7 +29,7 @@ class CreateUserRule extends Rule
      *
      * @param string|User $user the user GUID. This should be either a GUID string representing
      * the unique identifier of a user or a User instance. See [[\rhosocial\user\User::guid]].
-     * @param Item $item the role or permission that this rule is associated with
+     * @param CreateUser $item the role or permission that this rule is associated with
      * @param array $params parameters passed to [[CheckAccessInterface::checkAccess()]].
      * @return bool a value indicating whether the rule permits the auth item it is associated with.
      */
