@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\ViewUserRule;
 use rhosocial\user\rbac\Permission;
 
 /**
@@ -24,10 +23,4 @@ class ViewUser extends Permission
     public $name = 'viewUser';
 
     public $description = 'View user.';
-
-    public function init()
-    {
-        parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new ViewUserRule())->name : $this->ruleName;
-    }
 }

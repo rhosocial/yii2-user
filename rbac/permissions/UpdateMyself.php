@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\UpdateMyselfRule;
 use rhosocial\user\rbac\Permission;
 
 /**
@@ -30,10 +29,4 @@ class UpdateMyself extends Permission
      * @inheritdoc
      */
     public $description = 'Update myself.';
-    
-    public function init()
-    {
-        parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new UpdateMyselfRule())->name : $this->ruleName;
-    }
 }

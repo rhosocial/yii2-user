@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\DeleteMyselfRule;
 use rhosocial\user\rbac\Permission;
 
 /**
@@ -30,10 +29,4 @@ class DeleteMyself extends Permission
      * @inheritdoc
      */
     public $description = 'Delete myself.';
-    
-    public function init()
-    {
-        parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new DeleteMyselfRule())->name : $this->ruleName;
-    }
 }

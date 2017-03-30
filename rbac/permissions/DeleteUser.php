@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\DeleteUserRule;
 use rhosocial\user\rbac\Permission;
 
 /**
@@ -30,10 +29,4 @@ class DeleteUser extends Permission
      * @inheritdoc
      */
     public $description = 'Delete a user.';
-    
-    public function init()
-    {
-        parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new DeleteUserRule())->name : $this->ruleName;
-    }
 }

@@ -153,7 +153,7 @@ class M170310150337CreateAuthTables extends Migration
             $this->addPrimaryKey('user_item_name_pk', $authManager->assignmentTable, ['item_name', 'user_guid']);
             $this->addForeignKey('user_assignment_fk', $authManager->assignmentTable, 'user_guid', '{{%user}}', 'guid', 'CASCADE', 'CASCADE');
         }
-        $this->addRules();
+        //$this->addRules();
         $this->addRoles();
     }
 

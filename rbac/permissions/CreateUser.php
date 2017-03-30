@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\rbac\permissions;
 
-use rhosocial\user\rbac\rules\CreateUserRule;
 use rhosocial\user\rbac\Permission;
 
 /**
@@ -30,10 +29,4 @@ class CreateUser extends Permission
      * @inheritdoc
      */
     public $description = 'Create a user.';
-    
-    public function init()
-    {
-        parent::init();
-        $this->ruleName = empty($this->ruleName) ? (new CreateUserRule())->name : $this->ruleName;
-    }
 }
