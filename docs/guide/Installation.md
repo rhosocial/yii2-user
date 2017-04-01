@@ -3,7 +3,7 @@
 ## Migrations
 
 If you want to use built-in tables, you can execute built-in migrations (Only fit for MySQL).
-Or you can create tables referenced by our provided SQL file (`vendor/rhosocial/yii2-user/tests/data/rhosocial_yii2_user.sql`), or migrations' comments.
+Or you can create tables referenced by our provided SQL file (`vendor/rhosocial/yii2-user/tests/data/rhosocial_yii2_user_all.sql`), or migrations' comments.
 
 Before you execute built-in migrations, you need to create database, e.g. `yii2basic`,
 and modify the `db` configuration.

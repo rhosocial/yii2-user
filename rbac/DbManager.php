@@ -271,7 +271,7 @@ class DbManager extends \yii\rbac\DbManager
             if (!$role) {
                 return true;
             }
-            $this->revoke($role, $assignment->userGuid);
+            $this->revoke($role->name, $assignment->userGuid);
             return true;
         }
         return false;
@@ -316,9 +316,12 @@ class DbManager extends \yii\rbac\DbManager
      */
     public function assign($role, $userGuid, $failedAt = null)
     {
+        if ($role instanceof Item) {
+            $role = $role->name;
+        }
         $assignment = new Assignment([
             'userGuid' => $userGuid,
-            'roleName' => $role->name,
+            'roleName' => $role,
             'createdAt' => date('Y-m-d H:i:s'),
             'failedAt' => empty($failedAt) ? null : $failedAt,
         ]);
@@ -347,8 +350,12 @@ class DbManager extends \yii\rbac\DbManager
             $userGuid = $userGuid->getGUID();
         }
 
+        if ($role instanceof Item) {
+            $role = $role->name;
+        }
+
         return $this->db->createCommand()
-            ->delete($this->assignmentTable, ['user_guid' => (string) $userGuid, 'item_name' => $role->name])
+            ->delete($this->assignmentTable, ['user_guid' => (string) $userGuid, 'item_name' => $role])
             ->execute() > 0;
     }
 
