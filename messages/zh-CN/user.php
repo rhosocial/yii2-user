@@ -31,6 +31,7 @@ return [
     'ID' => '账号',
     'Remember Me' => '记住我',
     'Login' => '登录',
+    'Logout' => '登出',
     'Register' => '注册',
     'Nickname' => '昵称',
     'Password Repeat' => '重复密码',

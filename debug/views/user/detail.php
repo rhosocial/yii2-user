@@ -29,8 +29,30 @@ use yii\widgets\Pjax;
                 'label' => Yii::t('user', 'IP Address'),
             ],
             'IP Type' => $identity->ipTypeAttribute,
-            'Created At' => $identity->createdAtAttribute,
-            'Updated At' => $identity->updatedAtAttribute,
+            'Created At' => [
+                'attribute' => $identity->createdAtAttribute,
+                'label' => Yii::t('user', 'Creation Time'),
+                'value' => function($model, $widget) {
+                    $value = Yii::$app->formatter->asDatetime($model->getCreatedAt());
+                    $defaultTimeZone = Yii::$app->formatter->defaultTimeZone;
+                    Yii::$app->formatter->defaultTimeZone = date_default_timezone_get();
+                    $value .= ' (UTC: ' . Yii::$app->formatter->asDatetime($model->getCreatedAt()) . ' | Origial: ' . $model->getCreatedAt() . ')';
+                    Yii::$app->formatter->defaultTimeZone = $defaultTimeZone;
+                    return $value;
+                },
+            ],
+            'Updated At' => [
+                'attribute' => $identity->createdAtAttribute,
+                'label' => Yii::t('user', 'Last Updated Time'),
+                'value' => function($model, $widget) {
+                    $value = Yii::$app->formatter->asDatetime($model->getUpdatedAt());
+                    $defaultTimeZone = Yii::$app->formatter->defaultTimeZone;
+                    Yii::$app->formatter->defaultTimeZone = date_default_timezone_get();
+                    $value .= ' (UTC: ' . Yii::$app->formatter->asDatetime($model->getUpdatedAt()) . ' | Origial: ' . $model->getUpdatedAt() . ')';
+                    Yii::$app->formatter->defaultTimeZone = $defaultTimeZone;
+                    return $value;
+                },
+            ],
             'Authentication Key' => $identity->authKeyAttribute,
             'Access Token' => $identity->accessTokenAttribute,
             'Password Reset Token' => $identity->passwordResetTokenAttribute,

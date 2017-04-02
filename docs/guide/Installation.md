@@ -97,5 +97,3 @@ Migrated up successfully.
 ```
 It means successful.
 
-### PhpManager
-
