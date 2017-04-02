@@ -266,13 +266,13 @@ class UserTest extends TestCase
         $permission = new CreateAdminUser();
         $this->assertTrue($this->user->register([$this->profile]));
         $this->assertEmpty(Yii::$app->authManager->getPermissionsByUser($this->user));
-        $date = date('Y-m-d H:i:s');
+        $date = gmdate('Y-m-d H:i:s');
         $assignment = Yii::$app->authManager->assign($permission, $this->user, $date);
         /* @var $assignment Assignment */
         $this->assertInstanceOf(Assignment::class, $assignment);
         $this->assertEquals($date, $assignment->failedAt);
         sleep(1);
-        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s')));
+        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(gmdate('Y-m-d H:i:s')));
         
         $this->assertNull(Yii::$app->authManager->getAssignment($permission->name, $this->user));
     }
@@ -286,13 +286,13 @@ class UserTest extends TestCase
         $role = new AdminRole();
         $this->assertTrue($this->user->register([$this->profile]));
         $this->assertEmpty(Yii::$app->authManager->getPermissionsByUser($this->user));
-        $date = date('Y-m-d H:i:s');
+        $date = gmdate('Y-m-d H:i:s');
         $assignment = Yii::$app->authManager->assign($role, $this->user, $date);
         /* @var $assignment Assignment */
         $this->assertInstanceOf(Assignment::class, $assignment);
         $this->assertEquals($date, $assignment->failedAt);
         sleep(1);
-        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s')));
+        $this->assertTrue(strtotime($assignment->failedAt) < strtotime(gmdate('Y-m-d H:i:s')));
         
         $this->assertNull(Yii::$app->authManager->getAssignment($role->name, $this->user));
     }
