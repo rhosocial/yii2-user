@@ -30,7 +30,7 @@ class DbManager extends \yii\rbac\DbManager
      */
     protected function addItem($item)
     {
-        $time = date('Y-m-d H:i:s');
+        $time = gmdate('Y-m-d H:i:s');
         if ($item->createdAt === null) {
             $item->createdAt = $time;
         }
@@ -70,7 +70,7 @@ class DbManager extends \yii\rbac\DbManager
                 ->execute();
         }
 
-        $item->updatedAt = date('Y-m-d H:i:s');
+        $item->updatedAt = gmdate('Y-m-d H:i:s');
 
         $this->db->createCommand()
             ->update($this->itemTable, [
@@ -93,7 +93,7 @@ class DbManager extends \yii\rbac\DbManager
      */
     protected function addRule($rule)
     {
-        $time = date('Y-m-d H:i:s');
+        $time = gmdate('Y-m-d H:i:s');
         if ($rule->createdAt === null) {
             $rule->createdAt = $time;
         }
@@ -124,7 +124,7 @@ class DbManager extends \yii\rbac\DbManager
                 ->execute();
         }
 
-        $rule->updatedAt = date('Y-m-d H:i:s');
+        $rule->updatedAt = gmdate('Y-m-d H:i:s');
 
         $this->db->createCommand()
             ->update($this->ruleTable, [
@@ -266,7 +266,7 @@ class DbManager extends \yii\rbac\DbManager
         if ($assignment->failedAt === null) {
             return false;
         }
-        if (strtotime($assignment->failedAt) < strtotime(date('Y-m-d H:i:s'))) {
+        if (strtotime($assignment->failedAt) < strtotime(gmdate('Y-m-d H:i:s'))) {
             $role = $this->getRole($assignment->roleName);
             if (!$role) {
                 return true;
@@ -322,7 +322,7 @@ class DbManager extends \yii\rbac\DbManager
         $assignment = new Assignment([
             'userGuid' => $userGuid,
             'roleName' => $role,
-            'createdAt' => date('Y-m-d H:i:s'),
+            'createdAt' => gmdate('Y-m-d H:i:s'),
             'failedAt' => empty($failedAt) ? null : $failedAt,
         ]);
 
