@@ -69,4 +69,10 @@ return [
     'Failed to Update.' => '未能更新。',
     'Please do not forge parameters.' => '请勿伪造参数',
     'Other operations' => '其它操作',
+    'Setting' => '设置',
+    'My' => '我的',
+    'Please fill out the following fields to change password:' => '请填写以下字段后修改密码：',
+    'Please fill out the following fields to login:' => '请填写以下字段后登录：',
+    'Please fill out the following fields to update profile:' => '请填写以下字段后更新简介：',
+    'Please fill out the following fields to register:' => '请填写以下字段后注册：',
 ];

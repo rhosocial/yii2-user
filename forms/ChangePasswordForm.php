@@ -117,6 +117,11 @@ class ChangePasswordForm extends Model
         return $this->_user;
     }
 
+    /**
+     * This method adds ADMIN scenario, because the administrator does not need
+     * to know the original password when changing it.
+     * @return array scenarios.
+     */
     public function scenarios()
     {
         return array_merge(parent::scenarios(), [

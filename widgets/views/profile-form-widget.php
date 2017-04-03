@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $model Profile */
 ?>
 <div class="site-login">
-    <p>Please fill out the following fields to update profile:</p>
+    <p><?= Yii::t('user', 'Please fill out the following fields to update profile:') ?></p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'profile-form',

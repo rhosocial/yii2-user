@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $model ChangePasswordForm */
 ?>
 <div class="site-login">
-    <p>Please fill out the following fields to change password:</p>
+    <p><?= Yii::t('user', 'Please fill out the following fields to change password:') ?></p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'change-password-form',

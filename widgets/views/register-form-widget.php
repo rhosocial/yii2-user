@@ -18,7 +18,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $model RegisterForm */
 ?>
 <div class="site-login">
-    <p>Please fill out the following fields to register:</p>
+    <p><?= Yii::t('user', 'Please fill out the following fields to register:') ?></p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'register-form',

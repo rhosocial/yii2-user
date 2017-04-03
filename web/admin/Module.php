@@ -19,5 +19,5 @@ namespace rhosocial\user\web\admin;
  */
 class Module extends \yii\base\Module
 {
-    
+    public $defaultRoute = 'user';
 }
