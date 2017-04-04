@@ -58,18 +58,16 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'header' => Yii::t('user', 'Creation Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
-                return $model->getCreatedAt();
+                return $column->grid->formatter->format($model->getCreatedAt(), 'datetime');
             },
-            'format' => 'datetime',
         ],
         'updatedAt' => [
             'class' => DataColumn::class,
             'header' => Yii::t('user', 'Last Updated Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
-                return $model->getUpdatedAt();
+                return $column->grid->formatter->format($model->getUpdatedAt(), 'datetime');
             },
-            'format' => 'datetime',
         ],
         [
             'class' => ActionColumn::class,
