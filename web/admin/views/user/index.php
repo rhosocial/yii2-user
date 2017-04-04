@@ -14,6 +14,7 @@ use rhosocial\user\User;
 use rhosocial\user\Profile;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
+use yii\grid\DataColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -30,18 +31,18 @@ echo empty($dataProvider) ? '' : GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
+        /* The GUID is not displayed by default.
         'guid' => [
-            'class' => 'yii\grid\DataColumn',
+            'class' => DataColumn::class,
             'header' => Yii::t('user', 'GUID'),
             'content' => function ($model, $key, $index, $column) {
-                /* @var $model User */
                 return $model->getReadableGUID();
             },
             'format' => 'text',
-        ],
+        ],*/
         'id',
         'nickname' => [
-            'class' => 'yii\grid\DataColumn',
+            'class' => DataColumn::class,
             'header' => Yii::t('user', 'Nickname'),
             'value' => function ($data) {
                 /* @var $data User */
@@ -52,8 +53,24 @@ echo empty($dataProvider) ? '' : GridView::widget([
                 return $profile->nickname;
             },
         ],
-        'created_at:datetime',
-        'updated_at:datetime',
+        'createdAt' => [
+            'class' => DataColumn::class,
+            'header' => Yii::t('user', 'Creation Time'),
+            'content' => function ($model, $key, $index, $column) {
+                /* @var $model User */
+                return $model->getCreatedAt();
+            },
+            'format' => 'datetime',
+        ],
+        'updatedAt' => [
+            'class' => DataColumn::class,
+            'header' => Yii::t('user', 'Last Updated Time'),
+            'content' => function ($model, $key, $index, $column) {
+                /* @var $model User */
+                return $model->getUpdatedAt();
+            },
+            'format' => 'datetime',
+        ],
         [
             'class' => ActionColumn::class,
             'header' => Yii::t('user', 'Action'),

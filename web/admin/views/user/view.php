@@ -19,9 +19,9 @@ $this->params['breadcrumbs'][] = Yii::t('user', 'View User');
 echo DetailView::widget([
     'model' => $user,
     'attributes' => [
-        'GUID' => 'readableGUID',
+        // 'GUID' => 'readableGUID', // The GUID is not displayed by default.
         'ID' => $user->idAttribute,
-        'Password Hash' => $user->passwordHashAttribute,
+        // 'Password Hash' => $user->passwordHashAttribute, // The Password Hash is not displayed by default.
         'IP' => [
             'attribute' => 'ipAddress',
             'label' => Yii::t('user', 'IP Address'),
