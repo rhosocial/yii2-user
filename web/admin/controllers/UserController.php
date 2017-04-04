@@ -19,6 +19,7 @@ use rhosocial\user\forms\RegisterForm;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -113,6 +114,12 @@ class UserController extends Controller
                         'allow' => true,
                         'roles' => ['admin'], // Administrator can access this controller.
                     ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'deregister' => ['post'],
                 ],
             ],
         ];
