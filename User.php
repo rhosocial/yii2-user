@@ -167,6 +167,18 @@ class User extends BaseUserModel
     }
 
     /**
+     * 
+     * @return boolean
+     */
+    public function hasProfile()
+    {
+        if ($this->profileClass === false || !is_string($this->profileClass) || !class_exists($this->profileClass)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Get Profile query.
      * If you want to get profile model, please access this method in magic property way,
      * like following:
@@ -179,10 +191,10 @@ class User extends BaseUserModel
      */
     public function getProfile()
     {
-        $profileClass = $this->profileClass;
-        if ($this->profileClass === false || !is_string($this->profileClass) || !class_exists($this->profileClass)) {
+        if (!$this->hasProfile()) {
             return null;
         }
+        $profileClass = $this->profileClass;
         $profileModel = $profileClass::buildNoInitModel();
         return $this->hasOne($profileClass,
                 [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
