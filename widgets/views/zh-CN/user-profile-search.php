@@ -39,14 +39,14 @@ use yii\widgets\ActiveForm;
     ])->textInput(['placeholder' => Yii::t('user', 'Nickname'),]) ?>
     </div>
     <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'first_name', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'First Name'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'last_name', [
         'template' => "{input}\n{error}",
     ])->textInput(['placeholder' => Yii::t('user', 'Last Name'),]) ?>
+    </div>
+    <div class="col-md-3 col-sm-6">
+    <?= $form->field($model, 'first_name', [
+        'template' => "{input}\n{error}",
+    ])->textInput(['placeholder' => Yii::t('user', 'First Name'),]) ?>
     </div>
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'createdFrom', [

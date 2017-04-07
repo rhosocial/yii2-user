@@ -22,24 +22,38 @@ use yii\data\ActiveDataProvider;
  */
 trait UserProfileSearchTrait
 {
+    /**
+     * @var string 
+     */
     public $createdFrom;
     protected $createdFromInUtc;
+
+    /**
+     * @var string 
+     */
     public $createdTo;
     protected $createdToInUtc;
+
     /**
      * 
-     * @return type
+     * @return array
      */
     public function rules()
     {
         return [
             ['id', 'integer'],
-            ['nickname', 'string'],
+            [['nickname', 'first_name', 'last_name'], 'string'],
             [['createdFrom', 'createdTo'], 'datetime', 'format' => 'yyyy-MM-dd HH:mm'],
             [['createdFrom', 'createdTo'], 'gmdate'],
         ];
     }
 
+    /**
+     * Convert time attribute to UTC time.
+     * @param string $attribute
+     * @param array $params
+     * @param mixed $validator
+     */
     public function gmdate($attribute, $params, $validator)
     {
         if (isset($this->$attribute)) {
@@ -50,7 +64,7 @@ trait UserProfileSearchTrait
 
     /**
      * 
-     * @return type
+     * @return array
      */
     public function scenarios()
     {
@@ -59,8 +73,8 @@ trait UserProfileSearchTrait
     }
 
     /**
-     * 
-     * @param type $params
+     * Search
+     * @param array $params
      * @return ActiveDataProvider
      */
     public function search($params)
@@ -90,11 +104,19 @@ trait UserProfileSearchTrait
             '>=', 'created_at', $this->createdFromInUtc,
         ])->andFilterWhere([
             '<=', 'created_at', $this->createdToInUtc,
+        ])->andFilterWhere([
+            'LIKE', 'first_name', $this->first_name,
+        ])->andFilterWhere([
+            'LIKE', 'last_name', $this->last_name,
         ]);
         $dataProvider->query = $query;
         return $dataProvider;
     }
 
+    /**
+     * Add `createdFrom` & `createdTo` attributes.
+     * @return array
+     */
     public function attributeLabels()
     {
         $attributeLabels = parent::attributeLabels();

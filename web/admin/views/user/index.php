@@ -11,6 +11,7 @@
  */
 
 use rhosocial\user\UserProfileView;
+use rhosocial\user\widgets\UserProfileSearchWidget;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
@@ -25,12 +26,16 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
 $formId = 'user-search-form';
+echo UserProfileSearchWidget::widget([
+    'model' => $searchModel,
+    'formId' => $formId,
+]);
 Pjax::begin([
     'id' => 'user-pjax',
     'formSelector' => "#$formId",
 ]);
-echo $this->render('_search', ['model' => $searchModel, 'formId' => $formId]);
 echo empty($dataProvider) ? '' : GridView::widget([
+    'id' => 'user-grid-view',
     'caption' => Yii::t('user', 'Here are all the users who meet the search criteria:'),
     'dataProvider' => $dataProvider,
     'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
