@@ -69,15 +69,17 @@ class UserPanel extends Panel
             $rolesProvider = new ArrayDataProvider([
                 'allModels' => $authManager->getRolesByUser($data),
             ]);
-            $rolesProvider->pagination->pageSize = 20;
+            $rolesProvider->pagination->defaultPageSize = 20;
             $rolesProvider->pagination->pageParam = 'role-page';
+            $rolesProvider->pagination->pageSizeParam = 'role-per-page';
             $rolesProvider->sort->sortParam = 'role-sort';
 
             $permissionsProvider = new ArrayDataProvider([
                 'allModels' => $authManager->getPermissionsByUser($data),
             ]);
-            $permissionsProvider->pagination->pageSize = 20;
+            $permissionsProvider->pagination->defaultPageSize = 20;
             $permissionsProvider->pagination->pageParam = 'permission-page';
+            $permissionsProvider->pagination->pageSizeParam = 'permission-per-page';
             $permissionsProvider->sort->sortParam = 'permission-sort';
         }
 
@@ -87,8 +89,9 @@ class UserPanel extends Panel
             $loginLogProvider = new ArrayDataProvider([
                 'allModels' => $data->getLoginLogs(),
             ]);
-            $loginLogProvider->pagination->pageSize = 20;
+            $loginLogProvider->pagination->defaultPageSize = 20;
             $loginLogProvider->pagination->pageParam = 'login-log-page';
+            $loginLogProvider->pagination->pageSizeParam = 'login-log-per-page';
             $loginLogProvider->sort->sortParam = 'login-log-sort';
         }
 

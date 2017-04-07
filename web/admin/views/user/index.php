@@ -10,8 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\User;
-use rhosocial\user\Profile;
+use rhosocial\user\UserProfileView;
 use yii\data\ActiveDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\DataColumn;
@@ -21,12 +20,16 @@ use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
+/* @var $searchModel UserProfileView */
 /* @var $dataProvider ActiveDataProvider */
 $this->title = Yii::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
+$formId = 'user-search-form';
 Pjax::begin([
     'id' => 'user-pjax',
+    'formSelector' => "#$formId",
 ]);
+echo $this->render('_search', ['model' => $searchModel, 'formId' => $formId]);
 echo empty($dataProvider) ? '' : GridView::widget([
     'dataProvider' => $dataProvider,
     'columns' => [
@@ -41,24 +44,20 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'format' => 'text',
         ],*/
         'id',
-        'nickname' => [
+        'nickname',
+        'name' => [
             'class' => DataColumn::class,
-            'header' => Yii::t('user', 'Nickname'),
-            'value' => function ($data) {
-                /* @var $data User */
-                $profile = $data->profile;
-                if (empty($profile) || !($profile instanceof Profile) || empty($profile->nickname)) {
-                    return null;
-                }
-                return $profile->nickname;
-            },
+            'header' => Yii::t('user', 'Name'),
+            'content' => function ($model, $key, $index, $column) {
+                return $model->last_name . $model->first_name;
+            }
         ],
         'createdAt' => [
             'class' => DataColumn::class,
             'header' => Yii::t('user', 'Creation Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
-                return $column->grid->formatter->format($model->getCreatedAt(), 'datetime');
+                return $column->grid->formatter->format($model->created_at, 'datetime');
             },
         ],
         'updatedAt' => [
@@ -66,7 +65,7 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'header' => Yii::t('user', 'Last Updated Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
-                return $column->grid->formatter->format($model->getUpdatedAt(), 'datetime');
+                return $column->grid->formatter->format($model->updated_at, 'datetime');
             },
         ],
         [
@@ -75,11 +74,11 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'urlCreator' => function (string $action, $model, $key, $index, ActionColumn $column) {
                 /* @var $model User */
                 if ($action == 'view') {
-                    return Url::to(['view', 'id' => $model->getID()]);
+                    return Url::to(['view', 'id' => $model->id]);
                 } elseif ($action == 'update') {
-                    return Url::to(['update', 'id' => $model->getID()]);
+                    return Url::to(['update', 'id' => $model->id]);
                 } elseif ($action == 'delete') {
-                    return Url::to(['deregister', 'id' => $model->getID()]);
+                    return Url::to(['deregister', 'id' => $model->id]);
                 }
                 return '#';
             },
