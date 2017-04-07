@@ -10,6 +10,7 @@
  * @license https://vistart.me/license/
  */
 
+use kartik\datetime\DateTimePicker;
 use rhosocial\user\UserProfileSearch;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -34,10 +35,20 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'nickname') ?>
     </div>
     <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'createdFrom') ?>
+    <?= $form->field($model, 'createdFrom')->widget(DateTimePicker::class, [
+        'options' => ['placeholder' => Yii::t('user', 'From')],
+        'pluginOptions' => [
+            'todayHighlight' => true
+        ]
+    ]) ?>
     </div>
     <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'createdTo') ?>
+    <?= $form->field($model, 'createdTo')->widget(DateTimePicker::class, [
+        'options' => ['placeholder' => Yii::t('user', 'To')],
+        'pluginOptions' => [
+            'todayHighlight' => true
+        ]
+    ]) ?>
     </div>
 </div>
     <div class="form-group">

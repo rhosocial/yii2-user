@@ -35,7 +35,7 @@ trait UserProfileSearchTrait
         return [
             ['id', 'integer'],
             ['nickname', 'string'],
-            [['createdFrom', 'createdTo'], 'datetime', 'format' => 'yyyy-mm-dd HH:mm:ss'],
+            [['createdFrom', 'createdTo'], 'datetime', 'format' => 'yyyy-MM-dd HH:mm'],
             [['createdFrom', 'createdTo'], 'gmdate'],
         ];
     }
