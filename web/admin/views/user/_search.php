@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'id' => $formId,
         'action' => ['index'],
-        'method' => 'get',
+        'method' => 'post',
     ]); ?>
 <div class="row">
     <div class="col-md-3 col-sm-6">

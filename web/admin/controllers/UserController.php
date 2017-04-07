@@ -18,7 +18,6 @@ use rhosocial\user\Profile;
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -138,7 +137,7 @@ class UserController extends Controller
         }
         $class = $this->userProfileSearchClass;
         $searchModel = new $class();
-        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
         
         return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }

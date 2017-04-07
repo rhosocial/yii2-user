@@ -31,7 +31,9 @@ Pjax::begin([
 ]);
 echo $this->render('_search', ['model' => $searchModel, 'formId' => $formId]);
 echo empty($dataProvider) ? '' : GridView::widget([
+    'caption' => Yii::t('user', 'Here are all the users who meet the search criteria:'),
     'dataProvider' => $dataProvider,
+    'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         /* The GUID is not displayed by default.
@@ -89,9 +91,19 @@ echo empty($dataProvider) ? '' : GridView::widget([
             ],
         ],
     ],
+    'tableOptions' => [
+        'class' => 'table table-striped'
+    ]
 ]);
 Pjax::end();
 ?>
+<div class="well well-sm">
+    <?= Yii::t('user', 'Directions:') ?>
+    <ol>
+        <li><?= Yii::t('user', 'If no search criteria are specified, all users are displayed.') ?></li>
+        <li><?= Yii::t('user', 'If the creation time is the same as the last update time, there is no change.') ?></li>
+    </ol>
+</div>
 <div class="row">
     <div class="col-md-3">
         <?= Html::a(Yii::t('user', 'Register New User'), ['register-new-user'], ['class' => 'btn btn-primary']) ?>

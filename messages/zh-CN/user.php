@@ -61,7 +61,7 @@ return [
     'User Not Found.' => '用户未找到。',
     'You cannot deregister yourself.' => '您不能删除自己。',
     'Failed to deregister user.' => '未能注销用户。',
-    'Action' => '动作',
+    'Action' => '操作',
     'You are not an administrator and have no access to this page.' => '您不是管理员，无权访问此页面。',
     'You cannot access this page directly.' => '您不能直接访问此页面。',
     'You must log out current user before registering new one.' => '在注册新用户前，你必须登出当前用户。',
@@ -85,4 +85,8 @@ return [
     'Please fill out the following fields to login:' => '请填写以下字段后登录：',
     'Please fill out the following fields to update profile:' => '请填写以下字段后更新简介：',
     'Please fill out the following fields to register:' => '请填写以下字段后注册：',
+    'Directions:' => '说明：',
+    'Here are all the users who meet the search criteria:' => '以下为所有符合搜索条件的用户：',
+    'If no search criteria are specified, all users are displayed.' => '如果没有指定搜索条件，则显示全部用户。',
+    'If the creation time is the same as the last update time, there is no change.' => '如果创建时间与上次更新时间相同，则表示没有改动。',
 ];
