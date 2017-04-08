@@ -157,6 +157,11 @@ class Profile extends BaseBlameableModel
         return $genders;
     }
 
+    public static function getGenderDescsWithEmpty()
+    {
+        return array_merge(['' => Yii::t('user', 'All')], static::getGenderDescs());
+    }
+
     public function getGravatarRules()
     {
         return [

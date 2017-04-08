@@ -92,4 +92,5 @@ return [
     'If you do not limit the start time, leave it blank.' => '如果不限定起始时间,请留空。',
     'If you do not limit the end time, leave it blank.' => '如果不限定结束时间,请留空。',
     'Back to List' => '返回列表',
+    'All' => '全部',
 ];

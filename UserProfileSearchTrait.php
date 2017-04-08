@@ -35,6 +35,11 @@ trait UserProfileSearchTrait
     protected $createdToInUtc;
 
     /**
+     * @var string Gender filter.
+     */
+    public $gf;
+
+    /**
      * 
      * @return array
      */
@@ -45,6 +50,8 @@ trait UserProfileSearchTrait
             [['nickname', 'first_name', 'last_name'], 'string'],
             [['createdFrom', 'createdTo'], 'datetime', 'format' => 'yyyy-MM-dd HH:mm'],
             [['createdFrom', 'createdTo'], 'gmdate'],
+            ['gf', 'in', 'range' => array_keys(Profile::getGenderDescsWithEmpty())],
+            ['gf', 'default', 'value' => ''],
         ];
     }
 
@@ -108,6 +115,8 @@ trait UserProfileSearchTrait
             'LIKE', 'first_name', $this->first_name,
         ])->andFilterWhere([
             'LIKE', 'last_name', $this->last_name,
+        ])->andFilterWhere([
+            'gender' => $this->gf,
         ]);
         $dataProvider->query = $query;
         return $dataProvider;

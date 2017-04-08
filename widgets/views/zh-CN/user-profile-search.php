@@ -11,6 +11,7 @@
  */
 
 use kartik\datetime\DateTimePicker;
+use rhosocial\user\Profile;
 use rhosocial\user\UserProfileSearch;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -74,6 +75,11 @@ $this->registerCss($css);
             'todayHighlight' => true
         ]
     ])->hint(Yii::t('user', 'If you do not limit the end time, leave it blank.')) ?>
+    </div>
+    <div class="col-md-3 col-sm-6">
+    <?= $form->field($model, 'gf', [
+        'template' => "{input}\n{error}",
+    ])->dropDownList(Profile::getGenderDescsWithEmpty()) ?>
     </div>
 </div>
     <div class="form-group">

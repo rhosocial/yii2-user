@@ -10,6 +10,7 @@
  * @license https://vistart.me/license/
  */
 
+use rhosocial\user\Profile;
 use rhosocial\user\UserProfileView;
 use rhosocial\user\widgets\UserProfileSearchWidget;
 use yii\data\ActiveDataProvider;
@@ -57,6 +58,13 @@ echo empty($dataProvider) ? '' : GridView::widget([
             'header' => Yii::t('user', 'Name'),
             'content' => function ($model, $key, $index, $column) {
                 return $model->last_name . $model->first_name;
+            }
+        ],
+        'gf' => [
+            'class' => DataColumn::class,
+            'header' => Yii::t('user', 'Gender'),
+            'content' => function ($model, $key, $index, $column) {
+                return Profile::getGenderDesc($model->gender);
             }
         ],
         'createdAt' => [
