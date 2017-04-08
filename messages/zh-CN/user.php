@@ -89,4 +89,6 @@ return [
     'Here are all the users who meet the search criteria:' => '以下为所有符合搜索条件的用户：',
     'If no search criteria are specified, all users are displayed.' => '如果没有指定搜索条件，则显示全部用户。',
     'If the creation time is the same as the last update time, there is no change.' => '如果创建时间与上次更新时间相同，则表示没有改动。',
+    'If you do not limit the start time, leave it blank.' => '如果不限定起始时间,请留空。',
+    'If you do not limit the end time, leave it blank.' => '如果不限定结束时间,请留空。',
 ];

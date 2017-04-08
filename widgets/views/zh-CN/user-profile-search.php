@@ -13,12 +13,19 @@
 use kartik\datetime\DateTimePicker;
 use rhosocial\user\UserProfileSearch;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model UserProfileSearch */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $formId string */
+$css = <<<EOT
+div.required label.control-label:after {
+    content: " *";
+    color: red;
+}
+EOT;
+$this->registerCss($css);
 ?>
 
 <div class="user-search">
@@ -50,28 +57,28 @@ use yii\widgets\ActiveForm;
     </div>
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'createdFrom', [
-        'template' => "{input}\n{error}",
+        'template' => "{input}\n{hint}\n{error}",
     ])->widget(DateTimePicker::class, [
         'options' => ['placeholder' => Yii::t('user', 'From')],
         'pluginOptions' => [
             'todayHighlight' => true
         ]
-    ]) ?>
+    ])->hint(Yii::t('user', 'If you do not limit the start time, leave it blank.')) ?>
     </div>
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'createdTo', [
-        'template' => "{input}\n{error}",
+        'template' => "{input}\n{hint}\n{error}",
     ])->widget(DateTimePicker::class, [
         'options' => ['placeholder' => Yii::t('user', 'To')],
         'pluginOptions' => [
             'todayHighlight' => true
         ]
-    ]) ?>
+    ])->hint(Yii::t('user', 'If you do not limit the end time, leave it blank.')) ?>
     </div>
 </div>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('user', 'Search'), ['id' => "$formId-submit", 'class' => 'btn btn-primary']) ?>
-        <?= Html::submitButton(Yii::t('user', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::resetButton(Yii::t('user', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
