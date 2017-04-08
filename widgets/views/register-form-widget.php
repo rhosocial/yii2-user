@@ -16,6 +16,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $model RegisterForm */
+/* @var $this yii\web\View */
+$css = <<<EOT
+div.required label.control-label:after {
+    content: " *";
+    color: red;
+}
+EOT;
+$this->registerCss($css);
 ?>
 <div class="site-login">
     <p><?= Yii::t('user', 'Please fill out the following fields to register:') ?></p>

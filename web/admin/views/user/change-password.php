@@ -11,8 +11,17 @@
  */
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\widgets\ChangePasswordFormWidget;
+use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model ChangePasswordForm */
 $this->title = Yii::t('user', 'Change Password');
 $this->params['breadcrumbs'][] = $this->title;
 echo ChangePasswordFormWidget::widget(['model' => $model]);
+?>
+<div class="row">
+    <div class="col-md-3">
+        <?= Html::a(Yii::t('user', 'Back to List'), [
+            'index',
+        ], ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>

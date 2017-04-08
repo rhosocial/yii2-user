@@ -91,4 +91,5 @@ return [
     'If the creation time is the same as the last update time, there is no change.' => '如果创建时间与上次更新时间相同，则表示没有改动。',
     'If you do not limit the start time, leave it blank.' => '如果不限定起始时间,请留空。',
     'If you do not limit the end time, leave it blank.' => '如果不限定结束时间,请留空。',
+    'Back to List' => '返回列表',
 ];

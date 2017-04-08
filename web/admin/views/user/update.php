@@ -25,5 +25,8 @@ echo ProfileFormWidget::widget(['model' => $model]);
 <div class="row">
     <div class="col-md-3">
         <?= Html::a(Yii::t('user', 'Change Password'), ['change-password', 'id' => $user->getID()], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('user', 'Back to List'), [
+            'index',
+        ], ['class' => 'btn btn-primary']) ?>
     </div>
 </div>

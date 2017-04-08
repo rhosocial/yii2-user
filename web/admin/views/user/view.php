@@ -11,6 +11,7 @@
  */
 use rhosocial\user\User;
 use rhosocial\user\Profile;
+use yii\helpers\Html;
 use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $user User */
@@ -75,4 +76,11 @@ if (class_exists($user->profileClass) && ($profile = $user->profile)) {
              ],
         ],
     ]);
-}
+}?>
+<div class="row">
+    <div class="col-md-3">
+        <?= Html::a(Yii::t('user', 'Back to List'), [
+            'index',
+        ], ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>

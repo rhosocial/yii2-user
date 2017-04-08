@@ -11,8 +11,17 @@
  */
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\widgets\RegisterFormWidget;
+use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model RegisterForm */
 $this->title = Yii::t('user', 'Register New User');
 $this->params['breadcrumbs'][] = $this->title;
 echo RegisterFormWidget::widget(['model' => $model]);
+?>
+<div class="row">
+    <div class="col-md-3">
+        <?= Html::a(Yii::t('user', 'Back to List'), [
+            'index',
+        ], ['class' => 'btn btn-primary']) ?>
+    </div>
+</div>
