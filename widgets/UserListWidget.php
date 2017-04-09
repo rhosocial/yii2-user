@@ -50,7 +50,7 @@ class UserListWidget extends Widget
         if (empty($this->dataProvider)) {
             throw new ServerErrorHttpException('Invalid User Provider.');
         }
-        if (strtolower($this->actionColumn) == self::ACTION_COLUMN_DEFAULT) {
+        if (is_string($this->actionColumn) && strtolower($this->actionColumn) == self::ACTION_COLUMN_DEFAULT) {
             $this->actionColumn = [
                 'class' => ActionColumn::class,
                 'header' => Yii::t('user', 'Action'),
