@@ -29,6 +29,7 @@ class RegisterForm extends Model
     public $gender = 1;
     public $userClass;
     public $model = null;
+    public $continue = false;
 
     public function attributeLabels()
     {
@@ -39,6 +40,7 @@ class RegisterForm extends Model
             'first_name' => Yii::t('user', 'First Name'),
             'last_name' => Yii::t('user', 'Last Name'),
             'gender' => Yii::t('user', 'Gender'),
+            'continue' => Yii::t('user', 'Continue to register'),
         ];
     }
 
@@ -58,6 +60,7 @@ class RegisterForm extends Model
             ['password', 'compare'],
             [['first_name', 'last_name'], 'string', 'max' => 255],
             ['gender', 'in', 'range' => array_keys(\rhosocial\user\Profile::$genders)],
+            ['continue', 'integer'],
         ];
     }
 

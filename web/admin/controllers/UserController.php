@@ -150,7 +150,7 @@ class UserController extends Controller
                 if (($result = $model->register()) === true) {
                     Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
                     Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
-                    return $this->redirect(['index']);
+                    return $this->redirect($model->continue ? '' : ['index']);
                 }
                 if ($result instanceof \Exception) {
                     throw $result;

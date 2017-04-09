@@ -93,4 +93,5 @@ return [
     'If you do not limit the end time, leave it blank.' => '如果不限定结束时间,请留空。',
     'Back to List' => '返回列表',
     'All' => '全部',
+    'Continue to register' => '继续注册',
 ];
