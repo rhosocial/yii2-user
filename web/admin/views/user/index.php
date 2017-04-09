@@ -55,21 +55,24 @@ echo empty($dataProvider) ? '' : GridView::widget([
         'nickname',
         'name' => [
             'class' => DataColumn::class,
-            'header' => Yii::t('user', 'Name'),
+            'attribute' => 'name',
             'content' => function ($model, $key, $index, $column) {
                 return $model->last_name . $model->first_name;
-            }
+            },
+            'label' => Yii::t('user', 'Name'),
         ],
-        'gf' => [
+        'gender' => [
             'class' => DataColumn::class,
-            'header' => Yii::t('user', 'Gender'),
+            'attribute' => 'gender',
+            'label' => Yii::t('user', 'Gender'),
             'content' => function ($model, $key, $index, $column) {
                 return Profile::getGenderDesc($model->gender);
             }
         ],
         'createdAt' => [
             'class' => DataColumn::class,
-            'header' => Yii::t('user', 'Creation Time'),
+            'attribute' => 'createdAt',
+            'label' => Yii::t('user', 'Creation Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
                 return $column->grid->formatter->format($model->created_at, 'datetime');
@@ -77,7 +80,8 @@ echo empty($dataProvider) ? '' : GridView::widget([
         ],
         'updatedAt' => [
             'class' => DataColumn::class,
-            'header' => Yii::t('user', 'Last Updated Time'),
+            'attribute' => 'updatedAt',
+            'label' => Yii::t('user', 'Last Updated Time'),
             'content' => function ($model, $key, $index, $column) {
                 /* @var $model User */
                 return $column->grid->formatter->format($model->updated_at, 'datetime');

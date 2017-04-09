@@ -96,6 +96,34 @@ trait UserProfileSearchTrait
             ],
             'sort' => [
                 'sortParam' => 'user-sort',
+                'attributes' => [
+                    'id',
+                    'nickname',
+                    'name' => [
+                        'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
+                        'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => Yii::t('user', 'Name'),
+                    ],
+                    'gender' => [
+                        'asc' => ['gender' => SORT_ASC],
+                        'desc' => ['gender' => SORT_DESC],
+                        'default' => SORT_ASC,
+                        'label' => Yii::t('user', 'Gender'),
+                    ],
+                    'createdAt' => [
+                        'asc' => ['created_at' => SORT_ASC],
+                        'desc' => ['created_at' => SORT_DESC],
+                        'default' => SORT_ASC,
+                        'label' => Yii::t('user', 'Creation Time'),
+                    ],
+                    'updatedAt' => [
+                        'asc' => ['updated_at' => SORT_ASC],
+                        'desc' => ['updated_at' => SORT_DESC],
+                        'default' => SORT_ASC,
+                        'label' => Yii::t('user', 'Last Updated Time'),
+                    ],
+                ],
             ],
         ]);
 
