@@ -20,6 +20,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $model UserProfileSearch */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $formId string */
+/* @var $formConfig array */
 $css = <<<EOT
 div.required label.control-label:after {
     content: " *";
@@ -30,11 +31,7 @@ $this->registerCss($css);
 ?>
 
 <div class="user-search">
-    <?php $form = ActiveForm::begin([
-        'id' => $formId,
-        'action' => ['index'],
-        'method' => 'post',
-    ]); ?>
+    <?php $form = ActiveForm::begin($formConfig); ?>
 <div class="row">
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'id', [
