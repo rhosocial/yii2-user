@@ -12,6 +12,7 @@
 
 use rhosocial\user\Profile;
 use rhosocial\user\User;
+use rhosocial\user\UserProfileSearch;
 use yii\data\ActiveDataProvider;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
@@ -32,7 +33,22 @@ $columns = [
         },
         'format' => 'text',
     ],*/
-    'id',
+    'id' => [
+        'class' => DataColumn::class,
+        'attribute' => 'id',
+        'label' => Yii::t('user', 'User ID'),
+        'content' => function ($model, $key, $index, $column) {
+            /* @var $model UserProfileSearch */
+            return $model->id;
+        },
+        'contentOptions' => function ($model, $key, $index, $column) {
+            /* @var $model UserProfileSearch */
+            if ($model->id != Yii::$app->user->identity->getID()) {
+                return [];
+            }
+            return ['bgcolor' => '#00FF00'];
+        },
+    ],
     'nickname',
     'name' => [
         'class' => DataColumn::class,
@@ -55,7 +71,7 @@ $columns = [
         'attribute' => 'createdAt',
         'label' => Yii::t('user', 'Creation Time'),
         'content' => function ($model, $key, $index, $column) {
-            /* @var $model User */
+            /* @var $model UserProfileSearch */
             return $column->grid->formatter->format($model->created_at, 'datetime');
         },
     ],
@@ -64,7 +80,7 @@ $columns = [
         'attribute' => 'updatedAt',
         'label' => Yii::t('user', 'Last Updated Time'),
         'content' => function ($model, $key, $index, $column) {
-            /* @var $model User */
+            /* @var $model UserProfileSearch */
             return $column->grid->formatter->format($model->updated_at, 'datetime');
         },
     ],

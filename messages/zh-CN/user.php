@@ -94,4 +94,5 @@ return [
     'Back to List' => '返回列表',
     'All' => '全部',
     'Continue to register' => '继续注册',
+    'When the User ID column is green, it indicates that the user is the current logged-in user.' => '用户账户一栏底色为绿色时，表示此用户为当前登录用户。',
 ];
