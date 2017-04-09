@@ -21,6 +21,7 @@ use yii\web\View;
 
 /* @var $this View */
 /* @var $dataProvider ActiveDataProvider */
+/* @var $additionalColumns array */
 /* @var $actionColumn array */
 $columns = [
     ['class' => SerialColumn::class],
@@ -85,6 +86,9 @@ $columns = [
         },
     ],
 ];
+if (!empty($additionalColumns) && is_array($additionalColumns)) {
+    $columns = array_merge($columns, $additionalColumns);
+}
 if (!empty($actionColumn)) {
     $columns[] = $actionColumn;
 }

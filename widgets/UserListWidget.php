@@ -33,6 +33,13 @@ class UserListWidget extends Widget
      */
     public $actionColumn;
 
+    /**
+     * @var array|null Additional columns' configuration arrays.
+     * It will be appended after the existed columns.
+     * If you do not need additional columns, please set null.
+     */
+    public $additionalColumns;
+
     const ACTION_COLUMN_DEFAULT = 'default';
 
     /**
@@ -71,6 +78,7 @@ class UserListWidget extends Widget
     {
         return $this->render('user-list', [
             'dataProvider' => $this->dataProvider,
+            'additionalColumns' => $this->additionalColumns,
             'actionColumn' => $this->actionColumn
         ]);
     }
