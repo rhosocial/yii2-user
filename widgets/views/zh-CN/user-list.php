@@ -55,7 +55,7 @@ $columns = [
         'class' => DataColumn::class,
         'attribute' => 'name',
         'content' => function ($model, $key, $index, $column) {
-            return $model->first_name . ' ' . $model->last_name;
+            return $model->last_name . $model->first_name;
         },
         'label' => Yii::t('user', 'Name'),
     ],

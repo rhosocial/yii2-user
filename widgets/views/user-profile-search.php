@@ -76,7 +76,7 @@ $this->registerCss($css);
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'gf', [
         'template' => "{input}\n{error}",
-    ])->dropDownList(Profile::getGenderDescsWithEmpty) ?>
+    ])->dropDownList(Profile::getGenderDescsWithEmpty()) ?>
     </div>
 </div>
     <div class="form-group">

@@ -11,6 +11,8 @@
  */
 
 return [
+    'User' => '用户',
+    'Administrator' => '管理员',
     'Password' => '密码',
     'New Password' => '新密码',
     'New Password Repeat' => '重复新密码',
