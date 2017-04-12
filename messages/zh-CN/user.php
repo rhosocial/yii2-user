@@ -97,4 +97,5 @@ return [
     'All' => '全部',
     'Continue to register' => '继续注册',
     'When the User ID column is green, it indicates that the user is the current logged-in user.' => '用户账户一栏底色为绿色时，表示此用户为当前登录用户。',
+    'No users meet the search criteria found.' => '没有找到符合搜索条件的用户。',
 ];

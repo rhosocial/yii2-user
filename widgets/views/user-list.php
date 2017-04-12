@@ -96,6 +96,7 @@ echo GridView::widget([
     'id' => 'user-grid-view',
     'caption' => Yii::t('user', 'Here are all the users who meet the search criteria:'),
     'dataProvider' => $dataProvider,
+    'emptyText' => Yii::t('user', 'No users meet the search criteria found.'),
     'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
     'columns' => $columns,
     'tableOptions' => [
