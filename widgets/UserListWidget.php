@@ -45,6 +45,14 @@ class UserListWidget extends Widget
     public $showGUID = false;
 
     /**
+     * @var boolean|array Tips.
+     * If you do not want to show tips, please set false.
+     * If you want to show default tips, please set true.
+     * If you want to show tips including default ones and your owns, please set an array contains all tip text.
+     */
+    public $tips = false;
+
+    /**
      * Initialize attributes.
      */
     public function init()
@@ -83,6 +91,7 @@ class UserListWidget extends Widget
             'additionalColumns' => $this->additionalColumns,
             'actionColumn' => $this->actionColumn,
             'showGUID' => $this->showGUID,
+            'tips' => $this->tips,
         ]);
     }
 }

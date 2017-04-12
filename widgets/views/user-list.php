@@ -23,6 +23,7 @@ use yii\web\View;
 /* @var $additionalColumns array */
 /* @var $actionColumn array */
 /* @var $showGUID boolean */
+/* @var $tips boolean|array */
 $columns = [
     ['class' => SerialColumn::class],
     'guid' => [
@@ -125,12 +126,4 @@ echo GridView::widget([
         'class' => 'table table-striped'
     ]
 ]);
-?>
-<div class="well well-sm">
-    <?= Yii::t('user', 'User List Directions:') ?>
-    <ol>
-        <li><?= Yii::t('user', 'If no search criteria are specified, all users are displayed.') ?></li>
-        <li><?= Yii::t('user', 'When the User ID column is green, it indicates that the user is the current logged-in user.') ?></li>
-        <li><?= Yii::t('user', 'If the creation time is the same as the last update time, there is no change.') ?></li>
-    </ol>
-</div>
+echo $this->render('user-list-tips', ['tips' => $tips]);
