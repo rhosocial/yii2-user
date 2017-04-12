@@ -87,7 +87,7 @@ return [
     'Please fill out the following fields to login:' => '请填写以下字段后登录：',
     'Please fill out the following fields to update profile:' => '请填写以下字段后更新简介：',
     'Please fill out the following fields to register:' => '请填写以下字段后注册：',
-    'Directions:' => '说明：',
+    'User List Directions:' => '用户列表说明：',
     'Here are all the users who meet the search criteria:' => '以下为所有符合搜索条件的用户：',
     'If no search criteria are specified, all users are displayed.' => '如果没有指定搜索条件，则显示全部用户。',
     'If the creation time is the same as the last update time, there is no change.' => '如果创建时间与上次更新时间相同，则表示没有改动。',

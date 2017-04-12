@@ -42,6 +42,8 @@ class UserListWidget extends Widget
 
     const ACTION_COLUMN_DEFAULT = 'default';
 
+    public $showGUID = false;
+
     /**
      * Initialize attributes.
      */
@@ -79,7 +81,8 @@ class UserListWidget extends Widget
         return $this->render('user-list', [
             'dataProvider' => $this->dataProvider,
             'additionalColumns' => $this->additionalColumns,
-            'actionColumn' => $this->actionColumn
+            'actionColumn' => $this->actionColumn,
+            'showGUID' => $this->showGUID,
         ]);
     }
 }

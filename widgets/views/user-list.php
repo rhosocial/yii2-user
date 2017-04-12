@@ -23,9 +23,9 @@ use yii\web\View;
 /* @var $dataProvider ActiveDataProvider */
 /* @var $additionalColumns array */
 /* @var $actionColumn array */
+/* @var $showGUID booelan */
 $columns = [
     ['class' => SerialColumn::class],
-    /* The GUID is not displayed by default.
     'guid' => [
         'class' => DataColumn::class,
         'header' => Yii::t('user', 'GUID'),
@@ -33,7 +33,8 @@ $columns = [
             return $model->getReadableGUID();
         },
         'format' => 'text',
-    ],*/
+        'visible' => $showGUID,
+    ],
     'id' => [
         'class' => DataColumn::class,
         'attribute' => 'id',
@@ -103,3 +104,12 @@ echo GridView::widget([
         'class' => 'table table-striped'
     ]
 ]);
+?>
+<div class="well well-sm">
+    <?= Yii::t('user', 'User List Directions:') ?>
+    <ol>
+        <li><?= Yii::t('user', 'If no search criteria are specified, all users are displayed.') ?></li>
+        <li><?= Yii::t('user', 'When the User ID column is green, it indicates that the user is the current logged-in user.') ?></li>
+        <li><?= Yii::t('user', 'If the creation time is the same as the last update time, there is no change.') ?></li>
+    </ol>
+</div>
