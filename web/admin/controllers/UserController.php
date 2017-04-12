@@ -13,7 +13,6 @@
 namespace rhosocial\user\web\admin\controllers;
 
 use rhosocial\user\User;
-use rhosocial\user\UserProfileSearch;
 use rhosocial\user\Profile;
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
@@ -47,11 +46,6 @@ class UserController extends Controller
     
     public $updateSuccessMessage;
     public $updateFailedMessage;
-
-    /**
-     * @var string UseProfileSearch Class. 
-     */
-    public $userProfileSearchClass = UserProfileSearch::class;
 
     protected function initMessages()
     {
@@ -132,11 +126,7 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        if (!class_exists($this->userProfileSearchClass)) {
-            throw new ServerErrorHttpException('Unknown User Profile View.');
-        }
-        $class = $this->userProfileSearchClass;
-        $searchModel = new $class();
+        $searchModel = Yii::$app->user->identity->getSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->post());
         
         return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);

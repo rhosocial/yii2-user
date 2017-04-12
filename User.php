@@ -86,6 +86,15 @@ use Yii;
 class User extends BaseUserModel
 {
     use UserPasswordHistoryTrait, UserLoginTrait;
+    public $searchClass = UserSearch::class;
+    public function getSearchModel()
+    {
+        $class = $this->searchClass;
+        if (empty($class) || !class_exists($class)) {
+            return null;
+        }
+        return new $class;
+    }
 
     /**
      * @inheritdoc

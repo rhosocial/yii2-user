@@ -12,24 +12,45 @@
 
 namespace rhosocial\user;
 
+use rhosocial\base\models\queries\BaseUserQuery;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
+ * Class UserSearchTrait
+ * This trait should be used in the User model inherited from [[User]].
+ * @package rhosocial\user
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-trait UserProfileSearchTrait
+class UserSearch extends Model
 {
+    public $userClass = User::class;
+    public static function find()
+    {
+        $noInit = new static;
+        /* @var $noInit static */
+        $class = $noInit->userClass;
+        if (empty($class)) {
+            return null;
+        }
+        return $class::find();
+    }
+    public $userAlias = 'u_alias';
+    public $profileAlias = 'p_alias';
+    public $id;
+    public $nickname;
+    public $first_name;
+    public $last_name;
     /**
-     * @var string 
+     * @var string
      */
     public $createdFrom;
     protected $createdFromInUtc;
 
     /**
-     * @var string 
+     * @var string
      */
     public $createdTo;
     protected $createdToInUtc;
@@ -40,7 +61,7 @@ trait UserProfileSearchTrait
     public $gf;
 
     /**
-     * 
+     *
      * @return array
      */
     public function rules()
@@ -70,7 +91,7 @@ trait UserProfileSearchTrait
     }
 
     /**
-     * 
+     *
      * @return array
      */
     public function scenarios()
@@ -87,6 +108,16 @@ trait UserProfileSearchTrait
     public function search($params)
     {
         $query = static::find();
+        /* @var $query BaseUserQuery */
+        $userClass = $this->userClass;
+        $query = $query->from("{$userClass::tableName()} {$this->userAlias}");
+        $noInitUser = new $userClass;
+        /* @var $noInitUser User */
+        $profileClass = $noInitUser->profileClass;
+        $noInitProfile = null;
+        if (!empty($profileClass)) {
+            $query = $query->joinWith(["profile {$this->profileAlias}"]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -100,26 +131,26 @@ trait UserProfileSearchTrait
                     'id',
                     'nickname',
                     'name' => [
-                        'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
-                        'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
+                        'asc' => [$this->profileAlias . '.first_name' => SORT_ASC, $this->profileAlias . '.last_name' => SORT_ASC],
+                        'desc' => [$this->profileAlias . '.first_name' => SORT_DESC, $this->profileAlias . '.last_name' => SORT_DESC],
                         'default' => SORT_DESC,
                         'label' => Yii::t('user', 'Name'),
                     ],
                     'gender' => [
-                        'asc' => ['gender' => SORT_ASC],
-                        'desc' => ['gender' => SORT_DESC],
+                        'asc' => [$this->profileAlias . '.gender' => SORT_ASC],
+                        'desc' => [$this->profileAlias . '.gender' => SORT_DESC],
                         'default' => SORT_ASC,
                         'label' => Yii::t('user', 'Gender'),
                     ],
                     'createdAt' => [
-                        'asc' => ['created_at' => SORT_ASC],
-                        'desc' => ['created_at' => SORT_DESC],
+                        'asc' => [$this->userAlias . '.created_at' => SORT_ASC],
+                        'desc' => [$this->userAlias . '.created_at' => SORT_DESC],
                         'default' => SORT_ASC,
                         'label' => Yii::t('user', 'Creation Time'),
                     ],
                     'updatedAt' => [
-                        'asc' => ['updated_at' => SORT_ASC],
-                        'desc' => ['updated_at' => SORT_DESC],
+                        'asc' => [$this->userAlias . '.updated_at' => SORT_ASC],
+                        'desc' => [$this->userAlias . '.updated_at' => SORT_DESC],
                         'default' => SORT_ASC,
                         'label' => Yii::t('user', 'Last Updated Time'),
                     ],
@@ -132,19 +163,19 @@ trait UserProfileSearchTrait
         }
 
         $query = $query->andFilterWhere([
-            'LIKE', 'id', $this->id,
+            'LIKE', $this->userAlias . '.id', $this->id,
         ])->andFilterWhere([
-            'LIKE', 'nickname', $this->nickname,
+            'LIKE', $this->profileAlias . '.nickname', $this->nickname,
         ])->andFilterWhere([
-            '>=', 'created_at', $this->createdFromInUtc,
+            '>=', $this->userAlias . '.created_at', $this->createdFromInUtc,
         ])->andFilterWhere([
-            '<=', 'created_at', $this->createdToInUtc,
+            '<=', $this->userAlias . '.created_at', $this->createdToInUtc,
         ])->andFilterWhere([
-            'LIKE', 'first_name', $this->first_name,
+            'LIKE', $this->profileAlias . '.first_name', $this->first_name,
         ])->andFilterWhere([
-            'LIKE', 'last_name', $this->last_name,
+            'LIKE', $this->profileAlias . '.last_name', $this->last_name,
         ])->andFilterWhere([
-            'gender' => $this->gf,
+            $this->profileAlias . '.gender' => $this->gf,
         ]);
         $dataProvider->query = $query;
         return $dataProvider;

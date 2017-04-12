@@ -12,7 +12,6 @@
 
 use rhosocial\user\Profile;
 use rhosocial\user\User;
-use rhosocial\user\UserProfileSearch;
 use yii\data\ActiveDataProvider;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
@@ -23,7 +22,7 @@ use yii\web\View;
 /* @var $dataProvider ActiveDataProvider */
 /* @var $additionalColumns array */
 /* @var $actionColumn array */
-/* @var $showGUID booelan */
+/* @var $showGUID boolean */
 $columns = [
     ['class' => SerialColumn::class],
     'guid' => [
@@ -40,23 +39,40 @@ $columns = [
         'attribute' => 'id',
         'label' => Yii::t('user', 'User ID'),
         'content' => function ($model, $key, $index, $column) {
-            /* @var $model UserProfileSearch */
+            /* @var $model User */
             return $model->id;
         },
         'contentOptions' => function ($model, $key, $index, $column) {
-            /* @var $model UserProfileSearch */
+            /* @var $model User */
             if ($model->id != Yii::$app->user->identity->getID()) {
                 return [];
             }
             return ['bgcolor' => '#00FF00'];
         },
     ],
-    'nickname',
+    'nickname' => [
+        'class' => DataColumn::class,
+        'attribute' => 'nickname',
+        'label' => Yii::t('user', 'Nickname'),
+        'content' => function ($model, $key, $index, $column) {
+            /* @var $model User */
+            $profile = $model->profile;
+            if (empty($profile)) {
+                return null;
+            }
+            return $profile->nickname;
+        },
+    ],
     'name' => [
         'class' => DataColumn::class,
         'attribute' => 'name',
         'content' => function ($model, $key, $index, $column) {
-            return $model->first_name . ' ' . $model->last_name;
+            /* @var $model User */
+            $profile = $model->profile;
+            if (empty($profile)) {
+                return null;
+            }
+            return $profile->first_name . ' ' . $profile->last_name;
         },
         'label' => Yii::t('user', 'Name'),
     ],
@@ -65,7 +81,12 @@ $columns = [
         'attribute' => 'gender',
         'label' => Yii::t('user', 'Gender'),
         'content' => function ($model, $key, $index, $column) {
-            return Profile::getGenderDesc($model->gender);
+            /* @var $model User */
+            $profile = $model->profile;
+            if (empty($profile)) {
+                return null;
+            }
+            return Profile::getGenderDesc($profile->gender);
         }
     ],
     'createdAt' => [
@@ -73,7 +94,7 @@ $columns = [
         'attribute' => 'createdAt',
         'label' => Yii::t('user', 'Creation Time'),
         'content' => function ($model, $key, $index, $column) {
-            /* @var $model UserProfileSearch */
+            /* @var $model User */
             return $column->grid->formatter->format($model->created_at, 'datetime');
         },
     ],
@@ -82,7 +103,7 @@ $columns = [
         'attribute' => 'updatedAt',
         'label' => Yii::t('user', 'Last Updated Time'),
         'content' => function ($model, $key, $index, $column) {
-            /* @var $model UserProfileSearch */
+            /* @var $model User */
             return $column->grid->formatter->format($model->updated_at, 'datetime');
         },
     ],
