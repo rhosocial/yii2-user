@@ -102,19 +102,21 @@ class User extends BaseUserModel
     public function attributeLabels()
     {
         return [
-            'guid' => Yii::t('user', 'GUID'),
-            'id' => Yii::t('user', 'ID'),
-            'pass_hash' => Yii::t('user', 'Password Hash'),
-            'ip' => Yii::t('user', 'IP Address'),
-            'ip_type' => Yii::t('user', 'IP Address Type'),
-            'created_at' => Yii::t('user', 'Creation Time'),
-            'updated_at' => Yii::t('user', 'Last Updated Time'),
-            'auth_key' => Yii::t('user', 'Authentication Key'),
-            'access_token' => Yii::t('user', 'Access Token'),
-            'password_reset_token' => Yii::t('user', 'Password Reset Token'),
-            'status' => Yii::t('user', 'Status'),
+            $this->guidAttribute => Yii::t('user', 'GUID'),
+            $this->idAttribute => Yii::t('user', 'ID'),
+            $this->passwordHashAttribute => Yii::t('user', 'Password Hash'),
+            $this->ipAttribute => Yii::t('user', 'IP Address'),
+            $this->ipTypeAttribute => Yii::t('user', 'IP Address Type'),
+            $this->createdAtAttribute => Yii::t('user', 'Creation Time'),
+            $this->updatedAtAttribute => Yii::t('user', 'Last Updated Time'),
+            $this->authKeyAttribute => Yii::t('user', 'Authentication Key'),
+            $this->accessTokenAttribute => Yii::t('user', 'Access Token'),
+            $this->passwordResetTokenAttribute => Yii::t('user', 'Password Reset Token'),
+            $this->statusAttribute => Yii::t('user', 'Status'),
             'type' => Yii::t('user', 'Type'),
-            'source' => Yii::t('user', 'Source'),
+            $this->sourceAttribute => Yii::t('user', 'Source'),
+            'createdAt' => Yii::t('user', 'Registration Time'),
+            'updatedAt' => Yii::t('user', 'Last Updated Time'),
         ];
     }
 

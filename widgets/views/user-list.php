@@ -93,7 +93,6 @@ $columns = [
     'createdAt' => [
         'class' => DataColumn::class,
         'attribute' => 'createdAt',
-        'label' => Yii::t('user', 'Creation Time'),
         'content' => function ($model, $key, $index, $column) {
             /* @var $model User */
             return $column->grid->formatter->format($model->created_at, 'datetime');
@@ -102,7 +101,6 @@ $columns = [
     'updatedAt' => [
         'class' => DataColumn::class,
         'attribute' => 'updatedAt',
-        'label' => Yii::t('user', 'Last Updated Time'),
         'content' => function ($model, $key, $index, $column) {
             /* @var $model User */
             return $column->grid->formatter->format($model->updated_at, 'datetime');

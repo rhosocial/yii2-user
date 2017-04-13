@@ -75,7 +75,7 @@ class Profile extends BaseBlameableModel
     public function attributeLabels()
     {
         return [
-            'nickname' => Yii::t('user', 'Nickname'),
+            $this->contentAttribute => Yii::t('user', 'Nickname'),
             'first_name' => Yii::t('user', 'First Name'),
             'last_name' => Yii::t('user', 'Last Name'),
             'gender' => Yii::t('user', 'Gender'),
@@ -83,8 +83,9 @@ class Profile extends BaseBlameableModel
             'gravatar' => Yii::t('user', 'Gravatar'),
             'timezone' => Yii::t('user', 'Timezone'),
             'individual_sign' => Yii::t('user', 'Individual Signature'),
-            'created_at' => Yii::t('user', 'Creation Time'),
-            'updated_at' => Yii::t('user', 'Last Updated Time'),
+            $this->createdByAttribute => Yii::t('user', 'Created By'),
+            $this->createdAtAttribute => Yii::t('user', 'Creation Time'),
+            $this->updatedAtAttribute => Yii::t('user', 'Last Updated Time'),
         ];
     }
 

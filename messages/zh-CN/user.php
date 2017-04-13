@@ -23,6 +23,7 @@ return [
     'IP Address' => 'IP 地址',
     'IP Address Type' => 'IP 地址类型',
     'Creation Time' => '创建时间',
+    'Registration Time' => '注册时间',
     'Created At' => '创建于',
     'Profile Created At' => '简介创建于',
     'Last Updated Time' => '上次更新时间',

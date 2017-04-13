@@ -50,7 +50,7 @@ class UserListWidget extends Widget
      * If you want to show default tips, please set true.
      * If you want to show tips including default ones and your owns, please set an array contains all tip text.
      */
-    public $tips = false;
+    public $tips = true;
 
     /**
      * Initialize attributes.
