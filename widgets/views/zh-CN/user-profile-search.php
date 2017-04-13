@@ -12,13 +12,12 @@
 
 use kartik\datetime\DateTimePicker;
 use rhosocial\user\Profile;
-use rhosocial\user\UserProfileSearch;
-use yii\helpers\Html;
+use rhosocial\user\UserSearch;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model UserProfileSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $model UserSearch */
 /* @var $formId string */
 /* @var $formConfig array */
 $css = <<<EOT
@@ -32,6 +31,7 @@ $this->registerCss($css);
 
 <div class="user-search">
     <?php $form = ActiveForm::begin($formConfig); ?>
+    <?php /* @var $form ActiveForm */ ?>
 <div class="row">
     <div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'id', [

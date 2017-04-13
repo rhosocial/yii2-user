@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\widgets;
 
+use rhosocial\user\UserSearch;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
 
@@ -21,9 +22,22 @@ use yii\base\Widget;
  */
 class UserProfileSearchWidget extends Widget
 {
+    /**
+     * @var string
+     */
     public $formId = 'user-profile-search-form';
+    /**
+     * @var null|array
+     */
     public $formConfig = null;
+    /**
+     * @var UserSearch
+     */
     public $model;
+
+    /**
+     * @throws InvalidConfigException
+     */
     public function init()
     {
         if ($this->model == null) {
@@ -38,6 +52,9 @@ class UserProfileSearchWidget extends Widget
         }
     }
 
+    /**
+     * @return string
+     */
     public function run()
     {
         return $this->render('user-profile-search', [

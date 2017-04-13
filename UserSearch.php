@@ -19,7 +19,7 @@ use yii\data\ActiveDataProvider;
 
 /**
  * Class UserSearchTrait
- * This trait should be used in the User model inherited from [[User]].
+ *
  * @package rhosocial\user
  * @version 1.0
  * @author vistart <i@vistart.me>
@@ -30,7 +30,6 @@ class UserSearch extends Model
     public static function find()
     {
         $noInit = new static;
-        /* @var $noInit static */
         $class = $noInit->userClass;
         if (empty($class)) {
             return null;
@@ -91,16 +90,6 @@ class UserSearch extends Model
     }
 
     /**
-     *
-     * @return array
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
-
-    /**
      * Search
      * @param array $params
      * @return ActiveDataProvider
@@ -114,7 +103,6 @@ class UserSearch extends Model
         $noInitUser = new $userClass;
         /* @var $noInitUser User */
         $profileClass = $noInitUser->profileClass;
-        $noInitProfile = null;
         if (!empty($profileClass)) {
             $query = $query->joinWith(["profile {$this->profileAlias}"]);
         }
@@ -188,6 +176,11 @@ class UserSearch extends Model
     public function attributeLabels()
     {
         $attributeLabels = parent::attributeLabels();
+        $attributeLabels['id'] = Yii::t('user', 'User ID');
+        $attributeLabels['nickname'] = Yii::t('user', 'Nickname');
+        $attributeLabels['first_name'] = Yii::t('user', 'First Name');
+        $attributeLabels['last_name'] = Yii::t('user', 'Last Name');
+        $attributeLabels['gf'] = Yii::t('user', 'Gender');
         $attributeLabels['createdFrom'] = Yii::t('user', 'From');
         $attributeLabels['createdTo'] = Yii::t('user', 'To');
         return $attributeLabels;

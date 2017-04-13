@@ -12,12 +12,12 @@
 
 use kartik\datetime\DateTimePicker;
 use rhosocial\user\Profile;
-use rhosocial\user\UserProfileSearch;
+use rhosocial\user\UserSearch;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model UserProfileSearch */
+/* @var $model UserSearch */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $formId string */
 /* @var $formConfig array */
