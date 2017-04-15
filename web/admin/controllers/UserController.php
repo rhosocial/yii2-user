@@ -124,14 +124,21 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         $searchModel = Yii::$app->user->identity->getSearchModel();
-        $dataProvider = $searchModel->search(Yii::$app->request->post());
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         
         return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
     }
 
+    /**
+     * Register new user.
+     * @return string|\yii\web\Response
+     */
     public function actionRegisterNewUser()
     {
         $model = new RegisterForm();
@@ -177,6 +184,8 @@ class UserController extends Controller
      * Deregister User.
      * @param string $id User ID.
      * @return string
+     * @throws ServerErrorHttpException
+     * @throws ForbiddenHttpException
      */
     public function actionDeregister($id)
     {
@@ -207,6 +216,11 @@ class UserController extends Controller
         return $this->render('view', ['user' => $user]);
     }
 
+    /**
+     * @param string $id User ID.
+     * @return string|\yii\web\Response
+     * @throws BadRequestHttpException
+     */
     public function actionUpdate($id)
     {
         $user = $this->getUser($id);
@@ -230,6 +244,10 @@ class UserController extends Controller
         return $this->render('update', ['user' => $user, 'model' => $model]);
     }
 
+    /**
+     * @param string $id User ID.
+     * @return string|\yii\web\Response
+     */
     public function actionChangePassword($id)
     {
         $user = $this->getUser($id);

@@ -12,10 +12,10 @@
 
 namespace rhosocial\user\widgets;
 
+use rhosocial\user\grid\ActionColumn;
 use Yii;
 use yii\base\Widget;
 use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
 
@@ -64,6 +64,7 @@ class UserListWidget extends Widget
             $this->actionColumn = [
                 'class' => ActionColumn::class,
                 'header' => Yii::t('user', 'Action'),
+                'useIcon' => false,
                 'urlCreator' => function ($action, $model, $key, $index, ActionColumn $column) {
                     /* @var $model User */
                     if ($action == 'view') {

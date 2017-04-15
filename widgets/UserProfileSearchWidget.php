@@ -47,7 +47,7 @@ class UserProfileSearchWidget extends Widget
             $this->formConfig = [
                 'id' => !empty($this->formId) ? $this->formId : 'user-profile-search-form',
                 'action' => ['index'],
-                'method' => 'post',
+                'method' => 'get',
             ];
         }
     }
