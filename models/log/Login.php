@@ -75,6 +75,7 @@ class Login extends BaseBlameableModel
     /**
      *
      * @param ModelEvent $event
+     * @return integer
      */
     public function onDeleteExtraRecords($event)
     {
@@ -147,34 +148,63 @@ class Login extends BaseBlameableModel
         }
         return $count;
     }
+
+    const STATUS_NORMAL = 0x000;
+    const STATUS_ABNORMAL_UNUSUAL_LOCATION = 0x001;
+    const STATUS_ABNORMAL_TOO_MANY_WRONG_PASSWORD_ATTEMPTS = 0x002;
+    const STATUS_ABNORMAL_UNUSUAL_DEVICE = 0x003;
     
     public static $statuses = [
-        0x000 => 'Normal',
-        0x001 => 'Abnormal (Unusual location)',
-        0x002 => 'Abnormal (Too many wrong password attempts)',
-        0x003 => 'Abnormal (Unusual device)',
+        self::STATUS_NORMAL => 'Normal',
+        self::STATUS_ABNORMAL_UNUSUAL_LOCATION => 'Abnormal (Unusual location)',
+        self::STATUS_ABNORMAL_TOO_MANY_WRONG_PASSWORD_ATTEMPTS => 'Abnormal (Too many wrong password attempts)',
+        self::STATUS_ABNORMAL_UNUSUAL_DEVICE => 'Abnormal (Unusual device)',
     ];
+
+    const DEVICE_UNKNOWN = 0x000;
+    const DEVICE_PC_NO_CLASSIFICATION = 0x010;
+    const DEVICE_PC_WINDOWS_BROWSER = 0x011;
+    const DEVICE_PC_LINUX_BROWSER = 0x012;
+    const DEVICE_PC_OSX_BROWSER = 0x013;
+
+    const DEVICE_MOBILE_NO_CLASSICATION = 0x020;
+    const DEVICE_MOBILE_ANDROID_BROWSER = 0x021;
+    const DEVICE_MOBILE_WINDOWSPHONE_BROWSER = 0x022;
+    const DEVICE_MOBILE_IOS_BROWSER = 0x023;
+
+    const DEVICE_PC_WINDOWS_APPLICATION = 0x031;
+    const DEVICE_PC_LINUX_APPLICATION = 0x032;
+    const DEVICE_PC_OSX_APPLICATION = 0x033;
+
+    const DEVICE_MOBILE_ANDROID_APPLICATION = 0x041;
+    const DEVICE_MOBILE_WINDOWSPHONE_APPLICATION = 0x042;
+    const DEVICE_MOBILE_IOS_APPLICATION = 0x043;
+
+    const DEVICE_3PA_NO_CLASSIFICATION = 0x050;
+    const DEVICE_3PA_PC = 0x051;
+    const DEVICE_3PA_MOBILE = 0x052;
+    const DEVICE_3PA_BROWSER = 0x053;
     
     public static $devices = [
-        0x000 => 'Unknown',
-        0x010 => 'PC (No classification)',
-        0x011 => 'PC (Windows, Browser)',
-        0x012 => 'PC (Linux, Browser)',
-        0x013 => 'PC (OS X, Browser)',
-        0x020 => 'Mobile (No classification)',
-        0x021 => 'Mobile (Android, Browser)',
-        0x022 => 'Mobile (Windows Phone, Browser)',
-        0x023 => 'Mobile (iOS, Browser)',
-        0x031 => 'PC (Windows, Application)',
-        0x032 => 'PC (Linux, Application)',
-        0x033 => 'PC (OS X, Application)',
-        0x041 => 'Mobile (Android, Application)',
-        0x042 => 'Mobile (Windows Phone, Application)',
-        0x043 => 'Mobile (iOS, Application)',
-        0x050 => 'Third party authorization (No classification)',
-        0x051 => 'Third party authorization (PC)',
-        0x052 => 'Third party authorization (Mobile)',
-        0x053 => 'Third party authorization (Browser)',
+        self::DEVICE_UNKNOWN => 'Unknown',
+        self::DEVICE_PC_NO_CLASSIFICATION => 'PC (No classification)',
+        self::DEVICE_PC_WINDOWS_BROWSER => 'PC (Windows, Browser)',
+        self::DEVICE_PC_LINUX_BROWSER => 'PC (Linux, Browser)',
+        self::DEVICE_PC_OSX_BROWSER => 'PC (OS X, Browser)',
+        self::DEVICE_MOBILE_NO_CLASSICATION => 'Mobile (No classification)',
+        self::DEVICE_MOBILE_ANDROID_BROWSER => 'Mobile (Android, Browser)',
+        self::DEVICE_MOBILE_WINDOWSPHONE_BROWSER => 'Mobile (Windows Phone, Browser)',
+        self::DEVICE_MOBILE_IOS_BROWSER => 'Mobile (iOS, Browser)',
+        self::DEVICE_PC_WINDOWS_BROWSER => 'PC (Windows, Application)',
+        self::DEVICE_PC_LINUX_APPLICATION => 'PC (Linux, Application)',
+        self::DEVICE_PC_OSX_APPLICATION => 'PC (OS X, Application)',
+        self::DEVICE_MOBILE_ANDROID_APPLICATION => 'Mobile (Android, Application)',
+        self::DEVICE_MOBILE_WINDOWSPHONE_APPLICATION => 'Mobile (Windows Phone, Application)',
+        self::DEVICE_MOBILE_IOS_APPLICATION => 'Mobile (iOS, Application)',
+        self::DEVICE_3PA_NO_CLASSIFICATION => 'Third party authorization (No classification)',
+        self::DEVICE_3PA_PC => 'Third party authorization (PC)',
+        self::DEVICE_3PA_MOBILE => 'Third party authorization (Mobile)',
+        self::DEVICE_3PA_BROWSER => 'Third party authorization (Browser)',
     ];
     
     public function getLoginRules()
@@ -210,6 +240,8 @@ class Login extends BaseBlameableModel
     {
         return '{{%log_login}}';
     }
+
+    const GET_ALL_LATESTS = 'all';
     
     /**
      * Get latest ones.
@@ -220,7 +252,7 @@ class Login extends BaseBlameableModel
     public static function getLatests(User $user, $limit = 1)
     {
         $query = static::find()->createdBy($user)->orderByCreatedAt(SORT_DESC);
-        if ($limit == 'all' || !is_int($limit) || $limit < 1) {
+        if ($limit == self::GET_ALL_LATESTS || !is_int($limit) || $limit < 1) {
             return $query->all();
         }
         return $query->limit($limit)->all();

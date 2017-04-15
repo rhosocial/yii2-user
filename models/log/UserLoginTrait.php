@@ -37,7 +37,7 @@ trait UserLoginTrait
         /* @var $this User */
         $class = $this->loginLogClass;
         try {
-            return $class::getLatests($this, 'all');
+            return $class::getLatests($this, Login::GET_ALL_LATESTS);
         } catch (\Exception $ex) {
             Yii::error($ex->getMessage(), __METHOD__);
             return [];
@@ -57,6 +57,21 @@ trait UserLoginTrait
         } catch (\Exception $ex) {
             Yii::error($ex->getMessage(), __METHOD__);
             return null;
+        }
+    }
+
+    /**
+     * Record login.
+     * @param array $config
+     * @return mixed
+     */
+    public function recordLogin($config = [])
+    {
+        $log = $this->create($this->loginLogClass, $config);
+        try {
+            return $log->save();
+        } catch (\Exception $ex) {
+            Yii::error($ex->getMessage(), __METHOD__);
         }
     }
 }
