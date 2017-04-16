@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "71fc8beee609a539381d556034f9b4d4",
+    "content-hash": "32000b342cb7effd3d9defa3a9543959",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -459,16 +459,16 @@
         },
         {
             "name": "rhosocial/yii2-base-models",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rhosocial/yii2-base-models.git",
-                "reference": "bd06cb773bc19f078313a4843e2048515f4589be"
+                "reference": "2d830135c2ea80057e5222a1b50a706b0019d6e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rhosocial/yii2-base-models/zipball/bd06cb773bc19f078313a4843e2048515f4589be",
-                "reference": "bd06cb773bc19f078313a4843e2048515f4589be",
+                "url": "https://api.github.com/repos/rhosocial/yii2-base-models/zipball/2d830135c2ea80057e5222a1b50a706b0019d6e1",
+                "reference": "2d830135c2ea80057e5222a1b50a706b0019d6e1",
                 "shasum": ""
             },
             "require": {
@@ -508,7 +508,7 @@
                 "rhosocial",
                 "yii2"
             ],
-            "time": "2017-03-27 08:15:23"
+            "time": "2017-04-13T01:11:47+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -905,9 +905,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "rhosocial/yii2-base-models": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
