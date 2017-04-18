@@ -176,8 +176,8 @@ class Profile extends BaseBlameableModel
     public function getTimezoneRules()
     {
         return [
-            ['timezone', 'default', 'value' => 'UTC'],
-            ['timezone', 'string'],
+            ['timezone', 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            ['timezone', 'default', 'value' => Yii::$app->timeZone],
         ];
     }
 

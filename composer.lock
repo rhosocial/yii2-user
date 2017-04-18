@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "32000b342cb7effd3d9defa3a9543959",
+    "content-hash": "bf4b2a93293f8171e183ee93b64c1ed7",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -417,16 +417,16 @@
         },
         {
             "name": "rhosocial/helpers",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rhosocial/helpers.git",
-                "reference": "ff29ae8c51ea0835c776359562a46f53882eccdf"
+                "reference": "30feb277caeb1bb25fe2ff12abff48e9fa563427"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rhosocial/helpers/zipball/ff29ae8c51ea0835c776359562a46f53882eccdf",
-                "reference": "ff29ae8c51ea0835c776359562a46f53882eccdf",
+                "url": "https://api.github.com/repos/rhosocial/helpers/zipball/30feb277caeb1bb25fe2ff12abff48e9fa563427",
+                "reference": "30feb277caeb1bb25fe2ff12abff48e9fa563427",
                 "shasum": ""
             },
             "require": {
@@ -455,7 +455,7 @@
                 "helpers",
                 "number"
             ],
-            "time": "2017-01-10T18:33:01+00:00"
+            "time": "2017-04-18T07:38:26+00:00"
         },
         {
             "name": "rhosocial/yii2-base-models",

@@ -15,7 +15,7 @@
         "yiisoft/yii2": ">=2.0.11",
         "yiisoft/yii2-authclient": "*",
         "kartik-v/yii2-widget-datetimepicker": "*",
-        "rhosocial/helpers": "*",
+        "rhosocial/helpers": ">=1.0.1",
         "rhosocial/yii2-base-models": ">=1.0.0"
     },
     "require-dev": {

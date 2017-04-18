@@ -35,6 +35,6 @@ class ProfileFormWidget extends Widget
 
     public function run()
     {
-        return $this->render('profile-form-widget', ['model' => $this->model]);
+        return $this->render('profile-form', ['model' => $this->model]);
     }
 }

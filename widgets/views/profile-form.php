@@ -10,6 +10,7 @@
  * @license https://vistart.me/license/
  */
 
+use rhosocial\base\helpers\Timezone;
 use rhosocial\user\Profile;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -43,6 +44,8 @@ $this->registerCss($css);
         <?= $form->field($model, 'last_name')->textInput() ?>
 
         <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
+
+        <?= $form->field($model, 'timezone')->dropDownList(Timezone::generateList()) ?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">

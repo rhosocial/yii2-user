@@ -31,6 +31,6 @@ class ChangePasswordFormWidget extends Widget
     
     public function run()
     {
-        return $this->render('change-password-form-widget', ['model' => $this->model]);
+        return $this->render('change-password-form', ['model' => $this->model]);
     }
 }
