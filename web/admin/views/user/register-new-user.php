@@ -18,6 +18,7 @@ $this->title = Yii::t('user', 'Register New User');
 $this->params['breadcrumbs'][] = $this->title;
 echo RegisterFormWidget::widget(['model' => $model]);
 ?>
+<h3><?= Yii::t('user', 'Other operations') ?></h3>
 <div class="row">
     <div class="col-md-3">
         <?= Html::a(Yii::t('user', 'Back to User List'), [
