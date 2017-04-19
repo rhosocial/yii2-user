@@ -20,7 +20,7 @@ echo ChangePasswordFormWidget::widget(['model' => $model]);
 ?>
 <div class="row">
     <div class="col-md-3">
-        <?= Html::a(Yii::t('user', 'Back to List'), [
+        <?= Html::a(Yii::t('user', 'Back to User List'), [
             'index',
         ], ['class' => 'btn btn-primary']) ?>
     </div>

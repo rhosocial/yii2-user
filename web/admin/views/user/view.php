@@ -79,7 +79,7 @@ if (class_exists($user->profileClass) && ($profile = $user->profile)) {
 }?>
 <div class="row">
     <div class="col-md-3">
-        <?= Html::a(Yii::t('user', 'Back to List'), [
+        <?= Html::a(Yii::t('user', 'Back to User List'), [
             'index',
         ], ['class' => 'btn btn-primary']) ?>
     </div>
