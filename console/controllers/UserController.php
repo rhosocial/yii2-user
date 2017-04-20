@@ -12,11 +12,13 @@
 
 namespace rhosocial\user\console\controllers;
 
+use Faker\Factory;
 use rhosocial\user\User;
 use rhosocial\user\Profile;
 use yii\console\Controller;
 use yii\console\Exception;
 use Yii;
+use yii\helpers\Console;
 
 /**
  * The simple operations associated with User.
@@ -51,6 +53,7 @@ class UserController extends Controller
      * Get user from database.
      * @param User|string|integer $user User ID.
      * @return User
+     * @throws Exception
      */
     protected function getUser($user)
     {
@@ -72,6 +75,8 @@ class UserController extends Controller
      * @param string $nickname If profile contains this property, this parameter is required.
      * @param string $firstName If profile contains this property, this parameter is required.
      * @param string $lastName If profile contains this propery, this parameter is required.
+     * @return int
+     * @throws Exception
      */
     public function actionRegister($password, $nickname = null, $firstName = null, $lastName = null)
     {
@@ -97,15 +102,16 @@ class UserController extends Controller
     /**
      * Deregister user.
      * @param User|string|integer $user The user to be deregistered.
+     * @return int
      */
     public function actionDeregister($user)
     {
         $user = $this->getUser($user);
         if ($user->deregister()) {
             echo "User (" . $user->getID() . ") Deregistered.\n";
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
-        return false;
+        return static::EXIT_CODE_ERROR;
     }
     
     /**
@@ -115,6 +121,7 @@ class UserController extends Controller
      * @param boolean $passHash Show PasswordH Hash?
      * @param boolean $accessToken Show Access Token?
      * @param boolean $authKey Show Authentication Key?
+     * @return int
      */
     public function actionShow($user, $guid = false, $passHash = false, $accessToken = false, $authKey = false)
     {
@@ -133,12 +140,13 @@ class UserController extends Controller
         if ($authKey) {
             echo "Authentication Key: " . $user->getAuthKey() . "\n";
         }
-        return true;
+        return static::EXIT_CODE_NORMAL;
     }
     
     /**
      * Show statistics.
      * @param User|string|integer $user User ID.
+     * @return int
      */
     public function actionStat($user = null)
     {
@@ -146,15 +154,15 @@ class UserController extends Controller
             $count = User::find()->count();
             echo "Total number of user(s): " . $count . "\n";
             if ($count == 0) {
-                return true;
+                return static::EXIT_CODE_NORMAL;
             }
             $last = User::find()->orderByCreatedAt(SORT_DESC)->one();
             /* @var $last User */
             echo "Latest user (" . $last->getID() . ") registered at " . $last->getCreatedAt() . "\n";
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         $user = $this->getUser($user);
-        return true;
+        return static::EXIT_CODE_NORMAL;
     }
     
     /**
@@ -162,6 +170,7 @@ class UserController extends Controller
      * @param User|string|integer $user User ID.
      * @param string $operation Only `assign` and `revoke` are acceptable.
      * @param string $role Role name.
+     * @return int
      */
     public function actionRole($user, $operation, $role)
     {
@@ -173,14 +182,14 @@ class UserController extends Controller
             } catch (\yii\db\IntegrityException $ex) {
                 echo "Failed to assign `" . $role->name . "`.\n";
                 echo "Maybe the role has been assigned.\n";
-                return false;
+                return static::EXIT_CODE_ERROR;
             }
             if ($assignment) {
                 echo "`$role->name`" . " assigned to User (" . $user->getID() . ") successfully.\n";
             } else {
                 echo "Failed to assign `" . $role->name . "`.\n";
             }
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         if ($operation == 'revoke') {
             $assignment = Yii::$app->authManager->revoke($role, $user);
@@ -190,11 +199,11 @@ class UserController extends Controller
                 echo "Failed to revoke `" . $role->name . "`.\n";
                 echo "Maybe the role has not been assigned yet.\n";
             }
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         echo "Unrecognized operation: $operation.\n";
         echo "The accepted operations are `assign` and `revoke`.\n";
-        return false;
+        return static::EXIT_CODE_ERROR;
     }
     
     /**
@@ -202,6 +211,7 @@ class UserController extends Controller
      * @param User|string|integer $user User ID.
      * @param string $operation Only `assign` and `revoke` are acceptable.
      * @param string $permission Permission name.
+     * @return int
      */
     public function actionPermission($user, $operation, $permission)
     {
@@ -211,16 +221,16 @@ class UserController extends Controller
             try {
                 $assignment = Yii::$app->authManager->assign($permission, $user);
             } catch (\yii\db\IntegrityException $ex) {
-                echo "Failed to assign `" . $role->name . "`.\n";
+                echo "Failed to assign `" . $permission->name . "`.\n";
                 echo "Maybe the permission has been assigned.\n";
-                return false;
+                return static::EXIT_CODE_ERROR;
             }
             if ($assignment) {
                 echo "`$permission->name`" . " assigned to User (" . $user->getID() . ") successfully.\n";
             } else {
                 echo "Failed to assign `" . $permission->name . "`.\n";
             }
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         if ($operation == 'revoke') {
             $assignment = Yii::$app->authManager->revoke($permission, $user);
@@ -230,17 +240,18 @@ class UserController extends Controller
                 echo "Failed to revoke `" . $permission->name . "`.\n";
                 echo "Maybe the permission has not been assigned yet.\n";
             }
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         echo "Unrecognized operation: $operation.\n";
         echo "The accepted operations are `assign` and `revoke`.\n";
-        return false;
+        return static::EXIT_CODE_ERROR;
     }
 
     /**
      * Validate password.
      * @param User|string|integer $user User ID.
      * @param password $password Password.
+     * @return int
      */
     public function actionValidatePassword($user, $password)
     {
@@ -251,12 +262,14 @@ class UserController extends Controller
         } else {
             echo "Incorrect.\n";
         }
+        return static::EXIT_CODE_NORMAL;
     }
 
     /**
      * Change password directly.
      * @param User|string|integer $user User ID.
      * @param string $password Password.
+     * @return int
      */
     public function actionPassword($user, $password)
     {
@@ -268,6 +281,7 @@ class UserController extends Controller
         } else {
             echo "Password not changed.\n";
         }
+        return static::EXIT_CODE_NORMAL;
     }
 
     /**
@@ -275,6 +289,7 @@ class UserController extends Controller
      * This command will list all matching passwords in reverse order.
      * @param User|string|integer $user User ID.
      * @param string $password Password.
+     * @return int
      */
     public function actionConfirmPasswordHistory($user, $password)
     {
@@ -289,9 +304,79 @@ class UserController extends Controller
         }
         if ($passwordInHistory) {
             echo "$passwordInHistory matched.\n";
-            return true;
+            return static::EXIT_CODE_NORMAL;
         }
         echo "No password matched.\n";
-        return false;
+        return static::EXIT_CODE_ERROR;
+    }
+
+    /**
+     * Register users for testing.
+     * @param int $total
+     * @param string password
+     * @return int
+     * @throws Exception
+     */
+    public function actionAddTestUsers($total = 1000, $password = '123456')
+    {
+        echo "Registration Start...\n";
+        $userClass = $this->checkUserClass();
+
+        $faker = Factory::create();
+        $total = (int)$total;
+        $acc = 0;
+        for ($i = 1; $i <= $total; $i++) {
+            $user = new $userClass(['password' => $password]);
+            $user->source = 'console_test';
+            /* @var $user User */
+            $profile = $user->createProfile([
+                'nickname' => $faker->name,
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
+                'gender' => $faker->randomElement(array_keys(Profile::$genders)),
+            ]);
+            /* @var $profile Profile */
+            try {
+                is_null($profile) ? $user->register() : $user->register([$profile]);
+            } catch (\Exception $ex) {
+                echo $ex->getMessage() . "\n";
+                continue;
+            }
+            $acc++;
+            if ($acc % 10 == 0) {
+                $percent = (float)$i / $total * 100;
+                echo "10 users registered($percent% finished).\n";
+            }
+        }
+        echo "Totally $acc users registered.\n";
+        echo "Registration finished.\n";
+        return static::EXIT_CODE_NORMAL;
+    }
+
+    /**
+     * Deregister all users for testing.
+     * @return int
+     */
+    public function actionRemoveAllTestUsers()
+    {
+        echo "Deregistration Start...\n";
+
+        $userClass = $this->checkUserClass();
+        $acc = 0;
+        foreach ($userClass::find()->andWhere(['source' => 'console_test'])->each() as $user) {
+            try {
+                $user->deregister();
+            } catch (\Exception $ex) {
+                echo $ex->getMessage() . "\n";
+                continue;
+            }
+            $acc++;
+            if ($acc % 10 == 0) {
+                echo "10 users deregistered.\n";
+            }
+        }
+        echo "Totally $acc users deregistered.\n";
+        echo "Deregistration finished.\n";
+        return static::EXIT_CODE_NORMAL;
     }
 }
