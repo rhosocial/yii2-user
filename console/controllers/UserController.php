@@ -322,19 +322,37 @@ class UserController extends Controller
         echo "Registration Start...\n";
         $userClass = $this->checkUserClass();
 
-        $faker = Factory::create();
+        $faker = Factory::create(str_replace('-', '_', Yii::$app->language));
         $total = (int)$total;
         $acc = 0;
+        $time = time();
+        $genders = [Profile::GENDER_MALE, Profile::GENDER_FEMALE, Profile::GENDER_UNSPECIFIED];
         for ($i = 1; $i <= $total; $i++) {
             $user = new $userClass(['password' => $password]);
             $user->source = 'console_test';
             /* @var $user User */
-            $profile = $user->createProfile([
-                'nickname' => $faker->name,
-                'first_name' => $faker->firstName,
-                'last_name' => $faker->lastName,
-                'gender' => $faker->randomElement(array_keys(Profile::$genders)),
-            ]);
+            $gender = $faker->randomElement($genders);
+            $profile = null;
+            if ($gender == Profile::GENDER_MALE) {
+                $profile = $user->createProfile([
+                    'nickname' => $faker->titleMale,
+                    'first_name' => $faker->firstNameMale,
+                    'last_name' => $faker->lastName,
+                ]);
+            } elseif ($gender == Profile::GENDER_FEMALE) {
+                $profile = $user->createProfile([
+                    'nickname' => $faker->titleFemale,
+                    'first_name' => $faker->firstNameFemale,
+                    'last_name' => $faker->lastName,
+                ]);
+            } else {
+                $profile = $user->createProfile([
+                    'nickname' => $faker->title,
+                    'first_name' => $faker->firstName,
+                    'last_name' => $faker->lastName,
+                ]);
+            }
+            $profile->gender = $gender;
             /* @var $profile Profile */
             try {
                 is_null($profile) ? $user->register() : $user->register([$profile]);
@@ -348,8 +366,9 @@ class UserController extends Controller
                 echo "10 users registered($percent% finished).\n";
             }
         }
+        $consumed = time() - $time;
         echo "Totally $acc users registered.\n";
-        echo "Registration finished.\n";
+        echo "Registration finished($consumed seconds consumed).\n";
         return static::EXIT_CODE_NORMAL;
     }
 
@@ -363,6 +382,7 @@ class UserController extends Controller
 
         $userClass = $this->checkUserClass();
         $acc = 0;
+        $time = time();
         foreach ($userClass::find()->andWhere(['source' => 'console_test'])->each() as $user) {
             try {
                 $user->deregister();
@@ -375,8 +395,9 @@ class UserController extends Controller
                 echo "10 users deregistered.\n";
             }
         }
+        $consumed = time() - $time;
         echo "Totally $acc users deregistered.\n";
-        echo "Deregistration finished.\n";
+        echo "Deregistration finished($consumed seconds consumed).\n";
         return static::EXIT_CODE_NORMAL;
     }
 }
