@@ -355,7 +355,11 @@ class UserController extends Controller
             $profile->gender = $gender;
             /* @var $profile Profile */
             try {
-                is_null($profile) ? $user->register() : $user->register([$profile]);
+                $result = (is_null($profile) ? $user->register() : $user->register([$profile]));
+                if ($result !== true) {
+                    var_dump($user->getErrors());
+                    throw new Exception("User Not Registered.");
+                }
             } catch (\Exception $ex) {
                 echo $ex->getMessage() . "\n";
                 continue;
