@@ -217,7 +217,6 @@ class Profile extends BaseBlameableModel
     public function init()
     {
         $this->on(static::EVENT_AFTER_UPDATE, [$this, 'onInvalidTags']);
-        $this->on(static::EVENT_AFTER_DELETE, [$this, 'onInvalidTags']);
         parent::init();
     }
 
@@ -241,6 +240,6 @@ class Profile extends BaseBlameableModel
     {
         $sender = $event->sender;
         /*@var $sender static */
-        TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
+        return TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
     }
 }

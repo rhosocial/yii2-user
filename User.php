@@ -166,7 +166,6 @@ class User extends BaseUserModel
         $this->on(static::$eventAfterRegister, [$this, 'onAddPasswordToHistory']);
         $this->on(static::$eventAfterResetPassword, [$this, 'onAddPasswordToHistory']);
         $this->on(static::EVENT_AFTER_UPDATE, [$this, 'onInvalidTags']);
-        $this->on(static::EVENT_AFTER_DELETE, [$this,'onInvalidTags']);
         parent::init();
     }
 
@@ -190,7 +189,7 @@ class User extends BaseUserModel
     {
         $sender = $event->sender;
         /*@var $sender static */
-        TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
+        return TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
     }
 
     /**
