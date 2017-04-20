@@ -12,6 +12,7 @@
 
 use rhosocial\user\Profile;
 use rhosocial\user\User;
+use rhosocial\user\widgets\UserProfileModalWidget;
 use yii\data\ActiveDataProvider;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
@@ -41,7 +42,11 @@ $columns = [
         'label' => Yii::t('user', 'User ID'),
         'content' => function ($model, $key, $index, $column) {
             /* @var $model User */
-            return $model->id;
+            return Yii::$app->cache->getOrSet('UserProfileModal' . $model->getID(), function ($cache) use ($model) {
+                return UserProfileModalWidget::widget([
+                    'user' => $model,
+                ]);
+            }, 86400, new \yii\caching\TagDependency(['tags' => [$model->getCacheTag(), $model->profile->getCacheTag()]]));
         },
         'contentOptions' => function ($model, $key, $index, $column) {
             /* @var $model User */

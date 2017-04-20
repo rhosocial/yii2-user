@@ -17,6 +17,10 @@ use rhosocial\base\models\queries\BaseBlameableQuery;
 use rhosocial\user\models\log\UserLoginTrait;
 use rhosocial\user\security\UserPasswordHistoryTrait;
 use Yii;
+use yii\base\Event;
+use yii\behaviors\AttributeBehavior;
+use yii\caching\TagDependency;
+use yii\db\ActiveRecord;
 
 /**
  * Common User Model.
@@ -136,6 +140,11 @@ class User extends BaseUserModel
     public $idAttributePrefix = '4';
 
     /**
+     * @var bool
+     */
+    public $idPreassigned = true;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -148,12 +157,40 @@ class User extends BaseUserModel
      * please set it false.
      */
     public $profileClass = false;
-    
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->on(static::$eventAfterRegister, [$this, 'onAddPasswordToHistory']);
         $this->on(static::$eventAfterResetPassword, [$this, 'onAddPasswordToHistory']);
+        $this->on(static::EVENT_AFTER_UPDATE, [$this, 'onInvalidTags']);
+        $this->on(static::EVENT_AFTER_DELETE, [$this,'onInvalidTags']);
         parent::init();
+    }
+
+    /**
+     * @var string
+     */
+    public $cacheTagPrefix = 'tag_user_';
+
+    /**
+     * @return string
+     */
+    public function getCacheTag()
+    {
+        return $this->cacheTagPrefix . $this->getID();
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function onInvalidTags($event)
+    {
+        $sender = $event->sender;
+        /*@var $sender static */
+        TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
     }
 
     /**
@@ -209,5 +246,49 @@ class User extends BaseUserModel
         $profileModel = $profileClass::buildNoInitModel();
         return $this->hasOne($profileClass,
                 [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
+    }
+
+    public function onGenerateId($event)
+    {
+        $sender = $event->sender;
+        /* @var $sender static */
+        return $sender->generateId();
+    }
+
+    /**
+     * @return array
+     */
+    public function generateIdBehavior()
+    {
+        return [
+            'class' => AttributeBehavior::class,
+            'attributes' => [
+                ActiveRecord::EVENT_BEFORE_INSERT => $this->idAttribute,
+            ],
+            'value' => [$this, 'onGenerateId'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behavior = $this->generateIdBehavior();
+        if (!empty($behavior)) {
+            $behaviors[] = $behavior;
+        }
+        return $behaviors;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIdRules()
+    {
+        return [
+            [$this->idAttribute, 'safe'],
+        ];
     }
 }

@@ -20,25 +20,28 @@ use rhosocial\user\User;
  * This migration is equivalent to:
  ```SQL 
 CREATE TABLE `user` (
-  `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
-  `id` varchar(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'User ID No.',
-  `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
-  `ip` varbinary(16) NOT NULL DEFAULT '0' COMMENT 'IP Address',
-  `ip_type` tinyint(3) NOT NULL DEFAULT '4' COMMENT 'IP Address Type',
-  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Created At',
-  `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
-  `auth_key` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Authentication Key',
-  `access_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Access Token',
-  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Password Reset Token',
-  `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT 'Status',
-  `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Type',
-  `source` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Source',
-  PRIMARY KEY (`guid`),
-  UNIQUE KEY `user_id_unique` (`id`),
-  KEY `user_auth_key_normal` (`auth_key`),
-  KEY `user_access_token_normal` (`access_token`),
-  KEY `user_password_reset_token_normal` (`password_reset_token`),
-  KEY `user_created_at_normal` (`created_at`)
+    `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
+    `id` varchar(16) COLLATE utf8_unicode_ci NOT NULL COMMENT 'User ID No.',
+    `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
+    `ip` varbinary(16) NOT NULL DEFAULT '0' COMMENT 'IP Address',
+    `ip_type` tinyint(3) NOT NULL DEFAULT '4' COMMENT 'IP Address Type',
+    `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Created At',
+    `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
+    `auth_key` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Authentication Key',
+    `access_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Access Token',
+    `password_reset_token` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Password Reset Token',
+    `status` tinyint(3) NOT NULL DEFAULT '1' COMMENT 'Status',
+    `type` tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Type',
+    `source` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Source',
+    PRIMARY KEY (`guid`),
+    UNIQUE KEY `user_id_unique` (`id`),
+    KEY `user_auth_key_normal` (`auth_key`),
+    KEY `user_access_token_normal` (`access_token`),
+    KEY `user_password_reset_token_normal` (`password_reset_token`),
+    KEY `user_created_at_normal` (`created_at`),
+    KEY `user_status_normal` (`status`) USING BTREE,
+    KEY `user_type_normal` (`type`) USING BTREE,
+    KEY `user_source_normal` (`source`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User';
 ```
  *
@@ -79,6 +82,9 @@ class M170304140437CreateUserTable extends Migration
         $this->createIndex('user_access_token_normal', User::tableName(), 'access_token');
         $this->createIndex('user_password_reset_token_normal', User::tableName(), 'password_reset_token');
         $this->createIndex('user_created_at_normal', User::tableName(), 'created_at');
+        $this->createIndex('user_status_normal', User::tableName(), 'status');
+        $this->createIndex('user_type_normal', User::tableName(), 'type');
+        $this->createIndex('user_source_normal', User::tableName(), 'source');
     }
 
     public function down()

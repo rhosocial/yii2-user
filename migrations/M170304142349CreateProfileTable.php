@@ -21,19 +21,25 @@ use rhosocial\user\Profile;
  * This migration is equivalent to:
 ```SQL
 CREATE TABLE `profile` (
-  `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
-  `nickname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Nickname',
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First Name',
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Last Name',
-  `gravatar_type` smallint(6) NOT NULL DEFAULT '0',
-  `gravatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `gender` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Gender',
-  `timezone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC',
-  `individual_sign` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Individual Sign',
-  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Created At',
-  `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
-  PRIMARY KEY (`guid`),
-  CONSTRAINT `user_profile_fk` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+    `guid` varbinary(16) NOT NULL COMMENT 'User GUID',
+    `nickname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Nickname',
+    `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'First Name',
+    `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Last Name',
+    `gravatar_type` smallint(6) NOT NULL DEFAULT '0',
+    `gravatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    `gender` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Gender',
+    `timezone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'UTC',
+    `individual_sign` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Individual Sign',
+    `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Created At',
+    `updated_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Updated At',
+    PRIMARY KEY (`guid`),
+    KEY `user_nickname_normal` (`nickname`) USING BTREE,
+    KEY `user_first_name_normal` (`first_name`) USING BTREE,
+    KEY `user_last_name_normal` (`last_name`) USING BTREE,
+    KEY `user_gender_normal` (`gender`) USING BTREE,
+    KEY `user_timezone_normal` (`timezone`) USING BTREE,
+    KEY `user_profile_created_at_normal` (`created_at`) USING BTREE,
+    CONSTRAINT `user_profile_fk` FOREIGN KEY (`guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Profile';
 ```SQL
  *
@@ -68,6 +74,12 @@ class M170304142349CreateProfileTable extends Migration
         }
         $this->addPrimaryKey('user_guid_profile_pk', Profile::tableName(), 'guid');
         $this->addForeignKey('user_profile_fk', Profile::tableName(), 'guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_nickname_normal', Profile::tableName(), 'nickname');
+        $this->createIndex('user_first_name_normal', Profile::tableName(), 'first_name');
+        $this->createIndex('user_last_name_normal', Profile::tableName(), 'last_name');
+        $this->createIndex('user_gender_normal', Profile::tableName(), 'gender');
+        $this->createIndex('user_timezone_normal', Profile::tableName(), 'timezone');
+        $this->createIndex('user_profile_created_at_normal', Profile::tableName(), 'created_at');
     }
 
     public function down()

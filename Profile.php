@@ -14,6 +14,8 @@ namespace rhosocial\user;
 
 use rhosocial\base\models\models\BaseBlameableModel;
 use Yii;
+use yii\base\Event;
+use yii\caching\TagDependency;
 
 /**
  * Simple Profile Model.
@@ -207,5 +209,38 @@ class Profile extends BaseBlameableModel
         return array_merge(parent::scenarios(), [
             self::SCENARIO_UPDATE => [$this->contentAttribute, 'first_name', 'last_name', 'gender', 'gravatar_type', 'gravatar', 'timezone', 'individual_sign'],
         ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->on(static::EVENT_AFTER_UPDATE, [$this, 'onInvalidTags']);
+        $this->on(static::EVENT_AFTER_DELETE, [$this, 'onInvalidTags']);
+        parent::init();
+    }
+
+    /**
+     * @var string
+     */
+    public $cacheTagPrefix = 'tag_user_profile_';
+
+    /**
+     * @return string
+     */
+    public function getCacheTag()
+    {
+        return $this->cacheTagPrefix . $this->getID();
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function onInvalidTags($event)
+    {
+        $sender = $event->sender;
+        /*@var $sender static */
+        TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
     }
 }

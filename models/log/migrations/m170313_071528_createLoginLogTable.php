@@ -20,19 +20,23 @@ use rhosocial\user\migrations\Migration;
  * Create Login Log Table.
  * This migration is equivalent to:
 ```SQL
-CREATE TABLE IF NOT EXISTS `log_login` (
-  `guid` varbinary(16) NOT NULL,
-  `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
-  `user_guid` varbinary(16) NOT NULL,
-  `ip` varbinary(16) NOT NULL DEFAULT '0',
-  `ip_type` smallint(6) NOT NULL DEFAULT '4',
-  `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  `status` int(11) NOT NULL DEFAULT '0',
-  `device` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`guid`),
-  UNIQUE KEY `login_log_id_unique` (`guid`,`id`),
-  KEY `login_log_creator_fk` (`user_guid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `log_login` (
+    `guid` varbinary(16) NOT NULL,
+    `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+    `user_guid` varbinary(16) NOT NULL,
+    `ip` varbinary(16) NOT NULL DEFAULT '0',
+    `ip_type` smallint(6) NOT NULL DEFAULT '4',
+    `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+    `status` int(11) NOT NULL DEFAULT '0',
+    `device` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`guid`),
+    UNIQUE KEY `login_log_id_unique` (`guid`,`id`),
+    KEY `login_log_creator_fk` (`user_guid`),
+    KEY `login_log_created_at_normal` (`created_at`) USING BTREE,
+    KEY `login_log_status_normal` (`status`) USING BTREE,
+    KEY `login_log_device_normal` (`device`) USING BTREE,
+    CONSTRAINT `login_log_creator_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Login Log';
 ```
  * @codeCoverageIgnore
  * @version 1.0
@@ -45,7 +49,7 @@ class m170313_071528_createLoginLogTable extends Migration
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+            $tableOptions = "CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB COMMENT='Login Log'";
             $this->createTable(Login::tableName(), [
                 'guid' => $this->varbinary(16)->notNull(),
                 'id' => $this->varchar(4)->notNull(),
@@ -59,6 +63,9 @@ class m170313_071528_createLoginLogTable extends Migration
         }
         $this->addPrimaryKey('login_log_pk', Login::tableName(), 'guid');
         $this->createIndex('login_log_id_unique', Login::tableName(), ['guid', 'id'], true);
+        $this->createIndex('login_log_created_at_normal', Login::tableName(), 'created_at');
+        $this->createIndex('login_log_status_normal', Login::tableName(), 'status');
+        $this->createIndex('login_log_device_normal', Login::tableName(), 'device');
         $this->addForeignKey('login_log_creator_fk', Login::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
     }
 

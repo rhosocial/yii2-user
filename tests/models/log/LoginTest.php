@@ -35,7 +35,13 @@ class LoginTest extends TestCase
     protected function setUp() {
         parent::setUp();
         $this->user = new User(['password' => $this->password1]);
-        $this->assertTrue($this->user->register());
+        $result = $this->user->register();
+        if (!is_bool($result)) {
+            echo $result->getMessage();
+            $this->fail();
+        }
+        $this->assertTrue($result);
+        $this->assertTrue(is_numeric($this->user->getID()));
     }
 
     protected function tearDown() {

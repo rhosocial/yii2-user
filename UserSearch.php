@@ -100,7 +100,7 @@ class UserSearch extends Model
         /* @var $query BaseUserQuery */
         $userClass = $this->userClass;
         $query = $query->from("{$userClass::tableName()} {$this->userAlias}");
-        $noInitUser = new $userClass;
+        $noInitUser = $userClass::buildNoInitModel();
         /* @var $noInitUser User */
         $profileClass = $noInitUser->profileClass;
         if (!empty($profileClass)) {

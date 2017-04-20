@@ -21,13 +21,14 @@ use rhosocial\user\security\PasswordHistory;
  * This migration is equivalent to:
 ```SQL
 CREATE TABLE `password_history` (
-  `guid` varbinary(16) NOT NULL COMMENT 'Password GUID',
-  `user_guid` varbinary(16) NOT NULL COMMENT 'Created By',
-  `created_at` datetime NOT NULL COMMENT 'Created At',
-  `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
-  PRIMARY KEY (`guid`),
-  KEY `user_password_fk` (`user_guid`),
-  CONSTRAINT `user_password_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
+    `guid` varbinary(16) NOT NULL COMMENT 'Password GUID',
+    `user_guid` varbinary(16) NOT NULL COMMENT 'Created By',
+    `created_at` datetime NOT NULL COMMENT 'Created At',
+    `pass_hash` varchar(80) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Password Hash',
+    PRIMARY KEY (`guid`),
+    KEY `user_password_fk` (`user_guid`),
+    KEY `user_password_created_at_normal` (`created_at`) USING BTREE,
+    CONSTRAINT `user_password_fk` FOREIGN KEY (`user_guid`) REFERENCES `user` (`guid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Password History';
 ```
  *
@@ -55,6 +56,7 @@ class M170307150614CreatePasswordHistoryTable extends Migration
         }
         $this->addPrimaryKey('password_guid_pk', PasswordHistory::tableName(), 'guid');
         $this->addForeignKey('user_password_fk', PasswordHistory::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_password_created_at_normal', PasswordHistory::tableName(), 'created_at');
     }
 
     public function down()
