@@ -18,6 +18,7 @@ use rhosocial\user\models\log\UserLoginTrait;
 use rhosocial\user\security\UserPasswordHistoryTrait;
 use Yii;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
 use yii\behaviors\AttributeBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
@@ -184,12 +185,18 @@ class User extends BaseUserModel
 
     /**
      * @param Event $event
+     * @return bool|string|array
      */
     public function onInvalidTags($event)
     {
+        try {
+            $cache = Yii::$app->get('cache');
+        } catch (InvalidConfigException $ex) {
+            return true;
+        }
         $sender = $event->sender;
         /*@var $sender static */
-        return TagDependency::invalidate(Yii::$app->cache, $sender->getCacheTag());
+        return TagDependency::invalidate($cache, $sender->getCacheTag());
     }
 
     /**
