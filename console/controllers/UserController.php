@@ -13,6 +13,7 @@
 namespace rhosocial\user\console\controllers;
 
 use Faker\Factory;
+use rhosocial\base\helpers\Timezone;
 use rhosocial\user\User;
 use rhosocial\user\Profile;
 use yii\console\Controller;
@@ -326,6 +327,7 @@ class UserController extends Controller
         $total = (int)$total;
         $acc = 0;
         $time = time();
+        $timezones = array_keys(Timezone::generateList());
         $genders = [Profile::GENDER_MALE, Profile::GENDER_FEMALE, Profile::GENDER_UNSPECIFIED];
         for ($i = 1; $i <= $total; $i++) {
             $user = new $userClass(['password' => $password]);
@@ -338,18 +340,21 @@ class UserController extends Controller
                     'nickname' => $faker->titleMale,
                     'first_name' => $faker->firstNameMale,
                     'last_name' => $faker->lastName,
+                    'timezone' => $faker->randomElement($timezones),
                 ]);
             } elseif ($gender == Profile::GENDER_FEMALE) {
                 $profile = $user->createProfile([
                     'nickname' => $faker->titleFemale,
                     'first_name' => $faker->firstNameFemale,
                     'last_name' => $faker->lastName,
+                    'timezone' => $faker->randomElement($timezones),
                 ]);
             } else {
                 $profile = $user->createProfile([
                     'nickname' => $faker->title,
                     'first_name' => $faker->firstName,
                     'last_name' => $faker->lastName,
+                    'timezone' => $faker->randomElement($timezones),
                 ]);
             }
             $profile->gender = $gender;
@@ -367,7 +372,7 @@ class UserController extends Controller
             $acc++;
             if ($acc % 10 == 0) {
                 $percent = (float)$i / $total * 100;
-                echo "10 users registered($percent% finished).\n";
+                echo "$acc users registered($percent% finished).\n";
             }
         }
         $consumed = time() - $time;
@@ -396,7 +401,7 @@ class UserController extends Controller
             }
             $acc++;
             if ($acc % 10 == 0) {
-                echo "10 users deregistered.\n";
+                echo "$acc users deregistered.\n";
             }
         }
         $consumed = time() - $time;
