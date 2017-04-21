@@ -392,6 +392,8 @@ class UserController extends Controller
         $userClass = $this->checkUserClass();
         $acc = 0;
         $time = time();
+        $total = (int)$userClass::find()->andWhere(['source' => 'console_test'])->count();
+        echo "$total users maybe deregistered.\n";
         foreach ($userClass::find()->andWhere(['source' => 'console_test'])->each() as $user) {
             try {
                 $user->deregister();
@@ -401,7 +403,8 @@ class UserController extends Controller
             }
             $acc++;
             if ($acc % 10 == 0) {
-                echo "$acc users deregistered.\n";
+                $percent = (float)$acc / $total * 100;
+                echo "$acc users deregistered($percent% finished).\n";
             }
         }
         $consumed = time() - $time;
