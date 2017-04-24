@@ -101,4 +101,5 @@ return [
     'No users meet the search criteria found.' => '没有找到符合搜索条件的用户。',
     'No users found.' => '没有找到用户。',
     'Back to User List' => '返回用户列表',
+    'If you are not a user, you can register first.' => '如果您还不是用户，可以先注册。',
 ];

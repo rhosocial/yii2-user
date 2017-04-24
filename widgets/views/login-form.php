@@ -16,6 +16,7 @@ use yii\bootstrap\ActiveForm;
 
 /* @var $model LoginForm */
 /* @var $this yii\web\View */
+/* @var $tip string */
 $css = <<<EOT
 div.required label.control-label:after {
     content: " *";
@@ -25,6 +26,9 @@ EOT;
 $this->registerCss($css);
 ?>
 <div class="site-login">
+    <?php if (!empty($tip)) : ?>
+        <p><?= $tip ?></p>
+    <?php endif; ?>
     <p><?= Yii::t('user', 'Please fill out the following fields to login:') ?></p>
 
     <?php $form = ActiveForm::begin([

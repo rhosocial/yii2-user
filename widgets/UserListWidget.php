@@ -85,6 +85,10 @@ class UserListWidget extends Widget
         }
     }
 
+    /**
+     * Run action.
+     * @return string
+     */
     public function run()
     {
         return $this->render('user-list', [

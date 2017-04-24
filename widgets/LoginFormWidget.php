@@ -13,6 +13,7 @@
 namespace rhosocial\user\widgets;
 
 use rhosocial\user\forms\LoginForm;
+use Yii;
 use yii\base\Widget;
 
 /**
@@ -21,17 +22,35 @@ use yii\base\Widget;
  */
 class LoginFormWidget extends Widget
 {
+    /**
+     * @var LoginForm
+     */
     public $model;
-    
+
+    /**
+     * @var string
+     */
+    public $tip;
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (is_null($this->model) || !($this->model instanceof LoginForm)) {
             $this->model = new LoginForm();
         }
     }
-    
+
+    /**
+     * Run action.
+     * @return string
+     */
     public function run()
     {
-        return $this->render('login-form', ['model' => $this->model]);
+        return $this->render('login-form', [
+            'tip' => $this->tip,
+            'model' => $this->model
+        ]);
     }
 }
