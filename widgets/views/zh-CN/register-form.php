@@ -26,7 +26,11 @@ EOT;
 $this->registerCss($css);
 ?>
 <div class="site-login">
-    <p><?= Yii::t('user', 'Please fill out the following fields to register:') ?></p>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <p><?= Yii::t('user', 'Please fill out the following fields to register:') ?></p>
+        </div>
+    </div>
 
     <?php $form = ActiveForm::begin([
         'id' => 'register-form',

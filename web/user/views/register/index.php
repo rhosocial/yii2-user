@@ -17,3 +17,10 @@ $this->title = Yii::t('user', 'Register');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $result = \rhosocial\user\widgets\RegisterFormWidget::widget(['model' => $model]); ?>
+<hr>
+<p><?= Yii::t('user', 'If you are already a user, you can login.') ?></p>
+<?= \yii\helpers\Html::a(Yii::t('user', 'Login'), [
+    '/user/auth/login',
+], [
+    'class' => 'btn btn-primary',
+]) ?>

@@ -102,5 +102,6 @@ return [
     'No users found.' => '没有找到用户。',
     'Back to User List' => '返回用户列表',
     'If you are not a user, you can register first.' => '如果您还不是用户，可以先注册。',
-    'If you want to register new users consecutively, check this option.' => '如果您想连续注册新用户，请勾选该选项。',
+    'If you want to register new users consecutively, check this option.' => '如果您想连续注册新用户，请勾选此选项。',
+    'If you are already a user, you can login.' => '如果您已经是用户，可以直接登录。',
 ];

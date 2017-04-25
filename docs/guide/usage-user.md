@@ -29,6 +29,9 @@ class User extends \rhosocial\user\User
 
 ## Register a user
 
+We do not recommend that you save the new user instance directly to the database,
+please use the `register()` method instead.
+
 ```php
 try {
     $result = $user->register();
@@ -45,6 +48,8 @@ try {
 } catch (\Exception $ex) {
 }
 ```
+
+If the return value is `true`, it means success. 
 
 ### Get IP Address used for registration
 
@@ -82,6 +87,9 @@ profile modified, please refer to [Profile](usage-profile.md).
 
 ## Deregister a user
 
+We also do not recommend that you delete the user from database directly,
+please use `deregister()` method instead.
+
 The `deregister()` method would throw exception when user de-registration failed,
 so you should wrap it into try-catch block.
 
@@ -92,7 +100,7 @@ try {
 }
 ```
 
-If returned result is true, it means successful.
+If the return value is true, it means success.
 
 ## Change password
 
@@ -134,7 +142,7 @@ This is to prevent data inconsistency, because it is possible that password rese
 
 Each user can have a profile. We provide a default Profile class. [How to use it](usage-profile.md)
 
-Before creating a Profile, you need to specify the name of the Profile class:
+Before creating a `Profile`, you need to specify the name of the `Profile` class:
 
 ```php
 $user->profileClass = Profile::className();
@@ -145,7 +153,7 @@ It is not associated with any Profile model by default.
 When you create a Profile model, the `createProfile()` will check whether the `Profile` class exists in the current namespace.
 If so, then use it. If not, the `rhosocial\user\Profile` will be used.
 
-If they are not what you want, you can also customize the full qualified name of your Profile model.
+If they are not what you want, you can also customize the full qualified name of your `Profile` model.
 
 ### Get Profile
 
@@ -156,17 +164,19 @@ Note. If you want to get updated Profile model after profile updated, you should
 ## Best Practices
 
 - We do not recommend you do any changes on this class, unless you know the consequences of doing so.
-If you feel that the functions is not enough or does not meet your
+If you feel that the functions are not enough or do not meet your
 requirements, please implement a new `User` model and inherited from mine.
 - Once the GUID generated, it is not recommended to modify it throughout
 the user's lifecycle.
 - Since the user ID is allowed to be modified, it is not recommended to use
 the ID as a flag for fixing the user.
 - If you feel that the default random assignment ID does not meet your
-requirements, you can override the generateId () static method yourself.
+requirements, you can override the `generateId()` static method yourself.
 - `status`, `type`, `source` attributes do not achieve specific functions,
 these three need you according to the actual situation to develop the
 corresponding functions.
 - `pass_hash`, `created_at`, `updated_at`, `auth_key`, `access_token`,
 `password_reset_token` are not recommended for direct accessing or
 modification.
+- `guid`, `pass_hash`, `auth_key`, `access_token`, `password_reset_token` are
+sensitive data, you should prevent from exposing them to public.
