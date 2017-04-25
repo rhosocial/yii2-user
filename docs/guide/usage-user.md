@@ -3,6 +3,9 @@
 ## Concepts
 
 - table name: `{{%user}}`
+- The user GUID & ID are automatically generated when registering.
+- Only save password hash value, and the same password may not
+mean the same hash.
 
 ## Preparation
 
@@ -73,6 +76,10 @@ $updatedAt = $user->updatedAt;
 
 If you have defined a field named `updatedAt`, you should use `$user->getUpdatedAt()` method instead.
 
+> Note: This attribute records the last time this user's attributes were modified and
+does not involve its profile. If you want to know the last time the
+profile modified, please refer to [Profile](usage-profile.md).
+
 ## Deregister a user
 
 The `deregister()` method would throw exception when user de-registration failed,
@@ -85,6 +92,8 @@ try {
 }
 ```
 
+If returned result is true, it means successful.
+
 ## Change password
 
 ### Change directly:
@@ -94,7 +103,7 @@ $user->password = '<New Password>' // $password is write-only.
 $user->save();                     // 
 ```
 
-The `password` property is a magic one, it's origined from `setPassword()` method,
+The `password` property is a magic one, it's originated from `setPassword()` method,
 therefore it can only be set.
 
 or
@@ -108,7 +117,8 @@ $result = $user->applyForNewPassword();
 
 then, the $eventPasswordResetTokenGenerated event will be triggered.
 
-you can access `$password_reset_token` attribute to obtain reset token and notify user by some ways (e.g. email, SMS).
+you can access `$password_reset_token` attribute to obtain reset token and notify user by some ways
+(e.g. email, SMS. the specific method requires your own implementation).
 
 When a user provides new password, you also need to check the password reset token:
 
@@ -145,4 +155,18 @@ Note. If you want to get updated Profile model after profile updated, you should
 
 ## Best Practices
 
-We do not recommend you do any changes on this class, unless you know the consequences of doing so.
+- We do not recommend you do any changes on this class, unless you know the consequences of doing so.
+If you feel that the functions is not enough or does not meet your
+requirements, please implement a new `User` model and inherited from mine.
+- Once the GUID generated, it is not recommended to modify it throughout
+the user's lifecycle.
+- Since the user ID is allowed to be modified, it is not recommended to use
+the ID as a flag for fixing the user.
+- If you feel that the default random assignment ID does not meet your
+requirements, you can override the generateId () static method yourself.
+- `status`, `type`, `source` attributes do not achieve specific functions,
+these three need you according to the actual situation to develop the
+corresponding functions.
+- `pass_hash`, `created_at`, `updated_at`, `auth_key`, `access_token`,
+`password_reset_token` are not recommended for direct accessing or
+modification.

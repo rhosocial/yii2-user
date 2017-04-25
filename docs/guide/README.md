@@ -4,6 +4,11 @@ This extension provides two common models:
 - User
 - Profile
 
+And a SimpleProfile model, added `email` and `phone` attributes
+compared with Profile model.
+
+We also provide a UserSearch model for searching user.
+
 ## Getting Started
 
 - [Installation](Installation.md)

@@ -32,8 +32,8 @@ $this->registerCss($css);
         'id' => 'register-form',
         'layout' => 'horizontal',
         'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-7\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-2 control-label'],
         ],
     ]); ?>
 
@@ -49,10 +49,12 @@ $this->registerCss($css);
 
         <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
 
-        <?= $form->field($model, 'continue')->checkbox() ?>
+        <?= $form->field($model, 'continue')->checkbox([
+            'template' => "<div class=\"col-lg-offset-2 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-7\">{hint}</div>",
+        ]) ?>
 
         <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
+            <div class="col-lg-offset-2 col-lg-10">
                 <?= Html::submitButton(Yii::t('user', 'Register'), ['class' => 'btn btn-primary', 'name' => 'register-button']) ?>
             </div>
         </div>
