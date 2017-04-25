@@ -49,7 +49,9 @@ $this->registerCss($css);
 
         <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
 
-        <?= $form->field($model, 'continue')->checkbox() ?>
+        <?= $form->field($model, 'continue')->checkbox([
+            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{hint}</div>",
+        ]) ?>
 
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">

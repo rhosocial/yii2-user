@@ -31,6 +31,9 @@ class RegisterForm extends Model
     public $model = null;
     public $continue = false;
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
@@ -44,6 +47,19 @@ class RegisterForm extends Model
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'continue' => Yii::t('user', 'If you want to register new users consecutively, check this option.'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         if (empty($this->userClass)) {
@@ -51,6 +67,9 @@ class RegisterForm extends Model
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -64,6 +83,10 @@ class RegisterForm extends Model
         ];
     }
 
+    /**
+     * Register user with current model.
+     * @return bool
+     */
     public function register()
     {
         if ($this->validate()) {
