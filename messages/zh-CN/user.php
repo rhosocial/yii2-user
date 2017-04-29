@@ -104,4 +104,13 @@ return [
     'If you are not a user, you can register first.' => '如果您还不是用户，可以先注册。',
     'If you want to register new users consecutively, check this option.' => '如果您想连续注册新用户，请勾选此选项。',
     'If you are already a user, you can login.' => '如果您已经是用户，可以直接登录。',
+    'Failed to Register' => '未能注册',
+    'Registered' => '已注册',
+    'Congratulations' => '恭喜',
+    'You have successfully registered!' => '您已成功注册！',
+    'Your ID is:' => '您的帐号是：',
+    'Please keep in mind your account!' => '请牢记您的账号！',
+    'And use the password just fill in the registration:' => '并使用刚才注册时填写的密码登录：',
+    'Sorry' => '抱歉',
+    'Registration failed.' => '注册失败了。',
 ];

@@ -71,13 +71,16 @@ class AuthController extends Controller
      *
      * @return string
      */
-    public function actionLogin()
+    public function actionLogin($id = '')
     {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
         $model = new LoginForm();
+        if (!empty($id) && is_numeric($id)) {
+            $model->id = $id;
+        }
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }

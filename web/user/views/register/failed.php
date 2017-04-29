@@ -12,7 +12,13 @@
 
 /* @var $message string */
 
-$this->title = Yii::t('user', 'Register Failed');
+$this->title = Yii::t('user', 'Failed to Register');
 $this->params['breadcrumbs'][] = $this->title;
 
-echo $message;
+?>
+<div class="jumbotron">
+    <h1><?= Yii::t('user', 'Sorry') ?></h1>
+
+    <p class="lead"><?= Yii::t('user', 'Registration failed.') ?></p>
+
+</div>
