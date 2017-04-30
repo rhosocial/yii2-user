@@ -15,7 +15,7 @@ use rhosocial\user\widgets\ProfileFormWidget;
 use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $user User */
-/* @var $profile Profile */
+/* @var $model Profile */
 $this->title = Yii::t('user', 'Update User') . ' (' . $user->getID() . ')';
 $this->params['breadcrumbs'][] = Yii::t('user', 'Update User');
 echo ProfileFormWidget::widget(['model' => $model]);
@@ -23,7 +23,7 @@ echo ProfileFormWidget::widget(['model' => $model]);
 <h3><?= Yii::t('user', 'Other operations') ?></h3>
 <hr>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-12">
         <?= Html::a(Yii::t('user', 'Back to User List'), [
             'index',
         ], ['class' => 'btn btn-primary']) ?>

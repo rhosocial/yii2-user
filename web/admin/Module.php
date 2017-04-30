@@ -20,4 +20,9 @@ namespace rhosocial\user\web\admin;
 class Module extends \yii\base\Module
 {
     public $defaultRoute = 'user';
+
+    const RESULT_SUCCESS = 'success';
+    const RESULT_FAILED = 'failed';
+    const SESSION_KEY_MESSAGE = 'session_key_message';
+    const SESSION_KEY_RESULT = 'session_key_result';
 }

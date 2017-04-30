@@ -16,6 +16,7 @@ use rhosocial\user\User;
 use rhosocial\user\Profile;
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
+use rhosocial\user\web\admin\Module;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -145,8 +146,8 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if (($result = $model->register()) === true) {
-                    Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
-                    Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
+                    Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_SUCCESS);
+                    Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $model->model->getID() . ') ' . $this->registerSuccessMessage);
                     return $this->redirect($model->continue ? '' : ['index']);
                 }
                 if ($result instanceof \Exception) {
@@ -154,8 +155,8 @@ class UserController extends Controller
                 }
             } catch (\Exception $ex) {
                 Yii::error($ex->getMessage(), __METHOD__);
-                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
-                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, $ex->getMessage());
+                Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_FAILED);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, $ex->getMessage());
             }
         }
         return $this->render('register-new-user', ['model' => $model]);
@@ -205,8 +206,8 @@ class UserController extends Controller
         if ($result !== true) {
             throw new ServerErrorHttpException(Yii::t('user', 'Failed to deregister user.'));
         }
-        Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
-        Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->deregisterSuccessMessage);
+        Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_SUCCESS);
+        Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->deregisterSuccessMessage);
         return $this->redirect(['index']);
     }
 
@@ -234,12 +235,12 @@ class UserController extends Controller
                 throw new BadRequestHttpException(Yii::t('user', 'Please do not forge parameters.'));
             }
             if ($model->save()) {
-                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
-                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_SUCCESS);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
                 return $this->redirect(['update', 'id' => $id]);
             }
-            Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
-            Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
+            Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_FAILED);
+            Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
         }
         return $this->render('update', ['user' => $user, 'model' => $model]);
     }
@@ -254,12 +255,12 @@ class UserController extends Controller
         $model = new ChangePasswordForm(['user' => $user, 'scenario' => ChangePasswordForm::SCENARIO_ADMIN]);
         if ($model->load(Yii::$app->request->post())){
             if ($model->changePassword()) {
-                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_SUCCESS);
-                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_SUCCESS);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateSuccessMessage);
                 return $this->redirect(['index', 'id' => $id]);
             } else {
-                Yii::$app->session->setFlash(self::SESSION_KEY_RESULT, self::RESULT_FAILED);
-                Yii::$app->session->setFlash(self::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_FAILED);
+                Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $user->getID() . ') ' . $this->updateFailedMessage);
             }
         }
         return $this->render('change-password', ['model' => $model]);
