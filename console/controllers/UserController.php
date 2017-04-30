@@ -349,13 +349,6 @@ class UserController extends Controller
                     'last_name' => $faker->lastName,
                     'timezone' => $faker->randomElement($timezones),
                 ]);
-            } else {
-                $profile = $user->createProfile([
-                    'nickname' => $faker->title,
-                    'first_name' => $faker->firstName,
-                    'last_name' => $faker->lastName,
-                    'timezone' => $faker->randomElement($timezones),
-                ]);
             }
             $profile->gender = $gender;
             /* @var $profile Profile */

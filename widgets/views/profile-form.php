@@ -24,6 +24,7 @@ div.required label.control-label:after {
 }
 EOT;
 $this->registerCss($css);
+$profileClass = Yii::$app->user->identity->profileClass;
 ?>
 <div class="site-login">
     <p><?= Yii::t('user', 'Please fill out the following fields to update profile:') ?></p>
@@ -43,7 +44,7 @@ $this->registerCss($css);
 
         <?= $form->field($model, 'last_name')->textInput() ?>
 
-        <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
+        <?= $form->field($model, 'gender')->dropDownList($profileClass::getGenderDescs()) ?>
 
         <?= $form->field($model, 'timezone')->dropDownList(Timezone::generateList()) ?>
 

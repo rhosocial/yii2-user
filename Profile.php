@@ -119,12 +119,11 @@ class Profile extends BaseBlameableModel
         ];
     }
 
-    const GENDER_UNSPECIFIED = 0;
+    const GENDER_UNSPECIFIED = 0xffff;
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
     public static $genders = [
-        self::GENDER_UNSPECIFIED => 'Unspecified',
         self::GENDER_MALE => 'Male',
         self::GENDER_FEMALE => 'Female',
     ];
@@ -138,7 +137,7 @@ class Profile extends BaseBlameableModel
     public function getGenderRules()
     {
         return [
-            ['gender', 'default', 'value' => 0],
+            ['gender', 'default', 'value' => self::GENDER_MALE],
             ['gender', 'in', 'range' => array_keys(static::$genders)],
         ];
     }
@@ -162,7 +161,11 @@ class Profile extends BaseBlameableModel
 
     public static function getGenderDescsWithEmpty()
     {
-        return array_merge(['' => Yii::t('user', 'All')], static::getGenderDescs());
+        $genders[''] = Yii::t('user', 'All');
+        foreach (self::$genders as $key => $gender) {
+            $genders[$key] = static::getGenderDesc($key);
+        }
+        return $genders;
     }
 
     public function getGravatarRules()
