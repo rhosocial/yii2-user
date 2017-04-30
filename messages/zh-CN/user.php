@@ -113,4 +113,5 @@ return [
     'And use the password just fill in the registration:' => '并使用刚才注册时填写的密码登录：',
     'Sorry' => '抱歉',
     'Registration failed.' => '注册失败了。',
+    'Me' => '我',
 ];
