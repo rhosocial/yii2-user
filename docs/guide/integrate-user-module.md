@@ -20,6 +20,26 @@ $config = [
 ];
 ```
 
+If you want to attach more controllers or override existed controllers,
+you can specify `controllerMap` property of `user` Module, like following:
+```php
+$config = [
+    ...
+    'modules' => [
+        ...
+        'user' => [
+            'class' => 'rhosocial\user\web\user\Module',
+            'controllerMap' => [
+                'article' => [
+                    'class' => <Article Controller Class>
+                ],
+                ...
+            ],
+        ],
+    ],
+];
+```
+
 ### Replace `login` & `logout` action with our own
 
 `loginUrl` of `User` component:

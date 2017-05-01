@@ -328,7 +328,7 @@ class UserController extends Controller
         $acc = 0;
         $time = time();
         $timezones = array_keys(Timezone::generateList());
-        $genders = [Profile::GENDER_MALE, Profile::GENDER_FEMALE, Profile::GENDER_UNSPECIFIED];
+        $genders = [Profile::GENDER_MALE, Profile::GENDER_FEMALE];
         for ($i = 1; $i <= $total; $i++) {
             $user = new $userClass(['password' => $password]);
             $user->source = 'console_test';
