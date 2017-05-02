@@ -3,9 +3,10 @@
 ## Concepts
 
 - table name: `{{%user}}`
-- The user GUID & ID are automatically generated when registering.
+- The user's GUID & ID are automatically generated when registering.
 - Only save password hash value, and the same password may not
 mean the same hash.
+- If the user has profile, its GUID is same as the user's.
 
 ## Preparation
 
@@ -26,6 +27,37 @@ class User extends \rhosocial\user\User
 {
 }
 ```
+
+## Generate User GUID
+
+This feature comes from the `GUIDTrait` of yii2-base-models.
+
+By default, the user GUID is the same as the GUID of other models, which is a
+128-bit string, 16 bytes.
+
+This value is used to uniquely identify a user. Therefore, in a relational
+database, the column that holds the value should be set as the primary key; at
+the same time, the table that holds the other user-related model should also
+be referenced, that is, a model belongs to a user.
+
+Based on the above description, we do not recommend that you modify this value
+after the user registered. If you use a non-relational database, you will need
+to ensure data consistency yourself.
+
+## Generate User ID
+
+By default, an 8-digit number starting with 4 is randomly generated during user
+registration. Therefore, the ID attribute is empty before calling the
+[[User::register()]] method.
+
+The theoretical maximum number of users is 10 million, but we suggest that the
+actual number of users should not exceed one-tenth of the theoretical value,
+because when there are already many users, the probability of generating
+random numbers will be high, in order to ensure uniqueness of ID, the frequency
+of access to the database will be higher and higher.
+
+If you do not want to use the default `generateId()` method, you can inherit `User`
+model and override it.
 
 ## Register a user
 
@@ -73,7 +105,7 @@ $createdAt = $user->createdAt;
 
 If you have defined a field named `createdAt`, you should use `$user->getCreatedAt()` method instead.
 
-### Get the last update time
+### Get the last updated time
 
 ```php
 $updatedAt = $user->updatedAt;
@@ -160,6 +192,61 @@ If they are not what you want, you can also customize the full qualified name of
 You can simply access `$user->profile` to get Profile model. It is a magic property defined by `getProfile()` method.
 
 Note. If you want to get updated Profile model after profile updated, you should unset the `$user->profile` magic property first.
+
+## Use with other models
+
+If some of the models logically belong to a user (for example, the `Profile` described above),
+in order to facilitate the secondary development, we make the following agreement:
+
+### SubsidiaryMap
+
+This feature comes from yii2-base-models.
+
+You can add the class name and parameters of the model associated
+with user to the `subsidiaryMap` property, like following:
+
+```php
+$user->addSubsidiary('article', [
+    'class' => 'app\models\user\Article'
+];
+```
+
+Or, you can directly define the `subsidiaryMap` property like following:
+
+```php
+public $subsidiaryMap = [
+    'article' => [
+        'class' => 'app\models\user\Article',
+    ],
+];
+```
+
+You need to make sure that the array keys are lowercase and that the defined
+class does exist.
+
+Then you can create `Article` model by magic-method, like following:
+
+```php
+$article = $user->createArticle(<Configuration Array>);
+```
+
+The author of the article has been set to the `$user`.
+
+In order to facilitate secondary development, you can add the definition of
+this magic method in the annotation.
+
+### Active Record Relations
+
+You need to define your own Active Record relations, like following:
+
+```php
+public function getArticles()
+{
+    return $this->hasMany($this->getSubsidiaryClass('article'), [
+        'author_guid' => $this->guidAttribute,
+    ]);
+}
+```
 
 ## Best Practices
 

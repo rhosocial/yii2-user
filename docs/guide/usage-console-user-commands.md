@@ -38,6 +38,14 @@ We suggest the number not too much, otherwise it may consume a long time.
 
 After the command is run, each time 10 users are generated, a progress prompt is output.
 
+Since the user ID needs to be unique, the registration time may be longer and
+longer as the number of users increases, since the randomly generated ID may be
+duplicated, so the database needs to be accessed repeatedly.
+
+By default, the user ID is an 8-digit number beginning with 4, so the maximum number
+of users is 10 million. But we recommend that the actual number of users should be
+one-tenth of the theoretical value. Otherwise, the time spent by the registered user
+may be unbearable.
 
 ## Register New User
 
