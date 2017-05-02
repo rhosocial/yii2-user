@@ -115,4 +115,5 @@ return [
     'Sorry' => '抱歉',
     'Registration failed.' => '注册失败了。',
     'Me' => '我',
+    'We will assign an ID for you after registration.' => '我们会在注册后为您分配账号。',
 ];

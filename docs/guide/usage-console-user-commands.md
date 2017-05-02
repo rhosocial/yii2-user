@@ -23,7 +23,7 @@ the `controllerMap` property of configuration of the console application:
 ## Add Test Users
 
 ```
-yii user/add-test-users <total=1000>
+yii user/add-test-users <total=1000> <password=123456>
 ```
 
 We provide the command to add the test user, whose personal
@@ -31,9 +31,11 @@ information is generated randomly.
 
 By default, 1000 users are generated at one time.
 If you want to specify the number of users generated at once, you can add a number after the command, like following:
+
 ```
 yii user/add-test-users 100
 ```
+
 We suggest the number not too much, otherwise it may consume a long time.
 
 After the command is run, each time 10 users are generated, a progress prompt is output.
@@ -46,6 +48,10 @@ By default, the user ID is an 8-digit number beginning with 4, so the maximum nu
 of users is 10 million. But we recommend that the actual number of users should be
 one-tenth of the theoretical value. Otherwise, the time spent by the registered user
 may be unbearable.
+
+Users registered with this command have the source attribute of `console_test`.
+Therefore, remove the test user, in fact, is to deregister the user whose source
+attribute is `console_test`.
 
 ## Register New User
 

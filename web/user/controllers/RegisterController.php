@@ -13,6 +13,7 @@
 namespace rhosocial\user\web\user\controllers;
 
 use rhosocial\user\forms\RegisterForm;
+use rhosocial\user\web\user\Module;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -24,6 +25,8 @@ use yii\web\ForbiddenHttpException;
  */
 class RegisterController extends Controller
 {
+    public $layout = 'main';
+
     const SESSION_KEY_REGISTER_USER_ID = 'session_key_register_user_id';
     const SESSION_KEY_REGISTER_FAILED_MESSAGE = 'session_key_register_failed_message';
 
@@ -68,12 +71,20 @@ class RegisterController extends Controller
         ];
     }
 
+    /**
+     * @return string|\yii\web\Response
+     */
     public function actionIndex()
     {        
         $model = new RegisterForm();
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if (($result = $model->register()) === true) {
+                    if ($model->continue) {
+                        Yii::$app->session->setFlash(Module::SESSION_KEY_RESULT, Module::RESULT_SUCCESS);
+                        Yii::$app->session->setFlash(Module::SESSION_KEY_MESSAGE, '(' . $model->model->getID() . ') ' . Yii::t('user', 'User Registered.'));
+                        return $this->redirect(['index']);
+                    }
                     Yii::$app->session->setFlash(self::SESSION_KEY_REGISTER_USER_ID, $model->model->getID());
                     return $this->redirect(['success']);
                 }
@@ -91,6 +102,9 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * @return string|\yii\web\Response
+     */
     public function actionSuccess()
     {
         $id = Yii::$app->session->getFlash(self::SESSION_KEY_REGISTER_USER_ID);

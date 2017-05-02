@@ -29,7 +29,7 @@ class RegisterForm extends Model
     public $gender = 1;
     public $userClass;
     public $model = null;
-    public $continue = false;
+    public $continue = 0;
 
     /**
      * @inheritdoc

@@ -36,7 +36,7 @@ $this->registerCss($css);
         'id' => 'register-form',
         'layout' => 'horizontal',
         'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-7\">{error}</div>",
+            'template' => "{label}\n<div class=\"col-lg-5\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>",
             'labelOptions' => ['class' => 'col-lg-2 control-label'],
         ],
     ]); ?>
@@ -54,7 +54,7 @@ $this->registerCss($css);
         <?= $form->field($model, 'gender')->dropDownList(Profile::getGenderDescs()) ?>
 
         <?= $form->field($model, 'continue')->checkbox([
-            'template' => "<div class=\"col-lg-offset-2 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-7\">{hint}</div>",
+            'template' => "<div class=\"col-lg-offset-2 col-lg-10\">{input} {label}</div>\n<div class=\"col-lg-offset-2 col-lg-12\">{hint}</div>",
         ]) ?>
 
         <div class="form-group">

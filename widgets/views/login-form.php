@@ -29,14 +29,16 @@ $this->registerCss($css);
     <?php if (!empty($tip)) : ?>
         <p><?= $tip ?></p>
     <?php endif; ?>
-    <p><?= Yii::t('user', 'Please fill out the following fields to login:') ?></p>
+    <div class="col-lg-offset-2 col-lg-10">
+        <p><?= Yii::t('user', 'Please fill out the following fields to login:') ?></p>
+    </div>
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'layout' => 'horizontal',
         'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+            'template' => "{label}\n<div class=\"col-lg-5\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-2 control-label'],
         ],
     ]); ?>
 
@@ -45,11 +47,11 @@ $this->registerCss($css);
         <?= $form->field($model, 'password')->passwordInput() ?>
 
         <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+            'template' => "<div class=\"col-lg-offset-2 col-lg-5\">{input} {label}</div>\n<div class=\"col-lg-5\">{error}</div>",
         ]) ?>
 
         <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
+            <div class="col-lg-offset-2 col-lg-10">
                 <?= Html::submitButton(Yii::t('user', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
         </div>

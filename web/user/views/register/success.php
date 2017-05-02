@@ -13,8 +13,8 @@
 use yii\helpers\Html;
 /* @var $id string */
 
-$this->title = Yii::t('user', 'Registered');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'User Registered');
+$this->params['breadcrumbs'] = [$this->title];
 
 ?>
 <div class="jumbotron">
