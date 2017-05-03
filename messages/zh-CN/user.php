@@ -60,6 +60,7 @@ return [
     'To' => '到',
     'User Registered.' => '用户已注册。',
     'Register Failed' => '注册失败',
+    'Failed to register.' => '注册失败。',
     'Admin' => '管理',
     'User Not Found.' => '用户未找到。',
     'You cannot deregister yourself.' => '您不能删除自己。',

@@ -13,7 +13,7 @@
 use yii\helpers\Html;
 /* @var $id string */
 
-$this->title = Yii::t('user', 'User Registered');
+$this->title = Yii::t('user', 'User Registered.');
 $this->params['breadcrumbs'] = [$this->title];
 
 ?>
