@@ -120,4 +120,5 @@ return [
     'We will assign an ID for you after registration.' => '我们会在注册后为您分配账号。',
     'Incorrect ID.' => '账号不正确。',
     'Incorrect ID or password.' => '账号或密码不正确。',
+    'The username should be unique.' => '用户名应当唯一。',
 ];

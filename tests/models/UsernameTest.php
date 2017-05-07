@@ -40,7 +40,7 @@ class UsernameTest extends TestCase
     {
         parent::setUp();
         $this->user = new User(['password' => '123456']);
-        $result = $this->user->register([$this->user->createUsername('vistart')]);
+        $result = $this->user->register([$this->user->createUsername($this->username)]);
         if (!is_bool($result)) {
             echo $result->getMessage();
             $this->fail();
@@ -60,14 +60,14 @@ class UsernameTest extends TestCase
      */
     public function testNormal()
     {
-        $this->assertEquals('vistart', $this->user->username->content);
-        $this->assertEquals('vistart', (string)$this->user->username);
+        $this->assertEquals($this->username, $this->user->username->content);
+        $this->assertEquals($this->username, (string)$this->user->username);
     }
 
     /**
      * @group username
      */
-    public function testSetUsername()
+    public function testSet()
     {
         $this->user->username = $this->username . '1';
         $this->assertEquals($this->username . '1', (string)$this->user->getUsername()->one());
@@ -76,10 +76,30 @@ class UsernameTest extends TestCase
     /**
      * @group username
      */
-    public function testRemoveUsername()
+    public function testRemove()
     {
         $this->assertTrue($this->user->removeUsername());
         $this->assertNull($this->user->getUsername()->one());
         $this->assertTrue($this->user->hasUsername());
+    }
+
+    /**
+     * @group username
+     */
+    public function testUnique()
+    {
+        $this->assertEquals($this->username, (string)$this->user->username);
+        $user = new User(['password' => '123456']);
+        try {
+            $result = $user->register([$user->createUsername($this->username)]);
+            if ($result instanceof \Exception) {
+                throw $result;
+            }
+            $this->fail('Registration should be failed.');
+        } catch (\Exception $ex) {
+            $this->assertNotEmpty($ex->getMessage());
+        }
+        $user = new User(['password' => '123456']);
+        $this->assertTrue($user->register([$user->createUsername($this->username . '1')]));
     }
 }

@@ -22,6 +22,7 @@ We also provide a UserSearch model for searching user.
 - [Using the Login Log model](usage-login-log.md)
 - [Using the Login widget](usage-login-widget.md)
 - [Using the Register widget](usage-register-widget.md)
+- [Using the Username model](usage-username-model.md)
 - [Internationalization](usage-i18n.md)
 
 ## Console commands

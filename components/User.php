@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\components;
 
+use rhosocial\user\models\Username;
 use rhosocial\user\rbac\roles\Admin;
 use rhosocial\user\rbac\roles\Webmaster;
 use yii\base\Event;
@@ -71,7 +72,7 @@ class User extends \rhosocial\base\models\web\User
     {
         return [
             self::LOGIN_BY_ID => \rhosocial\user\User::$idRegex,
-            self::LOGIN_BY_USERNAME => \rhosocial\user\User::$usernameRegex,
+            self::LOGIN_BY_USERNAME => Username::$regex,
         ];
     }
 }

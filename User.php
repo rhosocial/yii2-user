@@ -313,7 +313,7 @@ class User extends BaseUserModel
     /**
      * @var string
      */
-    public static $idRegex = '\d{5,8}';
+    public static $idRegex = '/^\d{5,8}$/';
 
     /**
      * @return array

@@ -14,6 +14,7 @@ namespace rhosocial\user\models;
 
 use rhosocial\base\models\models\BaseBlameableModel;
 use rhosocial\user\User;
+use Yii;
 
 /**
  * Class Username
@@ -31,6 +32,18 @@ class Username extends BaseBlameableModel
     public $updatedByAttribute = false;
 
     public $contentAttributeRule = ['string', 'max' => 32];
+
+    public static $regex = '/^\w{2,32}$/';
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        return array_merge(parent::rules(), [
+            [$this->contentAttribute, 'unique', 'message'=> Yii::t('user', 'The username should be unique.')],
+        ]);
+    }
 
     /**
      * @return string

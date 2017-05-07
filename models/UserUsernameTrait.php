@@ -40,6 +40,7 @@ trait UserUsernameTrait
 
     /**
      * Get username.
+     * This method may return null, please consider processing the abnormal conditions.
      * @return BaseBlameableQuery
      */
     public function getUsername()
