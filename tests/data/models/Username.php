@@ -10,19 +10,17 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\tests\data;
+namespace rhosocial\user\tests\data\models;
 
-use rhosocial\user\tests\data\models\Username;
+use rhosocial\user\tests\data\User;
 
 /**
- * Description of User
- *
+ * Class Username
+ * @package rhosocial\user\tests\data\models
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class User extends \rhosocial\user\User
+class Username extends \rhosocial\user\models\Username
 {
-    public $profileClass = Profile::class;
-    public $passwordHistoryClass = PasswordHistory::class;
-    public $usernameClass = Username::class;
+    public $hostClass = User::class;
 }

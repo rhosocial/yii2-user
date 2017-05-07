@@ -41,7 +41,11 @@ $this->registerCss($css);
         ],
     ]); ?>
 
-        <?= $form->field($model, 'nickname')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($model, 'nickname')->textInput(['autofocus' => true]) ?>
+
+    <?php if (is_string($model->username)): ?>
+        <?= $form->field($model, 'username')->textInput() ?>
+    <?php endif; ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

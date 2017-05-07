@@ -60,14 +60,18 @@ class User extends \rhosocial\base\models\web\User
         return $this->can((new Webmaster)->name, $this->identity);
     }
 
+    const LOGIN_BY_ID = 'id';
+    const LOGIN_BY_USERNAME = 'username';
+
     /**
-     *
+     * Get the priority of login.
+     * @return array
      */
     public function getLoginPriority()
     {
         return [
-            'id' => \rhosocial\user\User::$idRegex,
-            'username' => \rhosocial\user\User::$usernameRegex,
+            self::LOGIN_BY_ID => \rhosocial\user\User::$idRegex,
+            self::LOGIN_BY_USERNAME => \rhosocial\user\User::$usernameRegex,
         ];
     }
 }

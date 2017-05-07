@@ -15,6 +15,7 @@ namespace rhosocial\user;
 use rhosocial\base\models\models\BaseUserModel;
 use rhosocial\base\models\queries\BaseBlameableQuery;
 use rhosocial\user\models\log\UserLoginTrait;
+use rhosocial\user\models\UserUsernameTrait;
 use rhosocial\user\security\UserPasswordHistoryTrait;
 use Yii;
 use yii\base\Event;
@@ -92,35 +93,7 @@ use yii\widgets\ActiveForm;
  */
 class User extends BaseUserModel
 {
-    use UserPasswordHistoryTrait, UserLoginTrait;
-
-    /**
-     * @var string|boolean
-     */
-    public $usernameAttribute = false;
-
-    /**
-     * @return mixed|null
-     */
-    public function getUsername()
-    {
-        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
-            return $this->{$this->usernameAttribute};
-        }
-        return null;
-    }
-
-    /**
-     * @param string $username
-     * @return null|string
-     */
-    public function setUsername($username = '')
-    {
-        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
-            return $this->{$this->usernameAttribute} = $username;
-        }
-        return null;
-    }
+    use UserPasswordHistoryTrait, UserLoginTrait, UserUsernameTrait;
 
     /**
      * @var string
@@ -161,11 +134,6 @@ class User extends BaseUserModel
             'createdAt' => Yii::t('user', 'Registration Time'),
             'updatedAt' => Yii::t('user', 'Last Updated Time'),
         ];
-        if (is_string($this->username) && !empty($this->username)) {
-            $labels = array_merge($labels, [
-                $this->usernameAttribute => Yii::t('user', 'Username'),
-            ]);
-        }
         return $labels;
     }
 
@@ -358,38 +326,11 @@ class User extends BaseUserModel
     }
 
     /**
-     * @var string
+     * Friendly to IDE.
+     * @return UserQuery
      */
-    public static $usernameRegex = '\w{1,32}';
-
-    /**
-     * Get the rules associated with `username` property.
-     * The `username` must not be empty, and its length must not be greater than 32.
-     * This property should be confirmed unique among all users.
-     * If you do not need this property, please override this method and return empty array.
-     * @return array
-     */
-    public function getUsernameRules()
+    public static function find()
     {
-        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
-            return [
-                [$this->usernameAttribute, 'required'],
-                [$this->usernameAttribute, 'string', 'max' => 32],
-                [$this->usernameAttribute, 'unique'],
-            ];
-        }
-        return [];
-    }
-
-    /**
-     * @return array
-     */
-    public function rules()
-    {
-        $rules = $this->getUsernameRules();
-        if (!empty($rules)) {
-            return array_merge(parent::rules(), $rules);
-        }
-        return parent::rules();
+        return parent::find();
     }
 }

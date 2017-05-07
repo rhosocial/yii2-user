@@ -21,12 +21,12 @@ use rhosocial\user\migrations\Migration;
  * This migration is equivalent to:
 ```SQL
 CREATE TABLE `log_login` (
-    `guid` varbinary(16) NOT NULL,
-    `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
-    `user_guid` varbinary(16) NOT NULL,
-    `ip` varbinary(16) NOT NULL DEFAULT '0',
-    `ip_type` smallint(6) NOT NULL DEFAULT '4',
-    `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
+    `guid` varbinary(16) NOT NULL COMMENT 'Login Log GUID',
+    `id` varchar(4) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Login Log ID',
+    `user_guid` varbinary(16) NOT NULL COMMENT 'User GUID',
+    `ip` varbinary(16) NOT NULL DEFAULT '0' COMMENT 'IP Address',
+    `ip_type` smallint(6) NOT NULL DEFAULT '4' COMMENT 'IP Address Type',
+    `created_at` datetime NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT 'Login Time',
     `status` int(11) NOT NULL DEFAULT '0',
     `device` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`guid`),
@@ -51,12 +51,12 @@ class m170313_071528_createLoginLogTable extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB COMMENT='Login Log'";
             $this->createTable(Login::tableName(), [
-                'guid' => $this->varbinary(16)->notNull(),
-                'id' => $this->varchar(4)->notNull(),
-                'user_guid' => $this->varbinary(16)->notNull(),
-                'ip' => $this->varbinary(16)->defaultValue(0)->notNull(),
-                'ip_type' => $this->smallInteger()->defaultValue(4)->notNull(),
-                'created_at' => $this->dateTime()->defaultValue('1970-01-01 00:00:00')->notNull(),
+                'guid' => $this->varbinary(16)->notNull()->comment('Login Log GUID'),
+                'id' => $this->varchar(4)->notNull()->comment('Login Log ID'),
+                'user_guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
+                'ip' => $this->varbinary(16)->defaultValue(0)->notNull()->comment('IP Address'),
+                'ip_type' => $this->smallInteger()->defaultValue(4)->notNull()->comment('IP Address Type'),
+                'created_at' => $this->dateTime()->defaultValue('1970-01-01 00:00:00')->notNull()->comment('Login Time'),
                 'status' => $this->integer()->defaultValue(0)->notNull(),
                 'device' => $this->integer()->defaultValue(0)->notNull(),
             ], $tableOptions);

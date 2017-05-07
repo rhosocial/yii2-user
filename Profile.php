@@ -74,6 +74,9 @@ class Profile extends BaseBlameableModel
 
     const SCENARIO_UPDATE = 'update';
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -159,6 +162,9 @@ class Profile extends BaseBlameableModel
         return $genders;
     }
 
+    /**
+     * @return mixed
+     */
     public static function getGenderDescsWithEmpty()
     {
         $genders[''] = Yii::t('user', 'All');
@@ -168,6 +174,9 @@ class Profile extends BaseBlameableModel
         return $genders;
     }
 
+    /**
+     * @return array
+     */
     public function getGravatarRules()
     {
         return [
@@ -178,6 +187,9 @@ class Profile extends BaseBlameableModel
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getTimezoneRules()
     {
         return [
@@ -207,6 +219,9 @@ class Profile extends BaseBlameableModel
         return '{{%profile}}';
     }
 
+    /**
+     * @return array
+     */
     public function scenarios()
     {
         return array_merge(parent::scenarios(), [

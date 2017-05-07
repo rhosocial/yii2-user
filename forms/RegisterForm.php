@@ -12,6 +12,8 @@
 
 namespace rhosocial\user\forms;
 
+use rhosocial\user\User;
+use rhosocial\user\Profile;
 use Yii;
 use yii\base\Model;
 
@@ -22,6 +24,7 @@ use yii\base\Model;
 class RegisterForm extends Model
 {
     public $nickname;
+    public $username = false;
     public $password;
     public $password_repeat;
     public $first_name;
@@ -37,6 +40,7 @@ class RegisterForm extends Model
     public function attributeLabels()
     {
         return [
+            'username' => Yii::t('user', 'Username'),
             'nickname' => Yii::t('user', 'Nickname'),
             'password' => Yii::t('user', 'Password'),
             'password_repeat' => Yii::t('user', 'Password Repeat'),
@@ -58,12 +62,28 @@ class RegisterForm extends Model
     }
 
     /**
+     * @return mixed
+     */
+    protected function getNoInitUsername()
+    {
+        $userClass = $this->userClass;
+        return $userClass::buildNoInitModel();
+    }
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
         if (empty($this->userClass)) {
             $this->userClass = Yii::$app->user->identityClass;
+        }
+        $noInit = $this->getNoInitUsername();
+        /* @var $noInit User */
+        if (class_exists($noInit->usernameClass)) {
+            $this->username = '';
+        } else {
+            $this->username = false;
         }
     }
 
@@ -72,15 +92,23 @@ class RegisterForm extends Model
      */
     public function rules()
     {
-        return [
+        $rules = [
             [['nickname', 'password', 'password_repeat', 'first_name', 'last_name', 'gender'], 'required'],
-            ['nickname', 'string', 'max' => 32],
+            [['nickname'], 'string', 'max' => 32],
             [['password', 'password_repeat'], 'string', 'min' => 6, 'max' => 32],
             ['password', 'compare'],
             [['first_name', 'last_name'], 'string', 'max' => 255],
-            ['gender', 'in', 'range' => array_keys(\rhosocial\user\Profile::$genders)],
+            ['gender', 'in', 'range' => array_keys(Profile::$genders)],
             ['continue', 'integer'],
         ];
+        if (is_string($this->username)) {
+            $rules = array_merge($rules, [
+                ['username', 'required'],
+                ['username', 'string', 'max' => 32],
+                ['username', 'unique', 'targetClass' => get_class($this->getNoInitUsername())]
+            ]);
+        }
+        return $rules;
     }
 
     /**
@@ -92,9 +120,14 @@ class RegisterForm extends Model
         if ($this->validate()) {
             $class = $this->userClass;
             $user = new $class(['password' => $this->password]);
-            /* @var $user \rhosocial\user\User */
+            /* @var $user User */
             $profile = $user->createProfile(['nickname' => $this->nickname, 'first_name' => $this->first_name, 'last_name' => $this->last_name, 'gender' => $this->gender]);
-            $result = $user->register([$profile]);
+            $models[] = $profile;
+            if (is_string($this->username)) {
+                $username = $user->createUsername($this->username);
+                $models[] = $username;
+            }
+            $result = $user->register($models);
             if ($result == true) {
                 $this->model = $user;
             }
