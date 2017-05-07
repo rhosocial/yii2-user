@@ -62,12 +62,21 @@ class RegisterForm extends Model
     }
 
     /**
-     * @return mixed
+     * @return User
      */
-    protected function getNoInitUsername()
+    protected function getNoInitUser()
     {
         $userClass = $this->userClass;
         return $userClass::buildNoInitModel();
+    }
+
+    /**
+     * @return Username
+     */
+    protected function getNoInitUsername()
+    {
+        $usernameClass = $this->getNoInitUser()->usernameClass;
+        return $usernameClass::buildNoInitModel();
     }
 
     /**
@@ -78,7 +87,7 @@ class RegisterForm extends Model
         if (empty($this->userClass)) {
             $this->userClass = Yii::$app->user->identityClass;
         }
-        $noInit = $this->getNoInitUsername();
+        $noInit = $this->getNoInitUser();
         /* @var $noInit User */
         if (class_exists($noInit->usernameClass)) {
             $this->username = '';
@@ -105,7 +114,7 @@ class RegisterForm extends Model
             $rules = array_merge($rules, [
                 ['username', 'required'],
                 ['username', 'string', 'max' => 32],
-                ['username', 'unique', 'targetClass' => get_class($this->getNoInitUsername())]
+                ['username', 'unique', 'targetClass' => $this->getNoInitUser()->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute]
             ]);
         }
         return $rules;
