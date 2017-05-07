@@ -37,6 +37,7 @@ return [
     'Source' => '来源',
     'ID' => '账号',
     'User ID' => '用户账户',
+    'Username' => '用户名',
     'Search' => '搜索',
     'Remember Me' => '记住我',
     'Login' => '登录',
@@ -117,4 +118,6 @@ return [
     'Registration failed.' => '注册失败了。',
     'Me' => '我',
     'We will assign an ID for you after registration.' => '我们会在注册后为您分配账号。',
+    'Incorrect ID.' => '账号不正确。',
+    'Incorrect ID or password.' => '账号或密码不正确。',
 ];

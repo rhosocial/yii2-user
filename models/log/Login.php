@@ -57,7 +57,10 @@ class Login extends BaseBlameableModel
     public $limitType = 0x3;
     public $limitMax = 100;
     public $limitDuration = 90 * 86400;
-    
+
+    /**
+     *
+     */
     public function init()
     {
         if (($this->limitType & static::LIMIT_MAX) && ($this->limitMax < 2 || !is_int($this->limitMax))) { // at least 2 records.
@@ -206,20 +209,31 @@ class Login extends BaseBlameableModel
         self::DEVICE_3PA_MOBILE => 'Third party authorization (Mobile)',
         self::DEVICE_3PA_BROWSER => 'Third party authorization (Browser)',
     ];
-    
+
+    /**
+     * @return array
+     */
     public function getLoginRules()
     {
         return [
             ['status', 'in', 'range' => array_keys(static::$statuses)],
+            ['status', 'default', 'value' => self::STATUS_NORMAL],
             ['device', 'in', 'range' => array_keys(static::$devices)],
+            ['device', 'default', 'value' => self::DEVICE_UNKNOWN],
         ];
     }
-    
+
+    /**
+     * @return array
+     */
     public function rules()
     {
         return array_merge($this->getLoginRules(), parent::rules());
     }
-    
+
+    /**
+     * @return mixed|null
+     */
     public function getStatusDesc()
     {
         if (array_key_exists($this->status, static::$statuses)) {
@@ -227,7 +241,10 @@ class Login extends BaseBlameableModel
         }
         return null;
     }
-    
+
+    /**
+     * @return mixed|null
+     */
     public function getDeviceDesc()
     {
         if (array_key_exists($this->device, static::$devices)) {
@@ -235,7 +252,10 @@ class Login extends BaseBlameableModel
         }
         return null;
     }
-    
+
+    /**
+     * @return string
+     */
     public static function tableName()
     {
         return '{{%log_login}}';

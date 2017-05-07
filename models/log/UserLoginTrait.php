@@ -67,6 +67,9 @@ trait UserLoginTrait
      */
     public function recordLogin($config = [])
     {
+        if (empty($this->loginLogClass)) {
+            return false;
+        }
         $log = $this->create($this->loginLogClass, $config);
         try {
             return $log->save();

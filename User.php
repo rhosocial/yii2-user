@@ -22,6 +22,7 @@ use yii\base\InvalidConfigException;
 use yii\behaviors\AttributeBehavior;
 use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
+use yii\widgets\ActiveForm;
 
 /**
  * Common User Model.
@@ -47,6 +48,7 @@ use yii\db\ActiveRecord;
  *   `source` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'Source',
  *   PRIMARY KEY (`guid`),
  *   UNIQUE KEY `user_id_unique` (`id`),
+ *   UNIQUE KEY `user_username_unique` (`username`),
  *   KEY `user_auth_key_normal` (`auth_key`),
  *   KEY `user_access_token_normal` (`access_token`),
  *   KEY `user_password_reset_token` (`password_reset_token`),
@@ -91,7 +93,43 @@ use yii\db\ActiveRecord;
 class User extends BaseUserModel
 {
     use UserPasswordHistoryTrait, UserLoginTrait;
+
+    /**
+     * @var string|boolean
+     */
+    public $usernameAttribute = false;
+
+    /**
+     * @return mixed|null
+     */
+    public function getUsername()
+    {
+        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
+            return $this->{$this->usernameAttribute};
+        }
+        return null;
+    }
+
+    /**
+     * @param string $username
+     * @return null|string
+     */
+    public function setUsername($username = '')
+    {
+        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
+            return $this->{$this->usernameAttribute} = $username;
+        }
+        return null;
+    }
+
+    /**
+     * @var string
+     */
     public $searchClass = UserSearch::class;
+
+    /**
+     * @return null
+     */
     public function getSearchModel()
     {
         $class = $this->searchClass;
@@ -106,7 +144,7 @@ class User extends BaseUserModel
      */
     public function attributeLabels()
     {
-        return [
+        $labels = [
             $this->guidAttribute => Yii::t('user', 'GUID'),
             $this->idAttribute => Yii::t('user', 'ID'),
             $this->passwordHashAttribute => Yii::t('user', 'Password Hash'),
@@ -123,6 +161,12 @@ class User extends BaseUserModel
             'createdAt' => Yii::t('user', 'Registration Time'),
             'updatedAt' => Yii::t('user', 'Last Updated Time'),
         ];
+        if (is_string($this->username) && !empty($this->username)) {
+            $labels = array_merge($labels, [
+                $this->usernameAttribute => Yii::t('user', 'Username'),
+            ]);
+        }
+        return $labels;
     }
 
     /**
@@ -161,12 +205,15 @@ class User extends BaseUserModel
 
     /**
      * @inheritdoc
+     * -----------
+     * When the user is updated or deleted, the cache contents tagged with the corresponding user tag will be invalidated.
      */
     public function init()
     {
         $this->on(static::$eventAfterRegister, [$this, 'onAddPasswordToHistory']);
         $this->on(static::$eventAfterResetPassword, [$this, 'onAddPasswordToHistory']);
         $this->on(static::EVENT_AFTER_UPDATE, [$this, 'onInvalidTags']);
+        $this->on(static::EVENT_AFTER_DELETE, [$this, 'onInvalidTags']);
         parent::init();
     }
 
@@ -176,11 +223,14 @@ class User extends BaseUserModel
     public $cacheTagPrefix = 'tag_user_';
 
     /**
+     * Get cache tag.
+     * The cache tag ends with the user ID, but after the user ID is modified, the old ID will prevail.
      * @return string
      */
     public function getCacheTag()
     {
-        return $this->cacheTagPrefix . $this->getID();
+        return $this->cacheTagPrefix .
+            ($this->isAttributeChanged($this->idAttribute) ? $this->getOldAttribute($this->idAttribute) : $this->getID());
     }
 
     /**
@@ -254,6 +304,10 @@ class User extends BaseUserModel
                 [$profileModel->createdByAttribute => $this->guidAttribute])->inverseOf('user');
     }
 
+    /**
+     * @param $event
+     * @return mixed
+     */
     public function onGenerateId($event)
     {
         $sender = $event->sender;
@@ -289,6 +343,11 @@ class User extends BaseUserModel
     }
 
     /**
+     * @var string
+     */
+    public static $idRegex = '\d{5,8}';
+
+    /**
      * @return array
      */
     public function getIdRules()
@@ -296,5 +355,41 @@ class User extends BaseUserModel
         return [
             [$this->idAttribute, 'safe'],
         ];
+    }
+
+    /**
+     * @var string
+     */
+    public static $usernameRegex = '\w{1,32}';
+
+    /**
+     * Get the rules associated with `username` property.
+     * The `username` must not be empty, and its length must not be greater than 32.
+     * This property should be confirmed unique among all users.
+     * If you do not need this property, please override this method and return empty array.
+     * @return array
+     */
+    public function getUsernameRules()
+    {
+        if (is_string($this->usernameAttribute) && !empty($this->usernameAttribute)) {
+            return [
+                [$this->usernameAttribute, 'required'],
+                [$this->usernameAttribute, 'string', 'max' => 32],
+                [$this->usernameAttribute, 'unique'],
+            ];
+        }
+        return [];
+    }
+
+    /**
+     * @return array
+     */
+    public function rules()
+    {
+        $rules = $this->getUsernameRules();
+        if (!empty($rules)) {
+            return array_merge(parent::rules(), $rules);
+        }
+        return parent::rules();
     }
 }

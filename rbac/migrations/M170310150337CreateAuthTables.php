@@ -24,6 +24,7 @@ use rhosocial\user\rbac\permissions\ViewUser;
 use rhosocial\user\rbac\permissions\UpdateAdminUser;
 use rhosocial\user\rbac\permissions\UpdateMyself;
 use rhosocial\user\rbac\permissions\UpdateUser;
+use rhosocial\user\rbac\roles\Webmaster;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\rbac\DbManager;
@@ -97,7 +98,10 @@ class M170310150337CreateAuthTables extends Migration
         }
         return $authManager;
     }
-    
+
+    /**
+     *
+     */
     public function up()
     {
         $authManager = $this->getAuthManager();
@@ -151,6 +155,9 @@ class M170310150337CreateAuthTables extends Migration
         $this->addRoles();
     }
 
+    /**
+     *
+     */
     public function down()
     {
         $authManager = $this->getAuthManager();
@@ -192,9 +199,11 @@ class M170310150337CreateAuthTables extends Migration
         
         $admin = new Admin();
         $user = new User();
+        $webmaster = new Webmaster();
         
         $authManager->add($admin);
         $authManager->add($user);
+        $authManager->add($webmaster);
         
         $authManager->addChild($user, $updateMyself);
         $authManager->addChild($user, $deleteMyself);
@@ -204,6 +213,8 @@ class M170310150337CreateAuthTables extends Migration
         $authManager->addChild($admin, $viewUser);
         $authManager->addChild($admin, $updateUser);
         $authManager->addChild($admin, $deleteUser);
+
+        $authManager->addChild($webmaster, $admin);
     }
 
     /*

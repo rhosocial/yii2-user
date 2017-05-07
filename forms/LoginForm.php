@@ -27,6 +27,9 @@ class LoginForm extends Model
     public $userClass;
     private $_user = false;
 
+    /**
+     * @return array
+     */
     public function attributeLabels()
     {
         return [
@@ -36,6 +39,9 @@ class LoginForm extends Model
         ];
     }
 
+    /**
+     *
+     */
     public function init()
     {
         if (empty($this->userClass)) {
@@ -43,14 +49,34 @@ class LoginForm extends Model
         }
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
             [['id', 'password'], 'required'],
-            ['id', 'integer', 'min' => 10000, 'max' => 9999999999],
+            ['id', 'validateId'],
             ['password', 'validatePassword'],
             ['rememberMe', 'boolean'],
         ];
+    }
+
+    /**
+     * Validates the ID.
+     *
+     * @param $attribute
+     * @param $params
+     */
+    public function validateId($attribute, $params)
+    {
+        $loginPriority = Yii::$app->user->getLoginPriority();
+        foreach ($loginPriority as $item) {
+            if (preg_match($item, $this->$attribute)) {
+                return;
+            }
+        }
+        $this->addError($attribute, Yii::t('user', 'Incorrect ID.'));
     }
 
     /**
@@ -66,7 +92,7 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, Yii::t('user', 'Incorrect ID or password.'));
             }
         }
     }
