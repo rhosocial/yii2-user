@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\forms;
 
+use rhosocial\user\User;
 use Yii;
 use yii\base\Model;
 
@@ -36,6 +37,16 @@ class LoginForm extends Model
             'id' => Yii::t('user', 'ID'),
             'password' => Yii::t('user', 'Password'),
             'rememberMe' => Yii::t('user', 'Remember Me'),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributeHints()
+    {
+        return [
+            'rememberMe' => Yii::t('user', 'When this option is checked, each login is valid for 30 days.'),
         ];
     }
 

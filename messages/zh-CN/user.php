@@ -122,4 +122,5 @@ return [
     'Incorrect ID or password.' => '账号或密码不正确。',
     'The username should be unique.' => '用户名应当唯一。',
     'The username has been used.' => '该用户名已经被使用。',
+    'When this option is checked, each login is valid for 30 days.' => '勾选此选项后，每次登录有效期持续 30 天。',
 ];

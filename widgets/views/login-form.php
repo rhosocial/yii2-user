@@ -41,13 +41,18 @@ $this->registerCss($css);
             'labelOptions' => ['class' => 'col-lg-2 control-label'],
         ],
     ]); ?>
-
-        <?= $form->field($model, 'id')->textInput(['autofocus' => true]) ?>
+    <?php
+    $placeholder = Yii::t('user', 'User ID');
+    if (array_key_exists(\rhosocial\user\components\User::LOGIN_BY_USERNAME, Yii::$app->user->getLoginPriority())) {
+        $placeholder .= ' / ' . Yii::t('user', 'Username');
+    }
+    ?>
+        <?= $form->field($model, 'id')->textInput(['autofocus' => true, 'placeholder' => $placeholder]) ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 
         <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-2 col-lg-5\">{input} {label}</div>\n<div class=\"col-lg-5\">{error}</div>",
+            'template' => "<div class=\"col-lg-offset-2 col-lg-10\">{input} {label}</div>\n<div class=\"col-lg-offset-2 col-lg-10\">{hint}</div>",
         ]) ?>
 
         <div class="form-group">
