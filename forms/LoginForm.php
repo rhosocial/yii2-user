@@ -70,9 +70,8 @@ class LoginForm extends Model
      */
     public function validateId($attribute, $params)
     {
-        $loginPriority = Yii::$app->user->getLoginPriority();
-        foreach ($loginPriority as $item) {
-            if (preg_match($item, $this->$attribute)) {
+        foreach (Yii::$app->user->getLoginPriority() as $item) {
+            if ($item::validate($this->$attribute)) {
                 return;
             }
         }
@@ -117,8 +116,11 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $class = $this->userClass;
-            $this->_user = $class::find()->id($this->id)->one();
+            foreach (Yii::$app->user->getLoginPriority() as $item) {
+                if ($item::validate($this->id)) {
+                    return $item::getUser($this->id);
+                }
+            }
         }
 
         return $this->_user;
