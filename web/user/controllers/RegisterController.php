@@ -15,9 +15,11 @@ namespace rhosocial\user\web\user\controllers;
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\web\user\Module;
 use Yii;
+use yii\bootstrap\ActiveForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
+use yii\web\Response;
 
 /**
  * @version 1.0
@@ -77,6 +79,10 @@ class RegisterController extends Controller
     public function actionIndex()
     {        
         $model = new RegisterForm();
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if (($result = $model->register()) === true) {

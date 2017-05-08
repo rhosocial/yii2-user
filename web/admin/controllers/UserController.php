@@ -18,12 +18,14 @@ use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\web\admin\Module;
 use Yii;
+use yii\bootstrap\ActiveForm;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\Response;
 use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
 
@@ -48,6 +50,9 @@ class UserController extends Controller
     public $updateSuccessMessage;
     public $updateFailedMessage;
 
+    /**
+     * Initialize messages.
+     */
     protected function initMessages()
     {
         if (!is_string($this->registerSuccessMessage)) {
@@ -70,12 +75,18 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->initMessages();
         parent::init();
     }
 
+    /**
+     * @return array
+     */
     public function behaviors() {
         return [
             'access' => [
@@ -143,6 +154,10 @@ class UserController extends Controller
     public function actionRegisterNewUser()
     {
         $model = new RegisterForm();
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
         if ($model->load(Yii::$app->request->post())) {
             try {
                 if (($result = $model->register()) === true) {

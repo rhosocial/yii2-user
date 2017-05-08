@@ -44,7 +44,7 @@ $this->registerCss($css);
     <?= $form->field($model, 'nickname')->textInput(['autofocus' => true]) ?>
 
     <?php if (is_string($model->username)): ?>
-        <?= $form->field($model, 'username')->textInput() ?>
+        <?= $form->field($model, 'username', ['enableAjaxValidation' => true])->textInput() ?>
     <?php endif; ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>

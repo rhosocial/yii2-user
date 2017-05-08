@@ -114,7 +114,7 @@ class RegisterForm extends Model
             $rules = array_merge($rules, [
                 ['username', 'required'],
                 ['username', 'string', 'max' => 32],
-                ['username', 'unique', 'targetClass' => $this->getNoInitUser()->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute]
+                ['username', 'unique', 'targetClass' => $this->getNoInitUser()->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute, 'message' => Yii::t('user', 'The username has been used.')]
             ]);
         }
         return $rules;
