@@ -70,7 +70,7 @@ class ChangePasswordForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect password.');
+                $this->addError($attribute, Yii::t('user', 'Incorrect password.'));
             }
         }
     }
@@ -96,6 +96,7 @@ class ChangePasswordForm extends Model
     /**
      * Set user.
      * @param User $user
+     * @return bool
      */
     public function setUser($user)
     {
