@@ -13,7 +13,8 @@
 namespace rhosocial\user\forms;
 
 use rhosocial\user\User;
-use yii\web\Model;
+use Yii;
+use yii\base\Model;
 
 /**
  * Class UsernameForm
@@ -28,6 +29,22 @@ class UsernameForm extends Model
      */
     public $user;
     public $username;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if (!$this->user) {
+            $this->user = Yii::$app->user->identity;
+        }
+        $username = $this->user->getUsername()->one();
+        if (!$username) {
+            $this->username = '';
+        } else {
+            $this->username = (string)$username;
+        }
+    }
 
     /**
      * @return mixed
@@ -48,7 +65,14 @@ class UsernameForm extends Model
             ['username', 'string', 'max' => 32, 'min' => '2'],
             ['username', 'match', 'not' => true, 'pattern' => '/^\d+$/', 'message' => Yii::t('user', 'The username can not be a pure number.')],
             ['username', 'match', 'pattern' => '/^\w{2,32}$/'],
-            ['username', 'unique', 'targetClass' => $this->user->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute],
+            ['username', 'unique', 'targetClass' => $this->user->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute, 'when' => function ($model, $attribute) {
+                /* @var $model static */
+                $username = $model->user->getUsername()->one();
+                if (!$username) {
+                    return true;
+                }
+                return $model->$attribute != (string)$username;
+            }],
         ];
     }
 

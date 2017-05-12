@@ -12,6 +12,7 @@
 
 use rhosocial\user\forms\UsernameForm;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 use yii\web\View;
 
 /* @var $model UsernameForm */
