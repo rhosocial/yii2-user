@@ -126,4 +126,5 @@ return [
     'Incorrect password.' => '密码不正确。',
     'The username can not be a pure number.' => '用户名不能是纯数字。',
     'Please fill out the following fields to update username:' => '请填写以下字段以更新用户名：',
+    'Specify a username to provide convenience for login.' => '提供用户名，方便登录。',
 ];

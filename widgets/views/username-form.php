@@ -32,7 +32,7 @@ $this->registerCss($css);
     'layout' => 'horizontal',
     'enableAjaxValidation' => true,
     'fieldConfig' => [
-        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>\n<div class=\"col-lg-offset-1 col-lg-11\">{hint}</div>",
         'labelOptions' => ['class' => 'col-lg-1 control-label'],
     ],
 ]); ?>

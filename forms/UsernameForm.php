@@ -67,4 +67,24 @@ class UsernameForm extends Model
         }
         return false;
     }
+
+    /**
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        return [
+            'username' => Yii::t('user', 'Username'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'username' => Yii::t('user', 'Specify a username to provide convenience for login.'),
+        ];
+    }
 }
