@@ -113,7 +113,8 @@ class RegisterForm extends Model
         if (is_string($this->username)) {
             $rules = array_merge($rules, [
                 ['username', 'required'],
-                ['username', 'string', 'max' => 32],
+                ['username', 'string', 'min'=>2, 'max' => 32],
+                ['username', 'match', 'not' => true, 'pattern' => '/^\d+$/', 'message' => Yii::t('user', 'The username can not be a pure number.')],
                 ['username', 'unique', 'targetClass' => $this->getNoInitUser()->usernameClass, 'targetAttribute' => $this->getNoInitUsername()->contentAttribute, 'message' => Yii::t('user', 'The username has been used.')]
             ]);
         }

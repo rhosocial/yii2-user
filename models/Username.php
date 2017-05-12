@@ -31,7 +31,7 @@ class Username extends BaseBlameableModel
     public $createdByAttribute = 'guid';
     public $updatedByAttribute = false;
 
-    public $contentAttributeRule = ['string', 'max' => 32];
+    public $contentAttributeRule = ['string', 'max' => 32, 'min' => 2];
 
     public static $regex = '/^\w{2,32}$/';
 
@@ -41,6 +41,7 @@ class Username extends BaseBlameableModel
     public function rules()
     {
         return array_merge(parent::rules(), [
+            [$this->contentAttribute, 'match', 'not' => true, 'pattern' => '/^\d+$/', 'message' => Yii::t('user', 'The username can not be a pure number.')],
             [$this->contentAttribute, 'unique', 'message'=> Yii::t('user', 'The username should be unique.')],
         ]);
     }

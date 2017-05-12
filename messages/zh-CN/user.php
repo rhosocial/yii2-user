@@ -124,4 +124,6 @@ return [
     'The username has been used.' => '该用户名已经被使用。',
     'When this option is checked, each login is valid for 30 days.' => '勾选此选项后，每次登录有效期持续 30 天。',
     'Incorrect password.' => '密码不正确。',
+    'The username can not be a pure number.' => '用户名不能是纯数字。',
+    'Please fill out the following fields to update username:' => '请填写以下字段以更新用户名：',
 ];
