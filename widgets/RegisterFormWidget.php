@@ -28,6 +28,7 @@ class RegisterFormWidget extends Widget
         if (is_null($this->model) || !($this->model instanceof RegisterForm)) {
             $this->model = new RegisterForm();
         }
+        parent::init();
     }
     
     public function run()

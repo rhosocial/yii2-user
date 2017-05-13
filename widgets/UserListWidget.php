@@ -83,6 +83,7 @@ class UserListWidget extends Widget
                 ],
             ];
         }
+        parent::init();
     }
 
     /**

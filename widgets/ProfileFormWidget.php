@@ -31,6 +31,7 @@ class ProfileFormWidget extends Widget
         if (is_null($this->model) || !($this->model instanceof Profile)) {
             $this->model = Yii::$app->user->identity->createProfile(['scenario' => Profile::SCENARIO_UPDATE]);
         }
+        parent::init();
     }
 
     public function run()

@@ -27,6 +27,7 @@ class ChangePasswordFormWidget extends Widget
         if (is_null($this->model) || !($this->model instanceof ChangePasswordForm)) {
             $this->model = new ChangePasswordForm();
         }
+        parent::init();
     }
     
     public function run()

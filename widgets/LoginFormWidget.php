@@ -40,6 +40,7 @@ class LoginFormWidget extends Widget
         if (is_null($this->model) || !($this->model instanceof LoginForm)) {
             $this->model = new LoginForm();
         }
+        parent::init();
     }
 
     /**

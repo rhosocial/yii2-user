@@ -50,6 +50,7 @@ class UserProfileSearchWidget extends Widget
                 'method' => 'get',
             ];
         }
+        parent::init();
     }
 
     /**
