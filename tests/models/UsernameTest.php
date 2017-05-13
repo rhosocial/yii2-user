@@ -80,7 +80,7 @@ class UsernameTest extends TestCase
     {
         $this->assertTrue($this->user->removeUsername());
         $this->assertNull($this->user->getUsername()->one());
-        $this->assertTrue($this->user->hasUsername());
+        $this->assertTrue($this->user->hasEnabledUsername());
     }
 
     /**

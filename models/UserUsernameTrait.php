@@ -30,7 +30,7 @@ trait UserUsernameTrait
      * Check whether this user enables the username feature or not.
      * @return boolean
      */
-    public function hasUsername()
+    public function hasEnabledUsername()
     {
         if ($this->usernameClass === false || !is_string($this->usernameClass) || !class_exists($this->usernameClass)) {
             return false;
@@ -45,7 +45,7 @@ trait UserUsernameTrait
      */
     public function getUsername()
     {
-        if (!$this->hasUsername()) {
+        if (!$this->hasEnabledUsername()) {
             return null;
         }
         $usernameClass = $this->usernameClass;
@@ -61,10 +61,10 @@ trait UserUsernameTrait
      */
     public function createUsername($username)
     {
-        $usernameClass = $this->usernameClass;
-        if (!is_string($usernameClass) || empty($usernameClass)) {
+        if (!$this->hasEnabledUsername()) {
             return null;
         }
+        $usernameClass = $this->usernameClass;
         $model = $usernameClass::findOne($this->getGUID());
         if (!$model) {
             $model = $this->create($usernameClass);
@@ -93,6 +93,7 @@ trait UserUsernameTrait
 
     /**
      * Remove username.
+     * @return bool
      */
     public function removeUsername()
     {
