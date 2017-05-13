@@ -44,6 +44,7 @@ class UsernameForm extends Model
         } else {
             $this->username = (string)$username;
         }
+        parent::init();
     }
 
     /**

@@ -40,10 +40,10 @@ class Username extends BaseBlameableModel
      */
     public function rules()
     {
-        return array_merge(parent::rules(), [
+        return array_merge([
             [$this->contentAttribute, 'match', 'not' => true, 'pattern' => '/^\d+$/', 'message' => Yii::t('user', 'The username can not be a pure number.')],
             [$this->contentAttribute, 'unique', 'message'=> Yii::t('user', 'The username should be unique.')],
-        ]);
+        ], parent::rules());
     }
 
     /**
