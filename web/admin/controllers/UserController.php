@@ -17,6 +17,8 @@ use rhosocial\user\Profile;
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\web\admin\Module;
+use rhosocial\user\widgets\UserListWidget;
+use rhosocial\user\widgets\UserProfileSearchWidget;
 use Yii;
 use yii\bootstrap\ActiveForm;
 use yii\filters\AccessControl;
@@ -136,6 +138,9 @@ class UserController extends Controller
         ];
     }
 
+    public $userListWidgetClass = UserListWidget::class;
+    public $userSearchWidgetClass = UserProfileSearchWidget::class;
+
     /**
      * @return string
      */
@@ -144,7 +149,12 @@ class UserController extends Controller
         $searchModel = Yii::$app->user->identity->getSearchModel();
         $dataProvider = $searchModel->search(Yii::$app->request->get());
         
-        return $this->render('index', ['dataProvider' => $dataProvider, 'searchModel' => $searchModel]);
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'userListWidgetClass' => $this->userListWidgetClass,
+            'userSearchWidgetClass' => $this->userSearchWidgetClass,
+        ]);
     }
 
     /**

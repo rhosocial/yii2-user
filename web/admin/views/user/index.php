@@ -20,10 +20,20 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel UserProfileView */
 /* @var $dataProvider ActiveDataProvider */
+/* @var $userListWidgetClass string */
+/* @var $userSearchWidgetClass string */
+
 $this->title = Yii::t('user', 'User List');
 $this->params['breadcrumbs'][] = $this->title;
+
+if (!class_exists($userListWidgetClass)) {
+    $userListWidgetClass = UserListWidget::class;
+}
+if (!class_exists($userSearchWidgetClass)) {
+    $userSearchWidgetClass = UserProfileSearchWidget::class;
+}
 $formId = 'user-search-form';
-echo UserProfileSearchWidget::widget([
+echo $userSearchWidgetClass::widget([
     'model' => $searchModel,
     'formId' => $formId,
 ]);
@@ -31,7 +41,7 @@ Pjax::begin([
     'id' => 'user-pjax',
     'formSelector' => "#$formId",
 ]);
-echo UserListWidget::widget(['dataProvider' => $dataProvider, 'actionColumn' => UserListWidget::ACTION_COLUMN_DEFAULT]);
+echo $userListWidgetClass::widget(['dataProvider' => $dataProvider, 'actionColumn' => $userListWidgetClass::ACTION_COLUMN_DEFAULT]);
 Pjax::end();
 ?>
 <div class="row">

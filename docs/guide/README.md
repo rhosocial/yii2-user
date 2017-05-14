@@ -20,11 +20,16 @@ We also provide a UserSearch model for searching user.
 - [Using the Password History model](usage-password-history.md)
 - [Using the Role-Based Authorization Control Features](usage-rbac.md)
 - [Using the Login Log model](usage-login-log.md)
-- [Using the Login widget](usage-login-widget.md)
-- [Using the Register widget](usage-register-widget.md)
 - [Using the Username model](usage-username-model.md)
 - [Using the Login Method](usage-login-method.md)
 - [Internationalization](usage-i18n.md)
+
+## Using widgets
+
+- [Using the Login widget](usage-login-widget.md)
+- [Using the Register widget](usage-register-widget.md)
+- [Using the User List & Search widget](usage-user-list-search-widget.md)
+- [Using the Change Password widget](usage-change-password-widget.md)
 
 ## Console commands
 

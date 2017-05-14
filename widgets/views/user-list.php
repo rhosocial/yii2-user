@@ -23,7 +23,7 @@ use yii\web\View;
 /* @var $dataProvider ActiveDataProvider */
 /* @var $additionalColumns array */
 /* @var $actionColumn array */
-/* @var $showGUID boolean */
+/* @var $visible array */
 /* @var $tips boolean|array */
 $columns = [
     ['class' => SerialColumn::class],
@@ -34,7 +34,7 @@ $columns = [
             return $model->getReadableGUID();
         },
         'format' => 'text',
-        'visible' => $showGUID,
+        'visible' => isset($visible['guid']) ? $visible['guid'] : false,
     ],
     'id' => [
         'class' => DataColumn::class,
@@ -55,6 +55,7 @@ $columns = [
             }
             return ['bgcolor' => '#00FF00'];
         },
+        'visible' => isset($visible['id']) ? $visible['id'] : true,
     ],
     'nickname' => [
         'class' => DataColumn::class,
@@ -68,6 +69,7 @@ $columns = [
             }
             return $profile->nickname;
         },
+        'visible' => isset($visible['nickname']) ? $visible['nickname'] : true,
     ],
     'name' => [
         'class' => DataColumn::class,
@@ -81,6 +83,7 @@ $columns = [
             return $profile->first_name . ' ' . $profile->last_name;
         },
         'label' => Yii::t('user', 'Name'),
+        'visible' => isset($visible['name']) ? $visible['name'] : true,
     ],
     'gender' => [
         'class' => DataColumn::class,
@@ -93,7 +96,8 @@ $columns = [
                 return null;
             }
             return Profile::getGenderDesc($profile->gender);
-        }
+        },
+        'visible' => isset($visible['gender']) ? $visible['gender'] : true,
     ],
     'createdAt' => [
         'class' => DataColumn::class,
@@ -102,6 +106,7 @@ $columns = [
             /* @var $model User */
             return $column->grid->formatter->format($model->created_at, 'datetime');
         },
+        'visible' => isset($visible['createdAt']) ? $visible['createdAt'] : true,
     ],
     'updatedAt' => [
         'class' => DataColumn::class,
@@ -110,6 +115,7 @@ $columns = [
             /* @var $model User */
             return $column->grid->formatter->format($model->updated_at, 'datetime');
         },
+        'visible' => isset($visible['updatedAt']) ? $visible['updatedAt'] : false,
     ],
 ];
 if (!empty($additionalColumns) && is_array($additionalColumns)) {

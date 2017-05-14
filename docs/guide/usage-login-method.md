@@ -28,6 +28,7 @@ class Email implements MethodInterface
     }
 }
 ```
+> Please see the notes for the specific usage of the above two methods.
 
 Then you need to impelment `User` component yourself and override the `LoginPriority()` method,
 like following:

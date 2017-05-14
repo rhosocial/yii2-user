@@ -42,7 +42,12 @@ class UserListWidget extends Widget
 
     const ACTION_COLUMN_DEFAULT = 'default';
 
-    public $showGUID = false;
+    /**
+     * @var array Column visibles.
+     */
+    public $visible = [
+        'guid' => false,
+    ];
 
     /**
      * @var boolean|array Tips.
@@ -96,7 +101,7 @@ class UserListWidget extends Widget
             'dataProvider' => $this->dataProvider,
             'additionalColumns' => $this->additionalColumns,
             'actionColumn' => $this->actionColumn,
-            'showGUID' => $this->showGUID,
+            'visible' => $this->visible,
             'tips' => $this->tips,
         ]);
     }
