@@ -34,6 +34,10 @@ class UserProfileSearchWidget extends Widget
      * @var UserSearch
      */
     public $model;
+    /**
+     * @var string The filename of view which displays all the search fields.
+     */
+    public $fieldsView = 'user-profile-search-fields';
 
     /**
      * @throws InvalidConfigException
@@ -50,6 +54,9 @@ class UserProfileSearchWidget extends Widget
                 'method' => 'get',
             ];
         }
+        if (empty($this->fieldsView)) {
+            $this->fieldsView = 'user-profile-search-fields';
+        }
         parent::init();
     }
 
@@ -61,7 +68,8 @@ class UserProfileSearchWidget extends Widget
         return $this->render('user-profile-search', [
             'model' => $this->model,
             'formId' => $this->formId,
-            'formConfig' => $this->formConfig
+            'formConfig' => $this->formConfig,
+            'fieldsView' => $this->fieldsView,
         ]);
     }
 }

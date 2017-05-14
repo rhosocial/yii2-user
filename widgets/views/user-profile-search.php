@@ -19,6 +19,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 /* @var $formId string */
 /* @var $formConfig array */
+/* @var $fieldsView string */
 $css = <<<EOT
 div.required label.control-label:after {
     content: " *";
@@ -26,12 +27,15 @@ div.required label.control-label:after {
 }
 EOT;
 $this->registerCss($css);
+if (empty($fieldsView)) {
+    $fieldsView = 'user-profile-search-fields';
+}
 ?>
 
 <div class="user-search">
     <?php $form = ActiveForm::begin($formConfig); ?>
 <div class="row">
-    <?= $this->render('user-profile-search-fields', ['form' => $form, 'model' => $model]) ?>
+    <?= $this->render($fieldsView, ['form' => $form, 'model' => $model]) ?>
 </div>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('user', 'Search'), ['id' => "$formId-submit", 'class' => 'btn btn-primary']) ?>
