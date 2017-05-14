@@ -10,8 +10,6 @@
  * @license https://vistart.me/license/
  */
 
-use kartik\datetime\DateTimePicker;
-use rhosocial\user\Profile;
 use rhosocial\user\UserSearch;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
@@ -33,51 +31,7 @@ $this->registerCss($css);
 <div class="user-search">
     <?php $form = ActiveForm::begin($formConfig); ?>
 <div class="row">
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'id', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'User ID'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'nickname', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'Nickname'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'first_name', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'First Name'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'last_name', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'Last Name'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'createdFrom', [
-        'template' => "{input}\n{hint}\n{error}",
-    ])->widget(DateTimePicker::class, [
-        'options' => ['placeholder' => Yii::t('user', 'From')],
-        'pluginOptions' => [
-            'todayHighlight' => true
-        ]
-    ])->hint(Yii::t('user', 'If you do not limit the start time, leave it blank.')) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'createdTo', [
-        'template' => "{input}\n{hint}\n{error}",
-    ])->widget(DateTimePicker::class, [
-        'options' => ['placeholder' => Yii::t('user', 'To')],
-        'pluginOptions' => [
-            'todayHighlight' => true
-        ]
-    ])->hint(Yii::t('user', 'If you do not limit the end time, leave it blank.')) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
-    <?= $form->field($model, 'gf', [
-        'template' => "{input}\n{error}",
-    ])->dropDownList(Profile::getGenderDescsWithEmpty()) ?>
-    </div>
+    <?= $this->render('user-profile-search-fields', ['form' => $form, 'model' => $model]) ?>
 </div>
     <div class="form-group">
         <?= Html::submitButton(Yii::t('user', 'Search'), ['id' => "$formId-submit", 'class' => 'btn btn-primary']) ?>

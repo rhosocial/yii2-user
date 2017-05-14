@@ -14,46 +14,32 @@ use kartik\datetime\DateTimePicker;
 use rhosocial\user\Profile;
 use rhosocial\user\UserSearch;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
 
-/* @var $this yii\web\View */
+/* @var $form ActiveForm */
 /* @var $model UserSearch */
-/* @var $formId string */
-/* @var $formConfig array */
-$css = <<<EOT
-div.required label.control-label:after {
-    content: " *";
-    color: red;
-}
-EOT;
-$this->registerCss($css);
 ?>
 
-<div class="user-search">
-    <?php $form = ActiveForm::begin($formConfig); ?>
-    <?php /* @var $form ActiveForm */ ?>
-<div class="row">
-    <div class="col-md-3 col-sm-6">
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'id', [
-        'template' => "{input}\n{error}",
-    ])->textInput(['placeholder' => Yii::t('user', 'User ID'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+    'template' => "{input}\n{error}",
+])->textInput(['placeholder' => Yii::t('user', 'User ID'),]) ?>
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'nickname', [
         'template' => "{input}\n{error}",
     ])->textInput(['placeholder' => Yii::t('user', 'Nickname'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'last_name', [
         'template' => "{input}\n{error}",
     ])->textInput(['placeholder' => Yii::t('user', 'Last Name'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'first_name', [
         'template' => "{input}\n{error}",
     ])->textInput(['placeholder' => Yii::t('user', 'First Name'),]) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'createdFrom', [
         'template' => "{input}\n{hint}\n{error}",
     ])->widget(DateTimePicker::class, [
@@ -62,8 +48,8 @@ $this->registerCss($css);
             'todayHighlight' => true
         ]
     ])->hint(Yii::t('user', 'If you do not limit the start time, leave it blank.')) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'createdTo', [
         'template' => "{input}\n{hint}\n{error}",
     ])->widget(DateTimePicker::class, [
@@ -72,17 +58,9 @@ $this->registerCss($css);
             'todayHighlight' => true
         ]
     ])->hint(Yii::t('user', 'If you do not limit the end time, leave it blank.')) ?>
-    </div>
-    <div class="col-md-3 col-sm-6">
+</div>
+<div class="col-md-3 col-sm-6">
     <?= $form->field($model, 'gf', [
         'template' => "{input}\n{error}",
     ])->dropDownList(Profile::getGenderDescsWithEmpty()) ?>
-    </div>
-</div>
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('user', 'Search'), ['id' => "$formId-submit", 'class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('user', 'Reset'), ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
 </div>
