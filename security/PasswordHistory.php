@@ -57,7 +57,7 @@ class PasswordHistory extends BaseBlameableModel
      * Check whether the password has been used.
      * @param string $password Password or Password Hash.
      * @param User $user
-     * @return false|static
+     * @return false|static The first validated password model, or false if not validated.
      */
     public static function isUsed($password, $user = null)
     {

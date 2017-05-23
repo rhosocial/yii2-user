@@ -131,9 +131,8 @@ echo GridView::widget([
     'emptyText' => Yii::t('user', 'No users meet the search criteria found.'),
     'layout' => "{summary}\n<div class=\"table-responsive\">{items}</div>\n{pager}",
     'columns' => $columns,
-    'emptyText' => Yii::t('user', 'No users found.'),
     'tableOptions' => [
         'class' => 'table table-striped'
-    ]
+    ],
 ]);
 echo $this->render('user-list-tips', ['tips' => $tips]);

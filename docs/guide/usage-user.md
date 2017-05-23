@@ -81,7 +81,29 @@ try {
 }
 ```
 
-If the return value is `true`, it means success. 
+If you want to assign the user permissions or roles, please pass them to second parameter
+like following:
+
+```php
+try {
+    $result = $user->register([$profile], ['Admin']);
+} catch (\Exception $ex) {
+}
+```
+
+If the return value is `true`, it means success.
+
+If one of registration, saving associated models, and assigning permissions or roles
+failed, the registration will not succeed.
+
+If the development mode is present, the exception itself is returned, or return false
+if production mode is present.
+
+The events registered with `$eventBeforeRegister` are called before the registration
+process begins.
+
+If the registration completes successfully, the events registered with `$eventAfterRegister`
+are called before returning true.
 
 ### Get IP Address used for registration
 
