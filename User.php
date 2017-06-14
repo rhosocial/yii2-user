@@ -14,6 +14,7 @@ namespace rhosocial\user;
 
 use rhosocial\base\models\models\BaseUserModel;
 use rhosocial\base\models\queries\BaseBlameableQuery;
+use rhosocial\user\models\invitation\registration\UserInvitationRegistrationTrait;
 use rhosocial\user\models\log\UserLoginTrait;
 use rhosocial\user\models\UserUsernameTrait;
 use rhosocial\user\security\UserPasswordHistoryTrait;
@@ -93,7 +94,7 @@ use yii\widgets\ActiveForm;
  */
 class User extends BaseUserModel
 {
-    use UserPasswordHistoryTrait, UserLoginTrait, UserUsernameTrait;
+    use UserPasswordHistoryTrait, UserLoginTrait, UserUsernameTrait, UserInvitationRegistrationTrait;
 
     /**
      * @var string
