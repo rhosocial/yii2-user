@@ -3,6 +3,8 @@ exclude_paths:
     - tests/**/*
     - migrations/**/*
     - rbac/migrations/**/*
+    - models/invitation/migrations/**/*
+    - models/log/migrations/**/*
     
 ratings:
     paths:

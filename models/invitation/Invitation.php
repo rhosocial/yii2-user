@@ -57,8 +57,8 @@ abstract class Invitation extends BaseBlameableModel
         ];
         if (!$this->allowRepeated) {
             $rules[] = [
-                [$this->createdByAttribute, 'invitee_guid'], 'unique', 'targetAttribute' => [
-                    $this->createdByAttribute, 'invitee_guid',
+                [$this->createdByAttribute, $this->contentAttribute, 'invitee_guid'], 'unique', 'targetAttribute' => [
+                    $this->createdByAttribute, $this->contentAttribute, 'invitee_guid',
                 ]
             ];
         }
@@ -79,10 +79,7 @@ abstract class Invitation extends BaseBlameableModel
      */
     public function setInvitee($invitee)
     {
-        if ($invitee instanceof User) {
-            $invitee = $invitee->getGUID();
-        }
-        return $this->invitee_guid = $invitee;
+        return $this->invitee_guid = (string)$invitee;
     }
 
     /**
@@ -95,12 +92,19 @@ abstract class Invitation extends BaseBlameableModel
     }
 
     /**
-     * @param User|string $invitee
+     * @param User|string|array $invitee
      * @return BaseBlameableQuery
      */
     public static function findByInvitee($invitee)
     {
-        return static::find()->andWhere(['invitee_guid' => (string)$invitee]);
+        if (!is_array($invitee)) {
+            $i[0] = $invitee;
+            $invitee = $i;
+        }
+        foreach ($invitee as $key => $i) {
+            $invitee[$key] = (string)$i;
+        }
+        return static::find()->andWhere(['invitee_guid' => $invitee]);
     }
 
     /**

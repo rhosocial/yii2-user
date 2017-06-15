@@ -22,6 +22,7 @@ use yii\db\IntegrityException;
 /**
  * Trait UserInvitationRegistrationTrait
  * @property-read Invitation[] invitationRegistrations
+ * @property-read User[] invitationRegistrationInvitees
  *
  * @package rhosocial\user\models\invitation\registration
  * @version 1.0
@@ -69,7 +70,8 @@ trait UserInvitationRegistrationTrait
     }
 
     /**
-     * @param $invitee
+     * Create a registration invitation instance.
+     * @param string|User $invitee The invited person.
      * @return Registration
      */
     public function createInvitationRegistration($invitee)
@@ -88,7 +90,6 @@ trait UserInvitationRegistrationTrait
         }
         return true;
     }
-
 
     /**
      * @return BaseBlameableQuery
@@ -109,6 +110,6 @@ trait UserInvitationRegistrationTrait
      */
     public function getInvitationRegistrationInvitees()
     {
-
+        return $this->hasMany(static::class, [$this->guidAttribute => 'invitee_guid'])->via('invitationRegistrations');
     }
 }

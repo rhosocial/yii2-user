@@ -41,6 +41,7 @@ class Registration extends Invitation
     }
 
     /**
+     * Returns the search instance and limits the search range to the registration.
      * @return BaseBlameableQuery
      */
     public static function find()
@@ -49,7 +50,8 @@ class Registration extends Invitation
     }
 
     /**
-     * @param User|string $invitee
+     * Returns the search instance and attach the specific invitee.
+     * @param User|string|array $invitee
      * @return BaseBlameableQuery
      */
     public static function findByInvitee($invitee)

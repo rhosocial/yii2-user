@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\tests\models\invitation;
 
+use rhosocial\user\tests\data\models\invitation\Registration;
 use rhosocial\user\tests\data\User;
 use rhosocial\user\tests\TestCase;
 
@@ -75,6 +76,7 @@ class RegistrationTest extends TestCase
         $this->assertCount(1, $invitationRegistrations);
         $this->assertInstanceOf(User::class, $invitationRegistrations[0]->invitee);
         $this->assertEquals((string)$invitationRegistrations[0]->invitee, (string)$this->invitee);
+        $this->assertEquals(Registration::INVITATION_REGISTRATION, $invitationRegistrations[0]->content);
     }
 
     /**
@@ -119,5 +121,47 @@ class RegistrationTest extends TestCase
         $this->assertNotEmpty($invitationRegistrations);
         $this->assertCount(1, $invitationRegistrations);
         $this->assertEquals((string)$this->invitee, (string)$invitationRegistrations[0]->invitee);
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     * @depends testRegister
+     */
+    public function testFindByInvitee()
+    {
+        $this->assertEmpty($this->user->invitationRegistrations);
+        $this->assertInstanceOf(User::class, $this->user);
+        $invitations = Registration::findByInvitee($this->user)->all();
+        $this->assertCount(0, $invitations);
+
+        $this->invitee = new User(['password' => '123456']);
+        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));
+        unset($this->user->invitationRegistrations);
+        $this->assertCount(1, $this->user->invitationRegistrations);
+
+        $invitations = Registration::findByInvitee($this->invitee)->all();
+        $this->assertCount(1, $invitations);
+
+        $this->assertEquals((string)$this->user, (string)$invitations[0]->host);
+        $this->assertEquals((string)$this->invitee, (string)$invitations[0]->invitee);
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     * @depends testGetInvitees
+     */
+    public function testGetInviteesByMethod()
+    {
+        $this->assertEmpty($this->user->invitationRegistrationInvitees);
+
+        $this->invitee = new User(['password' => '123456']);
+        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));
+        unset($this->user->invitationRegistrationInvitees);
+
+        $this->assertNotEmpty($this->user->invitationRegistrationInvitees);
+        $this->assertCount(1, $this->user->invitationRegistrationInvitees);
+        $this->assertEquals((string)$this->invitee, (string)$this->user->invitationRegistrationInvitees[0]);
     }
 }
