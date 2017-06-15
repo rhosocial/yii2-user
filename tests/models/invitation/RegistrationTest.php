@@ -73,6 +73,7 @@ class RegistrationTest extends TestCase
         $invitationRegistrations = $this->user->getInvitationRegistrations()->all();
         $this->assertNotEmpty($invitationRegistrations);
         $this->assertCount(1, $invitationRegistrations);
+        $this->assertInstanceOf(User::class, $invitationRegistrations[0]->invitee);
         $this->assertEquals((string)$invitationRegistrations[0]->invitee, (string)$this->invitee);
     }
 
@@ -99,6 +100,24 @@ class RegistrationTest extends TestCase
      */
     public function testGetInvitees()
     {
-        $this->user->
+        $this->assertNotEmpty($this->user->invitationRegistrationClass);
+        $class = $this->user->invitationRegistrationClass;
+        $noInit = $class::buildNoInitModel();
+        $invitationRegistrations = $this->user->getInvitationRegistrations()->andWhere(["<=", $noInit->createdAtAttribute, gmdate('Y-m-d H:i:s', time()-60)])->all();
+        $this->assertEmpty($invitationRegistrations);
+
+        $invitationRegistrations = $this->user->getInvitationRegistrations()->andWhere(['<=', $noInit->createdAtAttribute, gmdate('Y-m-d H:i:s', time()+60)])->all();
+        $this->assertEmpty($invitationRegistrations);
+
+        $this->invitee = new User(['password' => '123456']);
+        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));
+
+        $invitationRegistrations = $this->user->getInvitationRegistrations()->andWhere(["<=", $noInit->createdAtAttribute, gmdate('Y-m-d H:i:s', time()-60)])->all();
+        $this->assertEmpty($invitationRegistrations, 'The registration invitation should be empty.');
+
+        $invitationRegistrations = $this->user->getInvitationRegistrations()->andWhere(['<=', $noInit->createdAtAttribute, gmdate('Y-m-d H:i:s', time()+60)])->all();
+        $this->assertNotEmpty($invitationRegistrations);
+        $this->assertCount(1, $invitationRegistrations);
+        $this->assertEquals((string)$this->invitee, (string)$invitationRegistrations[0]->invitee);
     }
 }

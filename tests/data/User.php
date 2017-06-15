@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\tests\data;
 
+use rhosocial\user\tests\data\models\invitation\Registration;
 use rhosocial\user\tests\data\models\Username;
 
 /**
@@ -25,4 +26,5 @@ class User extends \rhosocial\user\User
     public $profileClass = Profile::class;
     public $passwordHistoryClass = PasswordHistory::class;
     public $usernameClass = Username::class;
+    public $invitationRegistrationClass = Registration::class;
 }
