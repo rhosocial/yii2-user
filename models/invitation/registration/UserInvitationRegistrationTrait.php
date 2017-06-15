@@ -65,6 +65,7 @@ trait UserInvitationRegistrationTrait
             $transaction->rollBack();
             throw $ex;
         }
+        return true;
     }
 
     /**

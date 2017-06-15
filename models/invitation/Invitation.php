@@ -62,6 +62,7 @@ abstract class Invitation extends BaseBlameableModel
                 ]
             ];
         }
+        return $rules;
     }
 
     /**
