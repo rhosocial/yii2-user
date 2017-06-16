@@ -15,6 +15,7 @@ namespace rhosocial\user\tests\models\invitation;
 use rhosocial\user\tests\data\models\invitation\Registration;
 use rhosocial\user\tests\data\User;
 use rhosocial\user\tests\TestCase;
+use yii\db\IntegrityException;
 
 /**
  * Class RegistrationTest
@@ -163,5 +164,28 @@ class RegistrationTest extends TestCase
         $this->assertNotEmpty($this->user->invitationRegistrationInvitees);
         $this->assertCount(1, $this->user->invitationRegistrationInvitees);
         $this->assertEquals((string)$this->invitee, (string)$this->user->invitationRegistrationInvitees[0]);
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     * @depends testRegister
+     */
+    public function testNotAllowRepeated()
+    {
+        $this->assertEmpty($this->user->getInvitationRegistrations()->all());
+
+        $this->invitee = new User(['password' => '123456']);
+        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));
+        $invitations = $this->user->getInvitationRegistrations()->all();
+        $this->assertNotEmpty($invitations);
+
+        $invitation = $this->user->createInvitationRegistration($this->invitee);
+        $this->assertInstanceOf(Registration::class, $invitation);
+        $this->assertEquals((string)$invitations[0]->host, (string)$invitation->host);
+        $this->assertEquals((string)$invitations[0]->content, (string)$invitation->content);
+        $this->assertEquals((string)$invitations[0]->invitee, (string)$invitation->invitee);
+
+        $this->assertFalse($invitation->save(), "Registration Invitation Instance cannot be Saved.");
     }
 }
