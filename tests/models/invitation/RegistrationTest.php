@@ -188,4 +188,17 @@ class RegistrationTest extends TestCase
 
         $this->assertFalse($invitation->save(), "Registration Invitation Instance cannot be Saved.");
     }
+
+    /**
+     * @group invitation
+     * @group register
+     * @depends testRegister
+     */
+    public function testRestrictContent()
+    {
+        // New Instance.
+        $invitation = new Registration(['content' => 0]);
+        $this->assertNotEquals(0, $invitation->content);
+        $this->assertEquals(Registration::INVITATION_REGISTRATION, $invitation->content);
+    }
 }
