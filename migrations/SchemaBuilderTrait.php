@@ -67,7 +67,7 @@ trait SchemaBuilderTrait
         }
     }
     
-    public function tinyInteger($length)
+    public function tinyInteger($length = null)
     {
         if ($this->getDb()->driverName == 'mysql') {
             return (new MySQLSchema(['db' => $this->getDb()]))->createColumnSchemaBuilder(MySQLSchema::TYPE_TINYINT, $length);
