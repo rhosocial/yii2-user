@@ -11,16 +11,16 @@ mean the same hash.
 ## Preparation
 
 - Create table for this model.
-- Implement your own User model.
-  - Customize table name.
-  - Customize rules.
-  - Customize attribute labels.
-  - Customize behaviors.
+- In order to user your own `User` model, you should customize:
+  - table name:`tableName()`
+  - rules:`rules()`
+  - attribute labels:`attributeLabels()`
+  - behaviors:`behaviors()`
 
 ## Implement your own User model
 
 Regardless of whether the current model to meet your needs, we do not recommend
-that you use the model as a user identity model. You need to implement your own user model:
+that you use the model as a user identity model. You need to implement your own `User` model:
 
 ```php
 class User extends \rhosocial\user\User
@@ -30,7 +30,8 @@ class User extends \rhosocial\user\User
 
 ## Generate User GUID
 
-This feature comes from the `GUIDTrait` of yii2-base-models.
+This feature comes from the [`GUIDTrait`](https://github.com/rhosocial/yii2-base-models/blob/1.0.x/traits/GUIDTrait.php)
+ of [`yii2-base-models`](https://github.com/rhosocial/yii2-base-models).
 
 By default, the user GUID is the same as the GUID of other models, which is a
 128-bit string, 16 bytes.
@@ -56,7 +57,8 @@ because when there are already many users, the probability of generating
 random numbers will be high, in order to ensure uniqueness of ID, the frequency
 of access to the database will be higher and higher.
 
-If you do not want to use the default `generateId()` method, you can inherit `User`
+If you do not want to use the default [`generateId()`](https://github.com/rhosocial/yii2-base-models/blob/1.0.x/traits/IDTrait.php#L128) 
+method, you can inherit `User`
 model and override it.
 
 ## Register a user
@@ -94,7 +96,7 @@ try {
 If the return value is `true`, it means success.
 
 If one of registration, saving associated models, and assigning permissions or roles
-failed, the registration will not succeed.
+failed, the registration will not succeed. At the same time, the events registered with $eventRegisterFailed are called.
 
 If the development mode is present, the exception itself is returned, or return false
 if production mode is present.
@@ -156,6 +158,10 @@ try {
 
 If the return value is true, it means success.
 
+Similar to registration, the events registered with the $eventBeforeDeregister are called before deregistration.
+If the unregister is successful, the events registered with $eventAfterDeregister are called, otherwise the event registered
+ with $eventDeregisterFailed are called.
+
 ## Change password
 
 ### Change directly:
@@ -199,7 +205,7 @@ Each user can have a profile. We provide a default Profile class. [How to use it
 Before creating a `Profile`, you need to specify the name of the `Profile` class:
 
 ```php
-$user->profileClass = Profile::className();
+$user->profileClass = Profile::class;
 ```
 
 It is not associated with any Profile model by default.
