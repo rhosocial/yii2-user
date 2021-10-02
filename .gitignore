@@ -50,5 +50,6 @@ Temporary Items
 /nbproject/private/
 /vendor
 /tests/runtime
+composer.lock
 
 .idea/
