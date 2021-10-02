@@ -50,3 +50,5 @@ Temporary Items
 /nbproject/private/
 /vendor
 /tests/runtime
+
+.idea/
