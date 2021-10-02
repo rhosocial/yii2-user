@@ -13,7 +13,7 @@
     "require": {
         "php": ">=8.0.11",
         "yiisoft/yii2": ">=2.0.43 < 2.1",
-        "yiisoft/yii2-authclient": "*",
+        "yiisoft/yii2-authclient": "^2.2.1",
         "kartik-v/yii2-widget-datetimepicker": "*",
         "rhosocial/helpers": ">=1.0.1",
         "rhosocial/yii2-base-models": ">=2.0.0-alpha"
@@ -26,5 +26,11 @@
         "psr-4": {
             "rhosocial\\user\\": ""
         }
-    }
+    },
+    "repositories":[
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
