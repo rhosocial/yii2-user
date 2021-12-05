@@ -39,7 +39,7 @@ trait UserInvitationRegistrationTrait
      * @throws \Exception
      * @throws InvalidParamException
      */
-    public function registerAccordingToInvitation($associatedModels = [], $authRoles = [], $inviter)
+    public function registerAccordingToInvitation($associatedModels = [], $authRoles = [], $inviter = null)
     {
         if (!$inviter) {
             return false;
