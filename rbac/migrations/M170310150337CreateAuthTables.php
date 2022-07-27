@@ -15,13 +15,13 @@ namespace rhosocial\user\rbac\migrations;
 use rhosocial\user\migrations\Migration;
 use rhosocial\user\rbac\roles\Admin;
 use rhosocial\user\rbac\roles\User;
-use rhosocial\user\rbac\permissions\CreateAdminUser;
+use rhosocial\user\rbac\permissions\GrantAdmin;
 use rhosocial\user\rbac\permissions\CreateUser;
-use rhosocial\user\rbac\permissions\DeleteAdminUser;
+use rhosocial\user\rbac\permissions\RevokeAdmin;
 use rhosocial\user\rbac\permissions\DeleteMyself;
 use rhosocial\user\rbac\permissions\DeleteUser;
 use rhosocial\user\rbac\permissions\ViewUser;
-use rhosocial\user\rbac\permissions\UpdateAdminUser;
+use rhosocial\user\rbac\permissions\UpdateAdmin;
 use rhosocial\user\rbac\permissions\UpdateMyself;
 use rhosocial\user\rbac\permissions\UpdateUser;
 use rhosocial\user\rbac\roles\Webmaster;
@@ -183,9 +183,9 @@ class M170310150337CreateAuthTables extends Migration
         $deleteUser = new DeleteUser();
         $updateMyself = new UpdateMyself();
         $deleteMyself = new DeleteMyself();
-        $createAdminUser = new CreateAdminUser();
-        $updateAdminUser = new UpdateAdminUser();
-        $deleteAdminUser = new DeleteAdminUser();
+        $grantAdmin = new GrantAdmin();
+        $updateAdmin = new UpdateAdmin();
+        $revokeAdmin = new RevokeAdmin();
         
         $authManager->add($createUser);
         $authManager->add($viewUser);
@@ -193,9 +193,9 @@ class M170310150337CreateAuthTables extends Migration
         $authManager->add($deleteUser);
         $authManager->add($updateMyself);
         $authManager->add($deleteMyself);
-        $authManager->add($createAdminUser);
-        $authManager->add($updateAdminUser);
-        $authManager->add($deleteAdminUser);
+        $authManager->add($grantAdmin);
+        $authManager->add($updateAdmin);
+        $authManager->add($revokeAdmin);
         
         $admin = new Admin();
         $user = new User();
@@ -215,6 +215,9 @@ class M170310150337CreateAuthTables extends Migration
         $authManager->addChild($admin, $deleteUser);
 
         $authManager->addChild($webmaster, $admin);
+        $authManager->addChild($webmaster, $grantAdmin);
+        $authManager->addChild($webmaster, $updateAdmin);
+        $authManager->addChild($webmaster, $revokeAdmin);
     }
 
     /*

@@ -16,12 +16,12 @@ use rhosocial\user\tests\data\User;
 use rhosocial\user\tests\data\Profile;
 use rhosocial\user\tests\TestCase;
 use rhosocial\user\rbac\Assignment;
-use rhosocial\user\rbac\permissions\CreateAdminUser;
+use rhosocial\user\rbac\permissions\GrantAdmin;
 use rhosocial\user\rbac\permissions\CreateUser;
-use rhosocial\user\rbac\permissions\DeleteAdminUser;
+use rhosocial\user\rbac\permissions\RevokeAdmin;
 use rhosocial\user\rbac\permissions\DeleteMyself;
 use rhosocial\user\rbac\permissions\DeleteUser;
-use rhosocial\user\rbac\permissions\UpdateAdminUser;
+use rhosocial\user\rbac\permissions\UpdateAdmin;
 use rhosocial\user\rbac\permissions\UpdateMyself;
 use rhosocial\user\rbac\permissions\UpdateUser;
 use rhosocial\user\rbac\Role;
@@ -92,7 +92,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new CreateAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new GrantAdmin())->name));
         $this->assertFalse(\Yii::$app->user->can((new CreateUser())->name));
     }
     
@@ -107,7 +107,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new CreateAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new GrantAdmin())->name));
         $this->assertTrue(\Yii::$app->user->can((new CreateUser())->name));
     }
     
@@ -122,7 +122,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new UpdateAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new UpdateAdmin())->name));
         $this->assertTrue(\Yii::$app->user->can((new UpdateMyself())->name));
         $this->assertFalse(\Yii::$app->user->can((new UpdateUser())->name));
     }
@@ -138,7 +138,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new UpdateAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new UpdateAdmin())->name));
         $this->assertTrue(\Yii::$app->user->can((new UpdateMyself())->name));
         $this->assertTrue(\Yii::$app->user->can((new UpdateUser())->name));
     }
@@ -154,7 +154,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new DeleteAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new RevokeAdmin())->name));
         $this->assertTrue(\Yii::$app->user->can((new DeleteMyself())->name));
         $this->assertFalse(\Yii::$app->user->can((new DeleteUser())->name));
     }
@@ -170,7 +170,7 @@ class UserTest extends TestCase
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         
-        $this->assertFalse(\Yii::$app->user->can((new DeleteAdminUser())->name));
+        $this->assertFalse(\Yii::$app->user->can((new RevokeAdmin())->name));
         $this->assertTrue(\Yii::$app->user->can((new DeleteMyself())->name));
         $this->assertTrue(\Yii::$app->user->can((new DeleteUser())->name));
     }

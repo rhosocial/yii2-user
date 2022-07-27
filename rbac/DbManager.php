@@ -25,6 +25,7 @@ use yii\db\Query;
  */
 class DbManager extends \yii\rbac\DbManager
 {
+    public $defaultRoles = ['user'];
     /**
      * @inheritdoc
      */

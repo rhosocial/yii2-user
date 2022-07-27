@@ -18,15 +18,15 @@ use rhosocial\user\rbac\Permission;
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class CreateAdminUser extends Permission
+class UpdateAdmin extends Permission
 {
     /**
      * @inheritdoc
      */
-    public $name = 'createAdminUser';
+    public $name = 'updateAdmin';
     
     /**
      * @inheritdoc
      */
-    public $description = 'Create an administrator user.';
+    public $description = 'Update an administrator user.';
 }

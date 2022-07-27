@@ -21,19 +21,20 @@ This migration script adds several role and permission definitions after creatin
 
 We provide the following permissions:
 
-    CreateAdminUser
+    GrantAdmin
     CreateUser
-    DeleteAdminUser
+    RevokeAdmin
     DeleteMyself
     DeleteUser
-    UpdateAdminUser
+    UpdateAdmin
     UpdateMyself
     UpdateUser
 
 And we also provide the following roles (and their respective permissions):
 
-    Admin       CreateUser, DeleteMyself(inherited from User), DeleteUser, UpdateMyself(inherited from User), UpdateUser
-    User        DeleteMyself, UpdateMyself
+    Webmaster      GrantAdmin, UpdateAdmin, RevokeAdmin, and all permissions inherited from `Admin`.
+    Admin          CreateUser, DeleteUser, UpdateUser, and all permission inherited from `User`.
+    User(default)  DeleteMyself, UpdateMyself.
 
 We do not have to force a user to be assigned a role or permission,
 nor do we check user roles or permissions when accessing `controller` and `action`.
