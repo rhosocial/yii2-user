@@ -1,6 +1,24 @@
 # Installation
 
-## Migrations
+## User Identity Model
+
+If you want to use user identity for web application, you should replace the default one with our's:
+
+```php
+<?php
+
+return [
+    'components' => [
+        ....
+        'user' => [
+             'class' => rhosocial\user\components\User::class
+        ],
+        ....
+    ]
+];
+```
+
+## User, Profile & PasswordHistory Migrations
 
 If you want to use built-in tables, you can execute built-in migrations (Only fit for MySQL).
 Or you can create tables referenced by our provided SQL file (`vendor/rhosocial/yii2-user/tests/data/rhosocial_yii2_user_all.sql`), or migrations' comments.
@@ -60,7 +78,22 @@ It means successful.
 
 We provide you with a Role-Based Authorization Control manager and save the authorization information in the database (MySQL Only).
 
-Before using the database manager, you need to perform the migrations:
+Before using the database manager, you need to configure the `DbManager` with:
+
+```php
+<?php
+
+return [
+    ......
+    'components' => [
+        'authManager' => [
+            'class' => 'rhosocial\user\rbac\DbManager',
+        ],
+    ],
+    ......
+];
+```
+and you need to perform the migrations:
 ```
 yii migrate/up --migrationPath=@vendor --migrationNamespaces=rhosocial\user\rbac\migrations --interactive=0
 ```
