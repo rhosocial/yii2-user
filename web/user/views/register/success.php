@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
@@ -24,6 +24,6 @@ $this->params['breadcrumbs'] = [$this->title];
     <p class="lead"><?= Yii::t('user', 'Your ID is:') . $id ?></p>
     <p class="lead"><?= Yii::t('user', 'Please keep in mind your account!') ?></p>
     <p class="lead"><?= Yii::t('user', 'And use the password just fill in the registration:') ?></p>
-    <p><?= Html::a(Yii::t('user', 'Login'), ['/user/auth/login', 'id' => $id]) ?></p>
+    <p><?= Html::a(Yii::t('user', 'Login'), ['/user/auth/login', 'id' => $id], ['class' => 'btn btn-primary']) ?></p>
 
 </div>

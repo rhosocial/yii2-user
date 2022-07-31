@@ -84,7 +84,7 @@ class UserPanel extends Panel
         }
 
         if (!class_exists($data->loginLogClass)) {
-            $loginLogProvider = 'Login Log Class Not Specified.';
+            $loginLogProvider = '`$loginLogClass` not defined Login logs are not recorded.';
         } else {
             $loginLogProvider = new ArrayDataProvider([
                 'allModels' => $data->getLoginLogs(),
