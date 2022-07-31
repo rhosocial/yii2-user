@@ -12,7 +12,7 @@
 
 use rhosocial\user\forms\ChangePasswordForm;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $model ChangePasswordForm */
 /* @var $this yii\web\View */

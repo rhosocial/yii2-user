@@ -71,7 +71,7 @@ class User extends \rhosocial\base\models\web\User
      * @return array
      */
     public function getLoginPriority()
-    {
+    {\Yii::$app->user;
         return [
             self::LOGIN_BY_ID => ID::class,
             self::LOGIN_BY_USERNAME => Username::class,

@@ -11,7 +11,7 @@
  */
 
 use rhosocial\user\User;
-use yii\bootstrap\Modal;
+use yii\bootstrap5\Modal;
 use yii\web\View;
 use yii\widgets\DetailView;
 

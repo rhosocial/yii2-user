@@ -15,6 +15,7 @@ namespace rhosocial\user\forms;
 use rhosocial\user\User;
 use rhosocial\user\Profile;
 use Yii;
+use yii\base\InvalidValueException;
 use yii\base\Model;
 
 /**
@@ -132,6 +133,9 @@ class RegisterForm extends Model
             $user = new $class(['password' => $this->password]);
             /* @var $user User */
             $profile = $user->createProfile(['nickname' => $this->nickname, 'first_name' => $this->first_name, 'last_name' => $this->last_name, 'gender' => $this->gender]);
+            if (class_exists($user->profileClass) && empty($profile)) {
+                throw new InvalidValueException("User Profile created `null`. `profileClass` property not set correctly yet?");
+            }
             $models[] = $profile;
             if (is_string($this->username)) {
                 $username = $user->createUsername($this->username);

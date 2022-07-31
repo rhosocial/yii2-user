@@ -13,7 +13,7 @@
 use rhosocial\user\Profile;
 use rhosocial\user\forms\RegisterForm;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $model RegisterForm */
 /* @var $this yii\web\View */

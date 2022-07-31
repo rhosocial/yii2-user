@@ -12,7 +12,7 @@
 
 use rhosocial\user\forms\LoginForm;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $model LoginForm */
 /* @var $this yii\web\View */

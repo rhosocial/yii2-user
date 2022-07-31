@@ -26,7 +26,7 @@ use Yii;
  */
 trait UserLoginTrait
 {
-    public $loginLogClass = Login::class;
+    public $loginLogClass = false;
     
     /**
      * Get login logs.
@@ -36,6 +36,9 @@ trait UserLoginTrait
     {
         /* @var $this User */
         $class = $this->loginLogClass;
+        if (empty($class)) {
+            return [];
+        }
         try {
             return $class::getLatests($this, Login::GET_ALL_LATESTS);
         } catch (\Exception $ex) {
@@ -52,6 +55,9 @@ trait UserLoginTrait
     {
         /* @var $this User */
         $class = $this->loginLogClass;
+        if (empty($class)) {
+            return [];
+        }
         try {
             return $class::getLatests($this, 1)[0];
         } catch (\Exception $ex) {
@@ -68,6 +74,7 @@ trait UserLoginTrait
     public function recordLogin($config = [])
     {
         if (empty($this->loginLogClass)) {
+            Yii::warning("`$loginLogClass` not defined. Login logs are not recorded.", __METHOD__);
             return false;
         }
         $log = $this->create($this->loginLogClass, $config);
