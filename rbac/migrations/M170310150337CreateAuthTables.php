@@ -102,7 +102,7 @@ class M170310150337CreateAuthTables extends Migration
     /**
      *
      */
-    public function up()
+    public function safeUp()
     {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
@@ -110,7 +110,7 @@ class M170310150337CreateAuthTables extends Migration
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ENGINE=InnoDB';
 
             $this->createTable($authManager->ruleTable, [
                 'name' => $this->varchar(64)->notNull()->comment('Rule Name'),
@@ -158,7 +158,7 @@ class M170310150337CreateAuthTables extends Migration
     /**
      *
      */
-    public function down()
+    public function safeDown()
     {
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
@@ -222,11 +222,11 @@ class M170310150337CreateAuthTables extends Migration
 
     /*
     // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
+    public function up()
     {
     }
 
-    public function safeDown()
+    public function down()
     {
     }
     */

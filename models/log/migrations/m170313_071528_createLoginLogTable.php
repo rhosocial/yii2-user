@@ -44,12 +44,12 @@ CREATE TABLE `log_login` (
  */
 class m170313_071528_createLoginLogTable extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = "CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB COMMENT='Login Log'";
+            $tableOptions = "CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ENGINE=InnoDB COMMENT='Login Log'";
             $this->createTable(LoginLog::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('Login Log GUID'),
                 'id' => $this->varchar(4)->notNull()->comment('Login Log ID'),
@@ -67,20 +67,22 @@ class m170313_071528_createLoginLogTable extends Migration
         $this->createIndex('login_log_status_normal', LoginLog::tableName(), 'status');
         $this->createIndex('login_log_device_normal', LoginLog::tableName(), 'device');
         $this->addForeignKey('login_log_creator_fk', LoginLog::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        return true;
     }
 
-    public function down()
+    public function safeDown()
     {
-        $this->dropTable(Login::tableName());
+        $this->dropTable(LoginLog::tableName());
+        return true;
     }
 
     /*
     // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
+    public function up()
     {
     }
 
-    public function safeDown()
+    public function down()
     {
     }
     */
