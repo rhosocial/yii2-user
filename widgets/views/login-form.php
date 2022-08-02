@@ -18,7 +18,7 @@ use yii\bootstrap5\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $tip string */
 $css = <<<EOT
-div.required label.control-label:after {
+div.required label.col-form-label:after {
     content: " *";
     color: red;
 }
@@ -36,10 +36,6 @@ $this->registerCss($css);
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'layout' => 'horizontal',
-        'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-5\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-2 control-label'],
-        ],
     ]); ?>
     <?php
     $placeholder = Yii::t('user', 'User ID');

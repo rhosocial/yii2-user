@@ -38,8 +38,14 @@ class Username implements MethodInterface
         if (class_exists($noInit->usernameClass)) {
             $class = $noInit->usernameClass;
             try {
-                return $class::find()->content($attribute)->one()->host;
+                $username = $class::find()->content($attribute)->one();
+                if (!$username) {
+                    Yii::info('This user does not have `username`.', __METHOD__);
+                    return null;
+                }
+                return $username->host;
             } catch (\Exception $ex) {
+                Yii::error($ex->getMessage(), __METHOD__);
                 return null;
             }
         }

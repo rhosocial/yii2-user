@@ -18,7 +18,7 @@ use yii\bootstrap5\ActiveForm;
 /* @var $model RegisterForm */
 /* @var $this yii\web\View */
 $css = <<<EOT
-div.required label.control-label:after {
+div.required label.col-form-label:after {
     content: " *";
     color: red;
 }
@@ -35,10 +35,6 @@ $this->registerCss($css);
     <?php $form = ActiveForm::begin([
         'id' => 'register-form',
         'layout' => 'horizontal',
-        'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-5\">{input}</div>\n<div class=\"col-lg-5\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-2 control-label'],
-        ],
     ]); ?>
 
     <?= $form->field($model, 'nickname')->textInput(['autofocus' => true]) ?>

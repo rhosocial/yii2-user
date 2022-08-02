@@ -15,7 +15,7 @@ namespace rhosocial\user\web\user\controllers;
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\web\user\Module;
 use Yii;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;

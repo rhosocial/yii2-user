@@ -33,7 +33,11 @@ class ID implements MethodInterface
             return null;
         }
         $userClass = Yii::$app->user->identityClass;
-        return $userClass::find()->id($attribute)->one();
+        $id = $userClass::find()->id($attribute)->one();
+        if (!$id) {
+            Yii::info('The specified `ID` does not exist.', __METHOD__);
+        }
+        return $id;
     }
 
     /**
