@@ -7,7 +7,8 @@ This extension provides two common models:
 And a SimpleProfile model, added `email` and `phone` attributes
 compared with Profile model.
 
-We also provide a UserSearch model for searching user.
+We also provide a `UserSearch` model for searching user, a `LoginLog` model to record log-in actions, a `Username` model
+to customize the identifier for user.
 
 ## Getting Started
 

@@ -11,14 +11,18 @@ return [
     'components' => [
         ....
         'user' => [
-             'class' => rhosocial\user\components\User::class
+             'class' => \rhosocial\user\components\User::class
         ],
         ....
     ]
 ];
 ```
 
-## User, Profile & PasswordHistory Migrations
+You can also extend and enhance this class and use it as a `user` component.
+
+## User, Profile, PasswordHistory, and their Migrations
+
+We provide three Active Record classes by default, each of which corresponds to a data table.
 
 If you want to use built-in tables, you can execute built-in migrations (Only fit for MySQL).
 Or you can create tables referenced by our provided SQL file (`vendor/rhosocial/yii2-user/tests/data/rhosocial_yii2_user_all.sql`), or migrations' comments.
@@ -72,7 +76,11 @@ Migrated up successfully.
 
 It means successful.
 
+> Note. the `Profile` and `PasswordHistory` are not required. You can decide whether to enable it according to your actual needs.
+
 ## Authorization
+
+We provided default permissions and roles and enhanced the DbManager provided by Yii.
 
 ### DbManager (Only Supports MySQL)
 
@@ -87,7 +95,7 @@ return [
     ......
     'components' => [
         'authManager' => [
-            'class' => 'rhosocial\user\rbac\DbManager',
+            'class' => \rhosocial\user\rbac\DbManager::class,
         ],
     ],
     ......
