@@ -24,15 +24,16 @@ class Assignment extends \yii\rbac\Assignment
      * @var string|User user ID (see [[\rhosocial\user\models\User::guid]])
      */
     public $userGuid;
-    
+
     /**
-     * @var string the time of invalidation of this Assignment. (Format: Y-m-d H:i:s)
+     * @var int|null UNIX timestamp representing the assignment failure time. `null` represents that this assignment is
+     * never expired.
      */
     public $failedAt;
-    
+
     public function init()
     {
-        if ($this->failedAt !== null && strtotime($this->failedAt) < strtotime(date('Y-m-d H:i:s'))) {
+        if ($this->failedAt !== null && $this->failedAt < strtotime(date('Y-m-d H:i:s'))) {
             return \Yii::$app->db->createCommand()
                 ->delete(\Yii::$app->authManager->assignmentTable, [
                     'user_guid' => (string) $this->userGuid,
