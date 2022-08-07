@@ -72,6 +72,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
                     'basePath' => __DIR__,
                     'vendorPath' => dirname(__DIR__) . '/vendor',
                     'timeZone' => 'Asia/Shanghai',
+                    'aliases' => [
+                        '@bower' => '@vendor/bower-asset',
+                        '@npm' => '@vendor/npm-asset',
+                    ],
                     'components' => [
                         'i18n' => [
                             'translations' => [
@@ -89,17 +93,18 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase {
                             'cookieValidationKey' => 'wefJDF8sfdsfSDefwqdxj9oq',
                             'scriptFile' => __DIR__ . '/index.php',
                             'scriptUrl' => '/index.php',
+                            'isConsoleRequest' => false,
                         ],
                         'user' => [
-                            'class' => 'rhosocial\user\tests\data\web\User',
-                            'identityClass' => 'rhosocial\user\tests\data\User',
+                            'class' => \rhosocial\user\components\User::class,
+                            'identityClass' => \rhosocial\user\tests\data\models\user\User::class,
                             'enableAutoLogin' => true,
                         ],
                         'authManager' => [
-                            'class' => 'rhosocial\user\rbac\DbManager',
+                            'class' => \rhosocial\user\rbac\DbManager::class,
                         ],
                     ]
-                        ], $config));
+            ], $config));
     }
 
     /**

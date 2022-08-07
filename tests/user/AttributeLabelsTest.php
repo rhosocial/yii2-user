@@ -13,7 +13,7 @@
 namespace rhosocial\user\tests\user;
 
 use rhosocial\user\tests\TestCase;
-use rhosocial\user\tests\data\User;
+use rhosocial\user\tests\data\models\user\User;
 
 /**
  * Description of AttributeLabelsTest

@@ -12,7 +12,6 @@
 
 namespace rhosocial\user\tests\rbac;
 
-use rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable;
 use rhosocial\user\tests\data\models\user\User;
 use rhosocial\user\tests\data\models\user\Profile;
 use rhosocial\user\tests\TestCase;
@@ -52,6 +51,7 @@ class UserTest extends TestCase
         \rhosocial\user\models\migrations\M170304140437CreateUserTable::class,
         \rhosocial\user\models\migrations\M170304142349CreateProfileTable::class,
         \rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable::class,
+        \rhosocial\user\models\log\migrations\m170313_071528_createLoginLogTable::class,
         \rhosocial\user\rbac\migrations\M170310150337CreateAuthTables::class,
     ];
     
@@ -99,6 +99,7 @@ class UserTest extends TestCase
     {
         $role = new UserRole();
         $this->assertTrue($this->user->register([$this->profile], $role));
+        $this->assertEquals($this->user->guid, User::findIdentityByGuid($this->user)->guid);
         $this->assertTrue(Yii::$app->user->login($this->user));
         $this->assertInstanceOf(Assignment::class, Yii::$app->authManager->getAssignment($role->name, $this->user));
         

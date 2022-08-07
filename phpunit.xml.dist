@@ -6,6 +6,7 @@
          convertWarningsToExceptions="true"
          stopOnFailure="false"
          timeoutForLargeTests="1200"
+         processIsolation="true"
          verbose="true">
     <testsuites>
         <testsuite name="Common">
