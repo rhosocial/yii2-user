@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\rbac\migrations;
 
-use rhosocial\user\migrations\Migration;
+use rhosocial\user\models\migrations\Migration;
 use rhosocial\user\rbac\roles\Admin;
 use rhosocial\user\rbac\roles\User;
 use rhosocial\user\rbac\permissions\GrantAdmin;

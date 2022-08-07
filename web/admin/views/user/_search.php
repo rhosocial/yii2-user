@@ -11,7 +11,7 @@
  */
 
 use kartik\datetime\DateTimePicker;
-use rhosocial\user\UserProfileSearch;
+use rhosocial\user\models\UserProfileSearch;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 

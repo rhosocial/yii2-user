@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\widgets;
 
-use rhosocial\user\UserSearch;
+use rhosocial\user\models\UserSearch;
 use yii\base\InvalidConfigException;
 use yii\base\Widget;
 

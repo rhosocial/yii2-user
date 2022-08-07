@@ -17,7 +17,7 @@ namespace rhosocial\user\tests\data\noprofile;
  *
  * @author vistart <i@vistart.me>
  */
-class User extends \rhosocial\user\User
+class User extends \rhosocial\user\models\User
 {
     //put your code here
 }

@@ -10,7 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\UserProfileView;
+use rhosocial\user\models\UserProfileView;
 use rhosocial\user\widgets\UserProfileSearchWidget;
 use rhosocial\user\widgets\UserListWidget;
 use yii\data\ActiveDataProvider;

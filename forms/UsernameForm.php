@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\forms;
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 use Yii;
 use yii\base\Model;
 

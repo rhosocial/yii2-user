@@ -6,14 +6,15 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
 namespace rhosocial\user\tests\rbac;
 
-use rhosocial\user\tests\data\User;
-use rhosocial\user\tests\data\Profile;
+use rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable;
+use rhosocial\user\tests\data\models\user\User;
+use rhosocial\user\tests\data\models\user\Profile;
 use rhosocial\user\tests\TestCase;
 use rhosocial\user\rbac\Assignment;
 use rhosocial\user\rbac\permissions\GrantAdmin;
@@ -46,14 +47,22 @@ class UserTest extends TestCase
     protected $profile;
     
     protected $password1 = '123456';
+
+    protected $migrations = [
+        \rhosocial\user\models\migrations\M170304140437CreateUserTable::class,
+        \rhosocial\user\models\migrations\M170304142349CreateProfileTable::class,
+        \rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable::class,
+        \rhosocial\user\rbac\migrations\M170310150337CreateAuthTables::class,
+    ];
     
-    protected function setUp() {
+    protected function setUp() : void {
         parent::setUp();
+        $this->applyMigrations($this->migrations);
         $this->user = new User(['password' => $this->password1]);
         $this->profile = $this->user->createProfile(['nickname' => 'vistart']);
     }
     
-    protected function tearDown()
+    protected function tearDown() : void
     {
         if ($this->user instanceof User) {
             try {
@@ -66,6 +75,7 @@ class UserTest extends TestCase
         }
         Profile::deleteAll();
         User::deleteAll();
+        $this->revertMigrations($this->migrations);
         parent::tearDown();
     }
     
@@ -263,7 +273,7 @@ class UserTest extends TestCase
      */
     public function testFailedPermission()
     {
-        $permission = new CreateAdminUser();
+        $permission = new GrantAdmin();
         $this->assertTrue($this->user->register([$this->profile]));
         $this->assertEmpty(Yii::$app->authManager->getPermissionsByUser($this->user));
         $date = gmdate('Y-m-d H:i:s');

@@ -17,7 +17,7 @@
         "yiisoft/yii2-bootstrap5": "^2.0.3",
         "kartik-v/yii2-widget-datetimepicker": "*",
         "rhosocial/helpers": ">=1.0.3",
-        "rhosocial/yii2-base-models": ">=2.0.0-alpha"
+        "rhosocial/yii2-base-models": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-faker": "*",
@@ -33,5 +33,10 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
 }

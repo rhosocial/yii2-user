@@ -6,15 +6,15 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
 namespace rhosocial\user\models\log\migrations;
 
-use rhosocial\user\User;
-use rhosocial\user\models\log\LoginLog;
-use rhosocial\user\migrations\Migration;
+use rhosocial\user\models\User;
+use rhosocial\user\models\log\Login;
+use rhosocial\user\models\migrations\Migration;
 
 /**
  * Create Login Log Table.
@@ -50,7 +50,7 @@ class m170313_071528_createLoginLogTable extends Migration
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = "CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ENGINE=InnoDB COMMENT='Login Log'";
-            $this->createTable(LoginLog::tableName(), [
+            $this->createTable(Login::tableName(), [
                 'guid' => $this->varbinary(16)->notNull()->comment('Login Log GUID'),
                 'id' => $this->varchar(4)->notNull()->comment('Login Log ID'),
                 'user_guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
@@ -61,18 +61,18 @@ class m170313_071528_createLoginLogTable extends Migration
                 'device' => $this->integer()->defaultValue(0)->notNull(),
             ], $tableOptions);
         }
-        $this->addPrimaryKey('login_log_pk', LoginLog::tableName(), 'guid');
-        $this->createIndex('login_log_id_unique', LoginLog::tableName(), ['guid', 'id'], true);
-        $this->createIndex('login_log_created_at_normal', LoginLog::tableName(), 'created_at');
-        $this->createIndex('login_log_status_normal', LoginLog::tableName(), 'status');
-        $this->createIndex('login_log_device_normal', LoginLog::tableName(), 'device');
-        $this->addForeignKey('login_log_creator_fk', LoginLog::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->addPrimaryKey('login_log_pk', Login::tableName(), 'guid');
+        $this->createIndex('login_log_id_unique', Login::tableName(), ['guid', 'id'], true);
+        $this->createIndex('login_log_created_at_normal', Login::tableName(), 'created_at');
+        $this->createIndex('login_log_status_normal', Login::tableName(), 'status');
+        $this->createIndex('login_log_device_normal', Login::tableName(), 'device');
+        $this->addForeignKey('login_log_creator_fk', Login::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
         return true;
     }
 
     public function safeDown()
     {
-        $this->dropTable(LoginLog::tableName());
+        $this->dropTable(Login::tableName());
         return true;
     }
 

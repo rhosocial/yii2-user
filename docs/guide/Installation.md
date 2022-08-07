@@ -1,8 +1,8 @@
 # Installation
 
-## User Identity Model
+## User Identity Component
 
-If you want to use user identity for web application, you should replace the default one with our's:
+If you want to use user identity component for web application, you should replace the default one with `\rhosocial\user\components\User`:
 
 ```php
 <?php
@@ -32,7 +32,7 @@ and modify the `db` configuration first.
 
 Then you can execute the following command in the console:
 ```
-yii migrate/up --migrationPath=@vendor --migrationNamespaces=rhosocial\user\migrations --interactive=0
+yii migrate/up --migrationPath=@vendor --migrationNamespaces=rhosocial\user\models\migrations --interactive=0
 ```
 
 > Note: In the linux system, you may need to add additional escape characters(`\`).

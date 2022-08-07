@@ -50,4 +50,7 @@ to customize the identifier for user.
 
 - [Using the debug panel](usage-debug.md)
 
-## [Test](Test.md)
+## Test
+
+- [Environment](test-environment.md)
+- [Execute Test Script](test-execute.md)

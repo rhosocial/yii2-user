@@ -6,15 +6,16 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
 namespace rhosocial\user\models\invitation\registration;
 
 use rhosocial\base\models\queries\BaseBlameableQuery;
+use rhosocial\base\models\queries\BaseUserQuery;
 use rhosocial\user\models\invitation\Invitation;
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\db\IntegrityException;
@@ -39,7 +40,7 @@ trait UserInvitationRegistrationTrait
      * @throws \Exception
      * @throws InvalidParamException
      */
-    public function registerAccordingToInvitation($associatedModels = [], $authRoles = [], $inviter = null)
+    public function registerAccordingToInvitation(array $associatedModels = [], array $authRoles = [], $inviter = null)
     {
         if (!$inviter) {
             return false;
@@ -59,7 +60,7 @@ trait UserInvitationRegistrationTrait
             $invitation = $inviter->createInvitationRegistration($this);
             $result = $invitation->save();
             if (!$result) {
-                throw new IntegrityException("Record Invitation Failed.");
+                throw new IntegrityException("Record Invitation Failed:" . $invitation->getFirstError());
             }
             $transaction->commit();
         } catch (\Exception $ex) {
@@ -106,7 +107,16 @@ trait UserInvitationRegistrationTrait
     }
 
     /**
-     * @return User[]
+     * Get query which the current user is as the inviter.
+     * If you want to get which users the current user has invited, you can use:
+     * ```php
+     * $users = $this->invitationRegistrationInvitees;
+     * ```
+     * If you just want to know who the current user has most recently invited, you can use:
+     * ```php
+     * $user = $this->getInvitationRegistryInvitees()->orderByCreatedAt(SORT_DESC)->one();
+     * ```
+     * @return BaseUserQuery
      */
     public function getInvitationRegistrationInvitees()
     {

@@ -10,8 +10,8 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\Profile;
-use rhosocial\user\User;
+use rhosocial\user\models\Profile;
+use rhosocial\user\models\User;
 use rhosocial\user\widgets\UserProfileModalWidget;
 use yii\data\ActiveDataProvider;
 use yii\grid\DataColumn;

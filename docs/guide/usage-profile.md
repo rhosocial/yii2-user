@@ -30,7 +30,7 @@ Regardless of whether the current model has met your needs, we do not recommend
 that you use the model as a profile model. You need to implement your own profile model:
 
 ```php
-class Profile extends \rhosocial\user\Profile
+class Profile extends \rhosocial\user\models\Profile
 {
 }
 ```

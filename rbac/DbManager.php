@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\rbac;
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 use yii\db\Expression;
 use yii\db\Query;
 
@@ -171,7 +171,7 @@ class DbManager extends \yii\rbac\DbManager
 
     /**
      * Returns all permissions that are directly assigned to user.
-     * @param string|User $userGuid the user GUID (see [[\rhosocial\user\User::guid]])
+     * @param string|User $userGuid the user GUID (see [[\rhosocial\user\models\User::guid]])
      * @return Permission[] all direct permissions that the user has. The array is indexed by the permission names.
      */
     protected function getDirectPermissionsByUser($userGuid)
@@ -191,7 +191,7 @@ class DbManager extends \yii\rbac\DbManager
 
     /**
      * Returns all permissions that the user inherits from the roles assigned to him.
-     * @param string|User $userGuid the user GUID (see [[\rhosocial\user\User::guid]])
+     * @param string|User $userGuid the user GUID (see [[\rhosocial\user\models\User::guid]])
      * @return Permission[] all inherited permissions that the user has. The array is indexed by the permission names.
      */
     protected function getInheritedPermissionsByUser($userGuid)

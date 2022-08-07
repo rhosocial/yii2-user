@@ -11,7 +11,7 @@
  */
 
 use rhosocial\base\helpers\Timezone;
-use rhosocial\user\Profile;
+use rhosocial\user\models\Profile;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 

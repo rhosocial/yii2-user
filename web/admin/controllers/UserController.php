@@ -12,8 +12,8 @@
 
 namespace rhosocial\user\web\admin\controllers;
 
-use rhosocial\user\User;
-use rhosocial\user\Profile;
+use rhosocial\user\models\User;
+use rhosocial\user\models\Profile;
 use rhosocial\user\forms\ChangePasswordForm;
 use rhosocial\user\forms\RegisterForm;
 use rhosocial\user\web\admin\Module;

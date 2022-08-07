@@ -12,8 +12,8 @@
 
 namespace rhosocial\user\tests\profile;
 
-use rhosocial\user\tests\data\User;
-use rhosocial\user\tests\data\Profile;
+use rhosocial\user\tests\data\models\user\User;
+use rhosocial\user\tests\data\models\user\Profile;
 use rhosocial\user\tests\TestCase;
 
 /**
@@ -31,14 +31,21 @@ class NormalTest extends TestCase
      * @var Profile
      */
     protected $profile;
+
+    protected $migrations = [
+        \rhosocial\user\models\migrations\M170304140437CreateUserTable::class,
+        \rhosocial\user\models\migrations\M170304142349CreateProfileTable::class,
+        \rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable::class,
+    ];
     
-    protected function setUp() {
+    protected function setUp() : void {
         parent::setUp();
+        $this->applyMigrations($this->migrations);
         $this->user = new User(['password' => '123456']);
         $this->profile = $this->user->createProfile(['nickname' => 'vistart']);
     }
     
-    protected function tearDown()
+    protected function tearDown() : void
     {
         if ($this->user instanceof User) {
             try {
@@ -51,6 +58,7 @@ class NormalTest extends TestCase
         }
         Profile::deleteAll();
         User::deleteAll();
+        $this->revertMigrations($this->migrations);
         parent::tearDown();
     }
     
@@ -67,6 +75,7 @@ class NormalTest extends TestCase
      */
     public function testNew()
     {
+        $this->assertNotNull($this->profile);
         $this->assertNull(Profile::findOne($this->user->getGUID()));
         $this->assertNull(Profile::findOne($this->profile->getGUID()));
         $this->assertInstanceOf(get_class(Profile::find()), $this->user->getProfile());

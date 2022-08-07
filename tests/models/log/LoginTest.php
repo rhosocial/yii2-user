@@ -32,8 +32,14 @@ class LoginTest extends TestCase
 
     protected $password1 = '123456';
 
-    protected function setUp() {
+    protected $migrations = [
+        \rhosocial\user\models\migrations\M170304140437CreateUserTable::class,
+        \rhosocial\user\models\log\migrations\m170313_071528_createLoginLogTable::class,
+    ];
+
+    protected function setUp() : void {
         parent::setUp();
+        $this->applyMigrations($this->migrations);
         $this->user = new User(['password' => $this->password1]);
         $result = $this->user->register();
         if (!is_bool($result)) {
@@ -44,7 +50,7 @@ class LoginTest extends TestCase
         $this->assertTrue(is_numeric($this->user->getID()));
     }
 
-    protected function tearDown() {
+    protected function tearDown() : void {
         if ($this->user instanceof User) {
             try {
                 $this->user->deregister();
@@ -54,6 +60,7 @@ class LoginTest extends TestCase
             $this->user =  null;
         }
         User::deleteAll();
+        $this->revertMigrations($this->migrations);
         parent::tearDown();
     }
 

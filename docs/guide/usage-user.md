@@ -23,7 +23,7 @@ Regardless of whether the current model to meet your needs, we do not recommend
 that you use the model as a user identity model. You need to implement your own `User` model:
 
 ```php
-class User extends \rhosocial\user\User
+class User extends \rhosocial\user\models\User
 {
 }
 ```
@@ -211,7 +211,7 @@ $user->profileClass = Profile::class;
 It is not associated with any Profile model by default.
 
 When you create a Profile model, the `createProfile()` will check whether the `Profile` class exists in the current namespace.
-If so, then use it. If not, the `rhosocial\user\Profile` will be used.
+If so, then use it. If not, the `rhosocial\user\models\Profile` will be used.
 
 If they are not what you want, you can also customize the full qualified name of your `Profile` model.
 

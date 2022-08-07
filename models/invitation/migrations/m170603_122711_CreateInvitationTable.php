@@ -6,15 +6,15 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
 namespace rhosocial\user\models\invitation\migrations;
 
-use rhosocial\user\migrations\Migration;
+use rhosocial\user\models\migrations\Migration;
 use rhosocial\user\models\invitation\Invitation;
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 
 /**
  * Class m170603_122711_CreateInvitationTable

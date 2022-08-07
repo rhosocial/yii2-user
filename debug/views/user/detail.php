@@ -2,9 +2,9 @@
 
 /* @var $panel yii\debug\panels\UserPanel */
 
-use rhosocial\user\User;
-use rhosocial\user\Profile;
-use rhosocial\user\security\PasswordHistory;
+use rhosocial\user\models\User;
+use rhosocial\user\models\Profile;
+use rhosocial\user\models\security\PasswordHistory;
 use rhosocial\user\rbac\Item;
 use yii\data\ArrayDataProvider;
 use yii\grid\GridView;

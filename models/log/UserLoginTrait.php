@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\models\log;
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 use Yii;
 
 /**

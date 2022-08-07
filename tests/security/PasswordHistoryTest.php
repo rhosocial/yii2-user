@@ -13,7 +13,7 @@
 namespace rhosocial\user\tests\security;
 
 use rhosocial\user\tests\TestCase;
-use rhosocial\user\tests\data\User;
+use rhosocial\user\tests\data\models\user\User;
 
 /**
  * @version 1.0
@@ -29,16 +29,23 @@ class PasswordHistoryTest extends TestCase
     protected $password1 = '123456';
     
     protected $password2 = '654321';
+
+    protected $migrations = [
+        \rhosocial\user\models\migrations\M170304140437CreateUserTable::class,
+        \rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable::class,
+    ];
     
-    protected function setUp() {
+    protected function setUp() : void {
         parent::setUp();
+        $this->applyMigrations($this->migrations);
         $this->user = new User(['password' => $this->password1]);
     }
     
-    protected function tearDown() {
+    protected function tearDown() : void {
         if ($this->user instanceof User && !$this->user->isNewRecord) {
             $this->user->deregister();
         }
+        $this->revertMigrations($this->migrations);
         parent::tearDown();
     }
     

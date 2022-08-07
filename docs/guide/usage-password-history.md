@@ -7,7 +7,7 @@ The password history model automatically records the new password after register
 Before using the password history features, we need to specify the password history class name:
 
 ```php
-class User extends \rhosocial\user\User
+class User extends \rhosocial\user\models\User
 {
     ...
     public $passwordHistoryClass = <Password History Class Name>;
@@ -23,7 +23,7 @@ The following are based on enabling the password history features.
 By default, it is allowed to continue using the passwords that have been used.
 That is:
 ```php
-class User extends \rhosocial\user\User {
+class User extends \rhosocial\user\models\User {
     ...
     $allowUsedPassword = true;
     ...
@@ -41,7 +41,7 @@ the default error message is 'This password has been used.'.
 If you want to modify it, you can assign `passwordUsedMessage` property of `User`
 class with your own message:
 ```php
-class User extends \rhosocial\user\User {
+class User extends \rhosocial\user\models\User {
     ...
     $passwordUsedMessage = <Your Own Message>;
     ...

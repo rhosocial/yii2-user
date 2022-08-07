@@ -12,8 +12,8 @@
 
 namespace rhosocial\user\forms;
 
-use rhosocial\user\User;
-use rhosocial\user\Profile;
+use rhosocial\user\models\User;
+use rhosocial\user\models\Profile;
 use Yii;
 use yii\base\InvalidValueException;
 use yii\base\Model;

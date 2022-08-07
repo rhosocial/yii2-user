@@ -1,0 +1,40 @@
+version: "3"
+services:
+  php:
+    build:
+      context: ../
+      args:
+        TAG: 8.1-apache
+    image: registry.us-west-1.aliyuncs.com/vistart_public/php:8.1-apache-dev
+    working_dir: /root/yii2-user
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - rhosocial_yii2user_dev
+    volumes:
+      - "composer_data_rhosocial_yii2user:/root/.composer/cache"
+      - ../../../../yii2-user:/root/yii2-user
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8
+    working_dir: /root/yii2-user
+    ports:
+      - "3306:3306"
+    networks:
+      - rhosocial_yii2user_dev
+    volumes:
+      - "mysql_data_rhosocial_yii2user:/var/lib/mysql"
+      - ../../../../yii2-user:/root/yii2-user
+      - ../../data/rhosocial_yii2_user.sql:/docker-entrypoint-initdb.d/rhosocial_yii2_user.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: rhosocial_yii2_user
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: rhosocial_yii2_user
+networks:
+  rhosocial_yii2user_dev:
+volumes:
+  composer_data_rhosocial_yii2user:
+  mysql_data_rhosocial_yii2user:

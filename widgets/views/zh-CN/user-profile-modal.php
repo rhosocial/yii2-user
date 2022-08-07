@@ -10,7 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 use yii\bootstrap5\Modal;
 use yii\web\View;
 use yii\widgets\DetailView;

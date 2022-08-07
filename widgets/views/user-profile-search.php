@@ -10,7 +10,7 @@
  * @license https://vistart.me/license/
  */
 
-use rhosocial\user\UserSearch;
+use rhosocial\user\models\UserSearch;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 

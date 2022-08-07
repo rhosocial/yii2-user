@@ -38,7 +38,7 @@ to the require section of your composer.json
 Once the extension is installed, simply use it in your code by:
 
 ```php
-class User extends \rhosocial\user\User
+class User extends \rhosocial\user\models\User
 {
     ...
 }
@@ -47,7 +47,7 @@ class User extends \rhosocial\user\User
 and
 
 ```php
-class Profile extends \rhosocial\user\Profile
+class Profile extends \rhosocial\user\models\Profile
 {
     ...
 }
@@ -57,7 +57,7 @@ But the above `Profile` class does not contain `email` and `phone` attributes.
 The following `SimpleProfile` contains them (including corresponding rules):
 
 ```php
-class Profile extends \rhosocial\user\SimpleProfile
+class Profile extends \rhosocial\user\models\SimpleProfile
 {
     ...
 }

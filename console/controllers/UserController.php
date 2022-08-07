@@ -14,8 +14,8 @@ namespace rhosocial\user\console\controllers;
 
 use Faker\Factory;
 use rhosocial\base\helpers\Timezone;
-use rhosocial\user\User;
-use rhosocial\user\Profile;
+use rhosocial\user\models\User;
+use rhosocial\user\models\Profile;
 use yii\console\Controller;
 use yii\console\Exception;
 use Yii;
@@ -36,7 +36,7 @@ class UserController extends Controller
     /**
      * Check and get valid User.
      * @return User
-     * @throws Exception throw if User is not an instance inherited from `\rhosocial\user\User`.
+     * @throws Exception throw if User is not an instance inherited from `\rhosocial\user\models\User`.
      */
     protected function checkUserClass()
     {
@@ -45,7 +45,7 @@ class UserController extends Controller
             throw new Exception('User Class Invalid.');
         }
         if (!((new $userClass()) instanceof User)) {
-            throw new Exception('User Class(' . $userClass . ') does not inherited from `\rhosocial\user\User`.');
+            throw new Exception('User Class(' . $userClass . ') does not inherited from `\rhosocial\user\models\User`.');
         }
         return $userClass;
     }

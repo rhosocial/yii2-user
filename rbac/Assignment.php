@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\rbac;
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 
 /**
  * @version 1.0
@@ -21,7 +21,7 @@ use rhosocial\user\User;
 class Assignment extends \yii\rbac\Assignment
 {
     /**
-     * @var string|User user ID (see [[\rhosocial\user\User::guid]])
+     * @var string|User user ID (see [[\rhosocial\user\models\User::guid]])
      */
     public $userGuid;
     

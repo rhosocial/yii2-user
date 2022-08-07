@@ -21,7 +21,7 @@ use rhosocial\user\tests\data\models\Username;
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class User extends \rhosocial\user\User
+class User extends \rhosocial\user\models\User
 {
     public $profileClass = Profile::class;
     public $passwordHistoryClass = PasswordHistory::class;

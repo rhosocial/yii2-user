@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2016 - 2017 vistart
  * @license https://vistart.me/license/
  */
-use rhosocial\user\User;
-use rhosocial\user\Profile;
+use rhosocial\user\models\User;
+use rhosocial\user\models\Profile;
 use rhosocial\user\widgets\ProfileFormWidget;
 use yii\helpers\Html;
 /* @var $this yii\web\View */

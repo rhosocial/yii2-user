@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
@@ -22,7 +22,7 @@ use yii\db\Connection;
  *
  * @author vistart <i@vistart.me>
  */
-abstract class TestCase extends \PHPUnit_Framework_TestCase {
+abstract class TestCase extends \PHPUnit\Framework\TestCase {
 
     public static $params;
 
@@ -44,7 +44,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
      * Clean up after test.
      * By default the application created with [[mockApplication]] will be destroyed.
      */
-    protected function tearDown() {
+    protected function tearDown() : void {
+        $migrations = self::getParam('migrations');
+        $this->revertMigrations($migrations);
         parent::tearDown();
         $this->destroyApplication();
     }
@@ -108,7 +110,37 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
         Yii::$container = new Container();
     }
 
-    protected function setUp() {
+    /**
+     * @param array|null $migrations
+     * @return void
+     */
+    protected function applyMigrations(array|null $migrations) : void {
+        if (empty($migrations)) {
+            return;
+        }
+        foreach ($migrations as $key => $migrationClass) {
+            $migration = new $migrationClass(['compact' => true]);
+            /* @var $migration \yii\db\Migration */
+            $migration->up();
+        }
+    }
+
+    /**
+     * @param array|null $migrations
+     * @return void
+     */
+    protected function revertMigrations(array|null $migrations) : void {
+        if (empty($migrations)) {
+            return;
+        }
+        foreach (array_reverse($migrations) as $key => $migrationClass) {
+            $migration = new $migrationClass(['compact' => true]);
+            /* @var $migration \yii\db\Migration */
+            $migration->down();
+        }
+    }
+
+    protected function setUp() : void {
         $databases = self::getParam('databases');
         $params = isset($databases['mysql']) ? $databases['mysql'] : null;
         if ($params === null) {
@@ -118,11 +150,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
             unset($params['class']);
         }
         $connection = new Connection($params);
-        $cacheParams = self::getParam('cache');/*
+        $cacheParams = self::getParam('cache');
+        /*
         if ($cacheParams === null) {
             $this->markTestSkipped('No cache component configured.');;
         }*/
         $this->mockWebApplication(['components' => ['db' => $connection, 'cache' => $cacheParams]]);
+
+        $migrations = self::getParam('migrations');
+        $this->applyMigrations($migrations);
 
         parent::setUp();
     }

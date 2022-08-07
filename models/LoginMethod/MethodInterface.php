@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\models\LoginMethod;
 
-use rhosocial\user\User;
+use rhosocial\user\models\User;
 
 /**
  * Interface MethodInterface
