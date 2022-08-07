@@ -14,10 +14,10 @@ jobs:
         run: docker-compose -f tests/environments/yii2-user-php80/mysql8.yml up -d --build && docker ps
       - name: Install dependencies
         run: |
-          docker exec yii2-user-php80_mysql8_1 sh -c "composer install -v"
+          docker exec yii2-user-php80_php_1 sh -c "composer install -v"
           sleep 60
       - name: Run tests
-        run: docker exec yii2-user-php80_mysql8_1 phpunit
+        run: docker exec yii2-user-php80_php_1 phpunit
       - name: Stop containers
         if: always()
         run: docker-compose -f tests/environments/yii2-user-php80/mysql8.yml down
