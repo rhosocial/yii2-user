@@ -114,7 +114,7 @@ trait UserInvitationRegistrationTrait
      * ```
      * If you just want to know who the current user has most recently invited, you can use:
      * ```php
-     * $user = $this->getInvitationRegistryInvitees()->orderByCreatedAt(SORT_DESC)->one();
+     * $user = $this->getInvitationRegistrationInvitees()->orderByCreatedAt(SORT_DESC)->one();
      * ```
      * @return BaseUserQuery
      */

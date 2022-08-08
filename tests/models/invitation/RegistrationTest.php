@@ -20,6 +20,7 @@ use rhosocial\user\rbac\permissions\CreateUser;
 use rhosocial\user\tests\data\models\invitation\Registration;
 use rhosocial\user\tests\data\models\user\User;
 use rhosocial\user\tests\TestCase;
+use yii\db\ActiveQueryInterface;
 use yii\db\IntegrityException;
 
 /**
@@ -169,13 +170,18 @@ class RegistrationTest extends TestCase
      */
     public function testGetInviteesByMethod()
     {
-        $this->assertEmpty($this->user->invitationRegistrationInvitees);
+        $this->assertEmpty($this->user->getInvitationRegistrations()->all());
 
         $this->invitee = new User(['password' => '123456']);
-        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));$this->user->getInvitationRegistrationInvitees()->orderByCreatedAt(SORT_DESC)->one();
-        unset($this->user->invitationRegistrationInvitees);
+        $this->assertTrue($this->invitee->registerAccordingToInvitation([], [], $this->user));
 
-        $this->assertNotEmpty($this->user->invitationRegistrationInvitees, "the actual count is: " . count($this->user->invitationRegistrationInvitees));
+        $this->assertEquals($this->invitee->guid, User::findIdentityByGuid($this->invitee)->guid);
+        $registration = Registration::findByInvitee($this->invitee)->one();
+        /* @var $registration Registration */
+        $this->assertEquals((string)$this->invitee, $registration->invitee_guid);
+
+        $invitations = $this->user->getInvitationRegistrations()->all();
+        $this->assertNotEmpty($invitations);
         $this->assertCount(1, $this->user->invitationRegistrationInvitees);
         $this->assertEquals((string)$this->invitee, (string)$this->user->invitationRegistrationInvitees[0]);
     }
