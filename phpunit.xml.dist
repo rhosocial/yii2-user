@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<phpunit bootstrap="./tests/bootstrap.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         stopOnFailure="false"
-         timeoutForLargeTests="1200"
-         processIsolation="true"
-         verbose="true">
-    <testsuites>
-        <testsuite name="Common">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <file>User.php</file>
-            <file>Profile.php</file>
-            <directory>console</directory>
-            <directory>models</directory>
-            <directory>security</directory>
-        </whitelist>
-    </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./tests/bootstrap.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="false" timeoutForLargeTests="1200" processIsolation="true" verbose="true" printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory>console</directory>
+      <directory>models</directory>
+      <directory>security</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="Common">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>

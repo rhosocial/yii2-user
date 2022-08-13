@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpunit bootstrap="./tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="false"
+         timeoutForLargeTests="1200"
+         processIsolation="true"
+         verbose="true"
+         printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer">
+    <testsuites>
+        <testsuite name="Common">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory>console</directory>
+            <directory>models</directory>
+            <directory>security</directory>
+        </whitelist>
+    </filter>
+</phpunit>
