@@ -14,10 +14,12 @@ namespace rhosocial\user\models\invitation\registration;
 
 use rhosocial\base\models\queries\BaseBlameableQuery;
 use rhosocial\base\models\queries\BaseUserQuery;
+use rhosocial\user\models\exception\NotActiveUserException;
 use rhosocial\user\models\invitation\Invitation;
 use rhosocial\user\models\User;
 use Yii;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\db\IntegrityException;
 
 /**
@@ -32,23 +34,53 @@ use yii\db\IntegrityException;
 trait UserInvitationRegistrationTrait
 {
     public $invitationRegistrationClass = Registration::class;
+
     /**
-     * @param array $associatedModels
-     * @param array $authRoles
+     * Check if the inviter is valid.
+     * The inviter must exist in the database and be active.
      * @param User $inviter
-     * @return boolean
-     * @throws \Exception
-     * @throws InvalidParamException
+     * @return bool true if [[$inviter]] is valid.
+     * @throws InvalidArgumentException throws if [[$inviter]] is null or new one.
+     * @throws IntegrityException throws if [[$inviter]] cannot be refreshed.
+     * @throws NotActiveUserException throws if [[$inviter]] is not active.
      */
-    public function registerAccordingToInvitation(array $associatedModels = [], array $authRoles = [], $inviter = null)
-    {
+    protected function checkInviter($inviter = null) {
         if (!$inviter) {
-            return false;
+            throw new InvalidArgumentException("Inviter cannot be null.");
         }
         if ($inviter instanceof User && $inviter->getIsNewRecord()) {
-            throw new InvalidParamException("Inviter cannot be a new user.");
+            throw new InvalidArgumentException("Inviter cannot be a new user.");
+        }
+        if (!$inviter->refresh()) {
+            throw new IntegrityException("Inviter cannot be refreshed.");
+        }
+        if ($inviter->status != static::$statusActive) {
+            throw new NotActiveUserException("The inviter is not currently an active user and cannot be as an inviter.");
+        }
+        return true;
+    }
+
+    /**
+     * Register by invitation.
+     * If an exception occurs during the registration process, all operations that have taken effect will be rolled.
+     * @param array $associatedModels
+     * @param array $authRoles
+     * @param User $inviter The inviting user must be a valid user, that is, the user has a record in the database and
+     * has the right to invite registration.
+     * @return bool true if registration succeeded.
+     * @throws \Exception
+     * @throws InvalidConfigException throws if invitation registration is not enabled.
+     * @throws InvalidArgumentException throws if [[$inviter]] is null or new one.
+     * @throws IntegrityException throws if [[$inviter]] cannot be refreshed or invitation active record failed to save.
+     * @throws NotActiveUserException throws if [[$inviter]] is not active.
+     */
+    public function registerByInvitation(array $associatedModels = [], array $authRoles = [], $inviter = null)
+    {
+        if (!$this->hasEnabledInvitationRegistration()) {
+            throw new InvalidConfigException("Invitation registration is not enabled.");
         }
         $transaction = Yii::$app->db->beginTransaction();
+        $this->checkInviter($inviter);
         try {
             $result = $this->register($associatedModels, $authRoles);
             if ($result instanceof \Exception) {
@@ -93,7 +125,16 @@ trait UserInvitationRegistrationTrait
     }
 
     /**
-     * @return BaseBlameableQuery
+     * Get invitation registration query which the current user is as the inviter.
+     * If you want to get all invitations issued by the current user, you can use:
+     * ```php
+     * $invitations = $this->invitationRegistrations;
+     * ```
+     * If you just want to know the latest invitation, you can use:
+     * ```php
+     * $invitation = $this->getInvitationRegistrations()->orderByCreatedAt(SORT_DESC)->one();
+     * ```
+     * @return BaseBlameableQuery|null Null if invitation disabled.
      */
     public function getInvitationRegistrations()
     {
@@ -107,7 +148,7 @@ trait UserInvitationRegistrationTrait
     }
 
     /**
-     * Get query which the current user is as the inviter.
+     * Get invitee query which the current user is as the inviter.
      * If you want to get which users the current user has invited, you can use:
      * ```php
      * $users = $this->invitationRegistrationInvitees;
@@ -116,10 +157,13 @@ trait UserInvitationRegistrationTrait
      * ```php
      * $user = $this->getInvitationRegistrationInvitees()->orderByCreatedAt(SORT_DESC)->one();
      * ```
-     * @return BaseUserQuery
+     * @return BaseUserQuery|null Null if invitation disabled.
      */
     public function getInvitationRegistrationInvitees()
     {
+        if (!$this->hasEnabledInvitationRegistration()) {
+            return null;
+        }
         return $this->hasMany(static::class, [$this->guidAttribute => 'invitee_guid'])->via('invitationRegistrations');
     }
 }
