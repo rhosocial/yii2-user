@@ -77,14 +77,14 @@ class M170304140437CreateUserTable extends Migration
             ], $tableOptions);
         }
         $this->addPrimaryKey('user_guid_pk', User::tableName(), 'guid');
-        $this->createIndex('user_id_unique', User::tableName(), 'id', true);
-        $this->createIndex('user_auth_key_unique', User::tableName(), 'auth_key', true);
-        $this->createIndex('user_access_token_unique', User::tableName(), 'access_token', true);
-        $this->createIndex('user_password_reset_token_unique', User::tableName(), 'password_reset_token', true);
-        $this->createIndex('user_created_at_normal', User::tableName(), 'created_at');
-        $this->createIndex('user_status_normal', User::tableName(), 'status');
-        $this->createIndex('user_type_normal', User::tableName(), 'type');
-        $this->createIndex('user_source_normal', User::tableName(), 'source');
+        $this->createIndex('user_id_index_unique', User::tableName(), 'id', true);
+        $this->createIndex('user_auth_key_index_unique', User::tableName(), 'auth_key', true);
+        $this->createIndex('user_access_token_index_unique', User::tableName(), 'access_token', true);
+        $this->createIndex('user_password_reset_token_index_unique', User::tableName(), 'password_reset_token', true);
+        $this->createIndex('user_created_at_index_normal', User::tableName(), 'created_at');
+        $this->createIndex('user_status_index_normal', User::tableName(), 'status');
+        $this->createIndex('user_type_index_normal', User::tableName(), 'type');
+        $this->createIndex('user_source_index_normal', User::tableName(), 'source');
         return true;
     }
 

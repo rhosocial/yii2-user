@@ -74,12 +74,12 @@ class M170304142349CreateProfileTable extends Migration
         }
         $this->addPrimaryKey('user_guid_profile_pk', Profile::tableName(), 'guid');
         $this->addForeignKey('user_profile_fk', Profile::tableName(), 'guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
-        $this->createIndex('user_nickname_normal', Profile::tableName(), 'nickname');
-        $this->createIndex('user_first_name_normal', Profile::tableName(), 'first_name');
-        $this->createIndex('user_last_name_normal', Profile::tableName(), 'last_name');
-        $this->createIndex('user_gender_normal', Profile::tableName(), 'gender');
-        $this->createIndex('user_timezone_normal', Profile::tableName(), 'timezone');
-        $this->createIndex('user_profile_created_at_normal', Profile::tableName(), 'created_at');
+        $this->createIndex('user_nickname_index_normal', Profile::tableName(), 'nickname');
+        $this->createIndex('user_first_name_index_normal', Profile::tableName(), 'first_name');
+        $this->createIndex('user_last_name_index_normal', Profile::tableName(), 'last_name');
+        $this->createIndex('user_gender_index_normal', Profile::tableName(), 'gender');
+        $this->createIndex('user_timezone_index_normal', Profile::tableName(), 'timezone');
+        $this->createIndex('user_profile_created_at_index_normal', Profile::tableName(), 'created_at');
         return true;
     }
 

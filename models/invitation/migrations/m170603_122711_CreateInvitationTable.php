@@ -24,7 +24,7 @@ use rhosocial\user\models\User;
  */
 class m170603_122711_CreateInvitationTable extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $tableOptions = null;
         if ($this->db->driverName == 'mysql') {
@@ -41,22 +41,24 @@ class m170603_122711_CreateInvitationTable extends Migration
             ], $tableOptions);
         }
         $this->addPrimaryKey('user_invitation_guid_pk', Invitation::tableName(), 'guid');
-        $this->addForeignKey('user_invitation_fk', Invitation::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
-        $this->addForeignKey('user_invitee_fk', Invitation::tableName(), 'invitee_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('user_invitation_user_guid_fk', Invitation::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_invitation_user_guid_index', Invitation::tableName(), 'user_guid');
+        $this->addForeignKey('user_invitation_invitee_fk', Invitation::tableName(), 'invitee_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_invitation_invitee_guid_index', Invitation::tableName(), 'invitee_guid');
     }
 
-    public function down()
+    public function safeDown()
     {
         $this->dropTable(Invitation::tableName());
     }
 
     /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
+    // Use up/down to run migration code without a transaction
+    public function up()
     {
     }
 
-    public function safeDown()
+    public function down()
     {
     }
     */

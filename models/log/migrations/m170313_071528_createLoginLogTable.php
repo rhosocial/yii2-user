@@ -62,11 +62,12 @@ class m170313_071528_createLoginLogTable extends Migration
             ], $tableOptions);
         }
         $this->addPrimaryKey('login_log_pk', Login::tableName(), 'guid');
-        $this->createIndex('login_log_id_unique', Login::tableName(), ['guid', 'id'], true);
-        $this->createIndex('login_log_created_at_normal', Login::tableName(), 'created_at');
-        $this->createIndex('login_log_status_normal', Login::tableName(), 'status');
-        $this->createIndex('login_log_device_normal', Login::tableName(), 'device');
-        $this->addForeignKey('login_log_creator_fk', Login::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('login_log_id_index_unique', Login::tableName(), ['guid', 'id'], true);
+        $this->createIndex('login_log_created_at_index_normal', Login::tableName(), 'created_at');
+        $this->createIndex('login_log_status_index_normal', Login::tableName(), 'status');
+        $this->createIndex('login_log_device_index_normal', Login::tableName(), 'device');
+        $this->addForeignKey('login_log_user_guid_fk', Login::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('login_log_user_guid_index', Login::tableName(), 'user_guid');
         return true;
     }
 

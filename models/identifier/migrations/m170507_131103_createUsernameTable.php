@@ -38,8 +38,8 @@ class m170507_131103_createUsernameTable extends Migration
             ], $tableOptions);
         }
         $this->addPrimaryKey('user_username_guid_pk', Username::tableName(), 'guid');
-        $this->addForeignKey('user_username_fk', Username::tableName(), 'guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
-        $this->createIndex('username_unique', Username::tableName(), 'content', true);
+        $this->addForeignKey('user_username_guid_fk', Username::tableName(), 'guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('username_index_unique', Username::tableName(), 'content', true);
         return true;
     }
 

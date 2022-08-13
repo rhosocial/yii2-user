@@ -55,8 +55,8 @@ class M170307150614CreatePasswordHistoryTable extends Migration
             ], $tableOptions);
         }
         $this->addPrimaryKey('password_guid_pk', PasswordHistory::tableName(), 'guid');
-        $this->addForeignKey('user_password_fk', PasswordHistory::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
-        $this->createIndex('user_password_created_at_normal', PasswordHistory::tableName(), 'created_at');
+        $this->addForeignKey('password_user_guid_fk', PasswordHistory::tableName(), 'user_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_password_created_at_index_normal', PasswordHistory::tableName(), 'created_at');
         return true;
     }
 

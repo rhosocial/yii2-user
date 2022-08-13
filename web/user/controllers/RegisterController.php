@@ -6,7 +6,7 @@
  * | |/ // /(__  )  / / / /| || |     | |
  * |___//_//____/  /_/ /_/ |_||_|     |_|
  * @link https://vistart.me/
- * @copyright Copyright (c) 2016 - 2017 vistart
+ * @copyright Copyright (c) 2016 - 2022 vistart
  * @license https://vistart.me/license/
  */
 
@@ -106,6 +106,10 @@ class RegisterController extends Controller
         return $this->render('index', [
             'model' => $model,
         ]);
+    }
+
+    public function actionInvitation($invitation_code = null) {
+        
     }
 
     /**
