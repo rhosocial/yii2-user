@@ -12,6 +12,7 @@
 
 namespace rhosocial\user\models\invitation\migrations;
 
+use rhosocial\user\models\invitation\InvitationCode;
 use rhosocial\user\models\migrations\Migration;
 use rhosocial\user\models\invitation\Invitation;
 use rhosocial\user\models\User;
@@ -35,6 +36,7 @@ class m170603_122711_CreateInvitationTable extends Migration
                 'user_guid' => $this->varbinary(16)->notNull()->comment('User GUID'),
                 'content' => $this->integer(11)->notNull()->comment('Invitation Type'),
                 'invitee_guid' => $this->varbinary(16)->notNull()->comment('Invitee GUID'),
+                'invitation_code_guid' => $this->varbinary(16)->defaultValue(null)->comment('Invitation Code GUID'),
                 'ip' => $this->varbinary(16)->defaultValue(0)->notNull()->comment('IP Address'),
                 'ip_type' => $this->smallInteger()->defaultValue(4)->notNull()->comment('IP Address Type'),
                 'created_at' => $this->dateTime()->notNull()->defaultValue('1970-01-01 00:00:00')->comment('Created At'),
@@ -45,6 +47,8 @@ class m170603_122711_CreateInvitationTable extends Migration
         $this->createIndex('user_invitation_user_guid_index', Invitation::tableName(), 'user_guid');
         $this->addForeignKey('user_invitation_invitee_fk', Invitation::tableName(), 'invitee_guid', User::tableName(), 'guid', 'CASCADE', 'CASCADE');
         $this->createIndex('user_invitation_invitee_guid_index', Invitation::tableName(), 'invitee_guid');
+        $this->addForeignKey('user_invitation_invitation_code_guid_fk', Invitation::tableName(), 'invitation_code_guid', InvitationCode::tableName(), 'guid', 'CASCADE', 'CASCADE');
+        $this->createIndex('user_invitation_invitation_code_guid_index', Invitation::tableName(), 'invitation_code_guid');
     }
 
     public function safeDown()

@@ -14,8 +14,10 @@ namespace rhosocial\user\models\invitation\registration;
 
 use rhosocial\base\models\queries\BaseBlameableQuery;
 use rhosocial\base\models\queries\BaseUserQuery;
-use rhosocial\user\models\exception\NotActiveUserException;
+use rhosocial\user\models\exceptions\NotActiveUserException;
 use rhosocial\user\models\invitation\Invitation;
+use rhosocial\user\models\invitation\InvitationCode;
+use rhosocial\user\models\invitation\InvitationCodeNotFoundException;
 use rhosocial\user\models\User;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -61,12 +63,40 @@ trait UserInvitationRegistrationTrait
     }
 
     /**
+     * @param string|InvitationCode|null $code
+     * @return bool
+     * @throws InvalidArgumentException throws if [[$code]] is null or new record.
+     * @throws InvitationCodeNotFoundException throws if [[$code]] does not exist.
+     */
+    protected function checkInvitationCode(string|InvitationCode $code = null) {
+        if (!$code) {
+            throw new InvalidArgumentException("Empty Invitation Code.");
+        }
+        if (!is_string($code) || !InvitationCode::find()->where(['code' => $code])->exists()) {
+            throw new InvitationCodeNotFoundException("The invitation code does not exist.");
+        }
+        if ($code instanceof InvitationCode && $code->getIsNewRecord()) {
+            throw new InvalidArgumentException("Invitation Code cannot be a new record.");
+        }
+        return true;
+    }
+
+    /**
+     * @param string|InvitationCode $code
+     * @return void
+     */
+    protected function getInvitationCodeIssuer(string|InvitationCode $code) {
+
+    }
+
+    /**
      * Register by invitation.
      * If an exception occurs during the registration process, all operations that have taken effect will be rolled.
      * @param array $associatedModels
      * @param array $authRoles
      * @param User $inviter The inviting user must be a valid user, that is, the user has a record in the database and
      * has the right to invite registration.
+     * @param string|InvitationCode $code
      * @return bool true if registration succeeded.
      * @throws \Exception
      * @throws InvalidConfigException throws if invitation registration is not enabled.
@@ -74,13 +104,19 @@ trait UserInvitationRegistrationTrait
      * @throws IntegrityException throws if [[$inviter]] cannot be refreshed or invitation active record failed to save.
      * @throws NotActiveUserException throws if [[$inviter]] is not active.
      */
-    public function registerByInvitation(array $associatedModels = [], array $authRoles = [], $inviter = null)
+    public function registerByInvitation(array $associatedModels = [], array $authRoles = [], User $inviter = null, $code = null)
     {
         if (!$this->hasEnabledInvitationRegistration()) {
             throw new InvalidConfigException("Invitation registration is not enabled.");
         }
         $transaction = Yii::$app->db->beginTransaction();
-        $this->checkInviter($inviter);
+        $isInviterValid = $inviter === null ? false : $this->checkInviter($inviter);
+        if (!$isInviterValid) {
+            $isInvitationCodeValid = $this->checkInvitationCode($code);
+            if ($isInvitationCodeValid) {
+
+            }
+        }
         try {
             $result = $this->register($associatedModels, $authRoles);
             if ($result instanceof \Exception) {

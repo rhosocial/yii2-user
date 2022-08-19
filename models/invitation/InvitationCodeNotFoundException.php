@@ -10,20 +10,20 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\models\exception;
+namespace rhosocial\user\models\invitation;
 
 /**
  *
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class NotActiveUserException extends \yii\base\Exception
+class InvitationCodeNotFoundException extends \yii\base\Exception
 {
     /**
      * @return string the user-friendly name of this exception
      */
     public function getName()
     {
-        return 'User Not Active';
+        return 'Invitation Code Not Found';
     }
 }

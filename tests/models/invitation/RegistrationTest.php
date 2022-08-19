@@ -12,8 +12,9 @@
 
 namespace rhosocial\user\tests\models\invitation;
 
-use rhosocial\user\models\exception\NotActiveUserException;
+use rhosocial\user\models\exceptions\NotActiveUserException;
 use rhosocial\user\models\invitation\migrations\m170603_122711_CreateInvitationTable;
+use rhosocial\user\models\invitation\migrations\m220813_051356_CreateInvitationCodeTable;
 use rhosocial\user\models\migrations\M170304140437CreateUserTable;
 use rhosocial\user\models\migrations\M170304142349CreateProfileTable;
 use rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable;
@@ -53,6 +54,7 @@ class RegistrationTest extends TestCase
         M170304140437CreateUserTable::class,
         M170304142349CreateProfileTable::class,
         M170307150614CreatePasswordHistoryTable::class,
+        m220813_051356_CreateInvitationCodeTable::class,
         m170603_122711_CreateInvitationTable::class,
     ];
 
@@ -138,7 +140,7 @@ class RegistrationTest extends TestCase
     public function testRegisterInvitedByNull() {
         $this->invitee = new User(['password' => '123456']);
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Inviter cannot be null.");
+        $this->expectExceptionMessage("Empty Invitation Code.");
         $this->invitee->registerByInvitation();
     }
 
