@@ -135,7 +135,7 @@ class RegistrationTest extends TestCase
      * Test null user to invite registration.
      * @group invitation
      * @group register
-     * @depends testRegister()
+     * @depends testRegister
      */
     public function testRegisterInvitedByNull() {
         $this->invitee = new User(['password' => '123456']);
@@ -148,7 +148,7 @@ class RegistrationTest extends TestCase
      * Test new user to invite registration.
      * @group invitation
      * @group register
-     * @depends testRegister()
+     * @depends testRegister
      */
     public function testRegisterInvitedByANewUser() {
         $user = new User(['password' => '123456']);
@@ -162,7 +162,7 @@ class RegistrationTest extends TestCase
      * Test inactive user to invite registration.
      * @group invitation
      * @group register
-     * @depends testRegister()
+     * @depends testRegister
      */
     public function testRegisterInvitedByAnInactiveInviter() {
         $this->assertFalse($this->inactiveUser->getIsNewRecord());
