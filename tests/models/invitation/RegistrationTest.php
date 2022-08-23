@@ -288,6 +288,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * A new user (which does not exist in the database) is not allowed to issue an invitation registration code.
      * @group invitation
      * @group register
      */
@@ -299,6 +300,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * A new user (which does not exist in the database) is not allowed to issue invitation registration codes.
      * @group invitation
      * @group register
      */
@@ -310,6 +312,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * Issue a invitation code when the invitation registration code is disabled.
      * @group invitation
      * @group register
      */
@@ -322,6 +325,7 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * Issue a batch of invitation codes when the invitation registration code is disabled.
      * @group invitation
      * @group register
      */
@@ -334,6 +338,8 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * Issue a invitation registration code, the invitation code is randomly generated.
+     * The default generation rule is a 16-bit positive integer.
      * @group invitation
      * @group register
      */
@@ -347,6 +353,8 @@ class RegistrationTest extends TestCase
     }
 
     /**
+     * Issue an invitation registration code, the invitation code is predefined.
+     * If the invitation code already exists, it is not allowed to issue the same invitation code.
      * @group invitation
      * @group register
      */
@@ -363,10 +371,54 @@ class RegistrationTest extends TestCase
         $model = $this->user->getLatestInvitationRegistrationCode();
         $this->assertInstanceOf(RegistrationCode::class, $model);
         $this->assertEquals($code, $model->code);
-
+        // Existing invitation code can no longer be issued, regardless of whether the issuer is me or someone else.
         $this->assertFalse($this->user->issueInvitationRegistrationCode($code));
         $user = new User(["password" => "123456"]);
         $this->assertTrue($user->register());
         $this->assertFalse($user->issueInvitationRegistrationCode($code));
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testIssueInvitationRegistrationCodes() {
+        $number = 20;
+        $this->assertTrue($this->user->issueInvitationRegistrationCodes($number));
+        $codes = $this->user->getLatestInvitationRegistrationCodes()->limit($number)->all();
+        $this->assertCount($number, $codes);
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testGetInvitationRegistrationCodeIssuer() {
+        $this->assertTrue($this->user->issueInvitationRegistrationCode());
+        $code = $this->user->getLatestInvitationRegistrationCode();
+        $this->assertInstanceOf(RegistrationCode::class, $code);
+        $user = $this->user->getInvitationRegistrationCodeIssuer($code)->one();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals((string)$this->user, (string)$user);
+    }
+    
+    public function testGetInvitationRegistrationCode() {
+        
+    }
+
+    /**
+     * Issue an invitation registration code, and invite a new user.
+     * @group invitation
+     * @group register
+     */
+    public function testIssueCodeAndInviteNewUser() {
+        $this->assertTrue($this->user->issueInvitationRegistrationCode());
+        $code = $this->user->getLatestInvitationRegistrationCode();
+        $this->assertInstanceOf(RegistrationCode::class, $code);
+
+        //
+        
+        $user = new User(["password" => "123456"]);
+        $this->assertTrue($user->registerByInvitation(null, null, null, $code->code));
     }
 }

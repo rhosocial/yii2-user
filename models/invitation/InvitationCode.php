@@ -49,6 +49,7 @@ class InvitationCode extends BaseBlameableModel
     }
 
     /**
+     * Get the issuer of the current invitation code (that is, the owner of the invitation code).
      * @return \rhosocial\base\models\queries\BaseUserQuery
      */
     public function getIssuer() {

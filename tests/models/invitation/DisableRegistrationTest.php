@@ -84,4 +84,12 @@ class DisableRegistrationTest extends TestCase
     public function testGetInvitationRegistrationInvitees() {
         $this->assertNull($this->user->getInvitationRegistrationInvitees());
     }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testGetInvitationRegistrationCodes() {
+        $this->assertNull($this->user->getInvitationRegistrationCodes());
+    }
 }

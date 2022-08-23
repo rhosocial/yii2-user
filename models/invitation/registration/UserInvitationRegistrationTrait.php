@@ -90,7 +90,7 @@ trait UserInvitationRegistrationTrait
      * @throws InvalidArgumentException throws if [[$code]] is null or new record.
      * @throws InvitationCodeNotFoundException throws if [[$code]] does not exist.
      */
-    protected function checkInvitationRegistrationCode(string|InvitationCode $code = null) {
+    protected function checkInvitationRegistrationCode(string|InvitationCode|null $code = null) {
         if (!$this->hasEnabledInvitationRegistrationCode()) {
             throw new InvitationCodeNotEnabledException("Invitation Registration Code has not been enabled yet.");
         }
@@ -98,21 +98,29 @@ trait UserInvitationRegistrationTrait
             throw new InvalidArgumentException("The invitation registration code is empty.");
         }
         $class = $this->invitationRegistrationCodeClass;
-        if (!is_string($code) || !$class::find()->where(['code' => $code])->exists()) {
-            throw new InvitationCodeNotFoundException("The invitation registration code does not exist.");
+        if ($code instanceof $class) {
+            /* @var $code InvitationCode */
+            if ($code->getIsNewRecord()) {
+                throw new InvalidArgumentException("The invitation registration code cannot be a new record.");
+            }
+            $code = $code->code;
         }
-        if ($code instanceof InvitationCode && $code->getIsNewRecord()) {
-            throw new InvalidArgumentException("The invitation registration code cannot be a new record.");
+        if (!is_string($code)) {
+            throw new InvalidArgumentException("Invalid type of invitation registration code.");
+        }
+        /* @var $code string */
+        if (!$class::find()->where(['code' => $code])->exists()) {
+            throw new InvitationCodeNotFoundException("The invitation registration code does not exist.");
         }
         return true;
     }
 
     /**
      * Get issuer of the invitation registration code.
-     * @param string|InvitationCode $code
+     * @param string|InvitationCode|null $code
      * @return BaseUserQuery
      */
-    protected function getInvitationRegistrationCodeIssuer(string|InvitationCode $code) {
+    public function getInvitationRegistrationCodeIssuer(string|InvitationCode|null $code = null) {
         $this->checkInvitationRegistrationCode($code);
         if (is_string($code)) {
             $class = $this->invitationRegistrationCodeClass;
@@ -125,19 +133,18 @@ trait UserInvitationRegistrationTrait
     /**
      * Register by invitation.
      * If an exception occurs during the registration process, all operations that have taken effect will be rolled.
-     * @param array $associatedModels
-     * @param array $authRoles
+     * @param array|null $associatedModels
+     * @param array|null $authRoles
      * @param User $inviter The inviting user must be a valid user, that is, the user has a record in the database and
      * has the right to invite registration.
-     * @param string|InvitationCode $code
+     * @param string|InvitationCode|null $code
      * @return bool true if registration succeeded.
-     * @throws \Exception
      * @throws InvalidConfigException throws if invitation registration is not enabled.
      * @throws InvalidArgumentException throws if [[$inviter]] is null or new one.
      * @throws IntegrityException throws if [[$inviter]] cannot be refreshed or invitation active record failed to save.
      * @throws UserNotActiveException throws if [[$inviter]] is not active.
      */
-    public function registerByInvitation(array $associatedModels = [], array $authRoles = [], User $inviter = null, $code = null)
+    public function registerByInvitation(array $associatedModels = null, array $authRoles = null, User $inviter = null, string|InvitationCode|null $code = null)
     {
         if (!$this->hasEnabledInvitationRegistration()) {
             throw new InvalidConfigException("Invitation registration is not enabled.");
@@ -147,7 +154,7 @@ trait UserInvitationRegistrationTrait
         Yii::info("is Inviter valid? $isInviterValid", __METHOD__);
         if (!$isInviterValid) {
             try {
-                $isInvitationCodeValid = $this->checkInvitationRegistrationCode($code);
+                $inviter = $this->getInvitationRegistrationCodeIssuer($code)->one();
             } catch (InvitationCodeNotEnabledException|InvitationCodeNotFoundException|InvalidArgumentException $ex) {
                 $transaction->rollBack();
                 throw new InvalidArgumentException("Inviter and Invitation Registration Code both invalid.");
@@ -274,7 +281,7 @@ trait UserInvitationRegistrationTrait
         if (!$this->hasEnabledInvitationRegistrationCode()) {
             return null;
         }
-        return $this->hasOne($this->invitationRegistrationClass, ['invitation_code_guid' => 'guid'])->via('invitationRegistrationCodes');
+        return $this->hasOne($this->invitationRegistrationClass, ['guid' => 'invitation_code_guid'])->via('invitationRegistrationCodes');
     }
 
     /**
