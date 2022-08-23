@@ -37,7 +37,7 @@ class m220813_051356_CreateInvitationCodeTable extends Migration
                 'guid' => $this->varbinary(16)->notNull()->comment('GUID'),
                 'code' => $this->varchar(16)->notNull()->defaultValue("")->comment('code'), // id.
                 'user_guid' => $this->varbinary(16)->notNull()->comment('Issuer GUID'),
-                'type' => $this->integer(11)->notNull()->comment('Invitation Code Type'), // Content.
+                'content' => $this->integer(11)->notNull()->comment('Invitation Code Type'), // Content.
                 'ip' => $this->varbinary(16)->defaultValue(0)->notNull()->comment('IP Address'),
                 'ip_type' => $this->smallInteger()->defaultValue(4)->notNull()->comment('IP Address Type'),
                 'created_at' => $this->dateTime()->notNull()->defaultValue('1970-01-01 00:00:00')->comment('Created At'),

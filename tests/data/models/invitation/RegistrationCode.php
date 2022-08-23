@@ -10,20 +10,17 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\models\invitation\exceptions;
+namespace rhosocial\user\tests\data\models\invitation;
+
+use rhosocial\user\tests\data\models\user\User;
 
 /**
- * Invitation Code Not Found Exception.
+ * Class Registration
+ * @package rhosocial\user\tests\data\models\invitation
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class InvitationCodeNotFoundException extends \yii\base\Exception
+class RegistrationCode extends \rhosocial\user\models\invitation\registration\RegistrationCode
 {
-    /**
-     * @return string the user-friendly name of this exception
-     */
-    public function getName()
-    {
-        return 'Invitation Code Not Found';
-    }
+    public $hostClass = User::class;
 }

@@ -148,9 +148,9 @@ trait UserInvitationRegistrationTrait
         if (!$isInviterValid) {
             try {
                 $isInvitationCodeValid = $this->checkInvitationRegistrationCode($code);
-            } catch (InvitationCodeNotEnabledException $ex) {
+            } catch (InvitationCodeNotEnabledException|InvitationCodeNotFoundException|InvalidArgumentException $ex) {
                 $transaction->rollBack();
-                throw new InvalidArgumentException("Inviter not specified and Invitation Registration Code not enabled.");
+                throw new InvalidArgumentException("Inviter and Invitation Registration Code both invalid.");
             } catch (\Exception $ex) {
                 $transaction->rollBack();
                 throw $ex;
@@ -198,7 +198,8 @@ trait UserInvitationRegistrationTrait
         if (!$this->hasEnabledInvitationRegistrationCode()) {
             return null;
         }
-        return $this->create($this->invitationRegistrationCodeClass);
+        $class = $this->invitationRegistrationCodeClass;
+        return $this->create($this->invitationRegistrationCodeClass, ['content' => $class::INVITATION_REGISTRATION]);
     }
 
     /**
@@ -301,12 +302,16 @@ trait UserInvitationRegistrationTrait
         if ($this->getIsNewRecord()) {
             throw new InvalidArgumentException("New user cannot issue invitation registration code.");
         }
-        if (!method_exists($this, "hasEnabledInvitationRegistrationCode") && !$this->hasEnabledInvitationRegistrationCode()) {
+        if (!method_exists($this, "hasEnabledInvitationRegistrationCode") || !$this->hasEnabledInvitationRegistrationCode()) {
             throw new InvitationCodeNotEnabledException("Invitation Registration Code has not been enabled yet.");
         }
         $invitationRegistrationCode = $this->createInvitationRegistrationCode();
+        /* @var $invitationRegistrationCode RegistrationCode */
         if ($code != null && is_string($code)) {
             $invitationRegistrationCode->code = $code;
+        }
+        if (!$invitationRegistrationCode->validate()) {
+            Yii::error($invitationRegistrationCode->getErrorSummary(false)[0], __METHOD__);
         }
         return $invitationRegistrationCode->save();
     }
@@ -340,7 +345,7 @@ trait UserInvitationRegistrationTrait
         if ($this->getIsNewRecord()) {
             throw new InvalidArgumentException("New user cannot issue invitation registration code.");
         }
-        if (!method_exists($this, "hasEnabledInvitationRegistrationCode") && !$this->hasEnabledInvitationRegistrationCode()) {
+        if (!method_exists($this, "hasEnabledInvitationRegistrationCode") || !$this->hasEnabledInvitationRegistrationCode()) {
             throw new InvitationCodeNotEnabledException("Invitation Registration Code has not been enabled yet.");
         }
         $invitationRegistrationCodes = [];

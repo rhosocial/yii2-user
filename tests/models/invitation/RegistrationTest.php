@@ -12,7 +12,9 @@
 
 namespace rhosocial\user\tests\models\invitation;
 
+use rhosocial\base\helpers\Number;
 use rhosocial\user\models\exceptions\UserNotActiveException;
+use rhosocial\user\models\invitation\exceptions\InvitationCodeNotEnabledException;
 use rhosocial\user\models\invitation\migrations\m170603_122711_CreateInvitationTable;
 use rhosocial\user\models\invitation\migrations\m220813_051356_CreateInvitationCodeTable;
 use rhosocial\user\models\migrations\M170304140437CreateUserTable;
@@ -20,6 +22,7 @@ use rhosocial\user\models\migrations\M170304142349CreateProfileTable;
 use rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable;
 use rhosocial\user\rbac\permissions\CreateUser;
 use rhosocial\user\tests\data\models\invitation\Registration;
+use rhosocial\user\tests\data\models\invitation\RegistrationCode;
 use rhosocial\user\tests\data\models\user\User;
 use rhosocial\user\tests\TestCase;
 use yii\base\InvalidArgumentException;
@@ -140,7 +143,7 @@ class RegistrationTest extends TestCase
     public function testRegisterInvitedByNull() {
         $this->invitee = new User(['password' => '123456']);
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Inviter not specified and Invitation Registration Code not enabled.");
+        $this->expectExceptionMessage("Inviter and Invitation Registration Code both invalid.");
         $this->invitee->registerByInvitation();
     }
 
@@ -284,7 +287,86 @@ class RegistrationTest extends TestCase
         $this->assertEquals(Registration::INVITATION_REGISTRATION, $invitation->content);
     }
 
-    public function testIssueInvitationRegistrationCode() {
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testNewUserIssueInvitationRegistrationCode() {
+        $user = new User(["password" => "123456"]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("New user cannot issue invitation registration code.");
+        $user->issueInvitationRegistrationCode();
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testNewUserIssueInvitationRegistrationCodes() {
+        $user = new User(["password" => "123456"]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("New user cannot issue invitation registration code.");
+        $user->issueInvitationRegistrationCodes();
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testDisableInvitationRegistrationCodeIssueCode() {
+        $this->assertFalse($this->user->getIsNewRecord());
+        $this->user->invitationRegistrationCodeClass = false;
+        $this->expectException(InvitationCodeNotEnabledException::class);
+        $this->expectExceptionMessage("Invitation Registration Code has not been enabled yet.");
         $this->user->issueInvitationRegistrationCode();
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testDisableInvitationRegistrationCodeIssueCodes() {
+        $this->assertFalse($this->user->getIsNewRecord());
+        $this->user->invitationRegistrationCodeClass = false;
+        $this->expectException(InvitationCodeNotEnabledException::class);
+        $this->expectExceptionMessage("Invitation Registration Code has not been enabled yet.");
+        $this->user->issueInvitationRegistrationCodes();
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testIssueInvitationRegistrationCodeRandomly() {
+        $this->assertFalse($this->user->getIsNewRecord());
+        $this->assertTrue($this->user->hasEnabledInvitationRegistrationCode());
+        $this->assertTrue($this->user->issueInvitationRegistrationCode());
+        $code = $this->user->getLatestInvitationRegistrationCode();
+        $this->assertInstanceOf(RegistrationCode::class, $code);
+        $this->assertMatchesRegularExpression("/^\d{{$code->idAttributeLength}}$/", $code->code);;
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     */
+    public function testIssueInvitationRegistrationCodePredefined() {
+        $noInitModel = $this->user->invitationRegistrationCodeClass::buildNoInitModel();
+        /* @var noInitModel RegistrationCode */
+        $length = $noInitModel->idAttributeLength;
+        $code = Number::randomNumber("8451", $length);
+        $remainingLength = $length - 4;
+        $this->assertMatchesRegularExpression("/^8451\d{{$remainingLength}}$/", $code);
+        $this->assertFalse($this->user->getIsNewRecord());
+        $this->assertTrue($this->user->hasEnabledInvitationRegistrationCode());
+        $this->assertTrue($this->user->issueInvitationRegistrationCode($code));
+        $model = $this->user->getLatestInvitationRegistrationCode();
+        $this->assertInstanceOf(RegistrationCode::class, $model);
+        $this->assertEquals($code, $model->code);
+
+        $this->assertFalse($this->user->issueInvitationRegistrationCode($code));
+        $user = new User(["password" => "123456"]);
+        $this->assertTrue($user->register());
+        $this->assertFalse($user->issueInvitationRegistrationCode($code));
     }
 }

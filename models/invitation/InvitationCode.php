@@ -23,7 +23,8 @@ use rhosocial\user\models\User;
  * Each user can issue an unlimited number of invitation codes.
  * Each invitation code can correspond to an invitation.
  * The user can not reuse the invitation code that has been used up.
- * @property string $code Invitation Registration Code.
+ * @property string $code Invitation Code.
+ * @property int $content Invitation Code Type.
  * @package rhosocial\user\models\invitation
  * @version 1.0
  * @author vistart <i@vistart.me>
@@ -34,6 +35,7 @@ class InvitationCode extends BaseBlameableModel
     public $idAttribute = 'code';
     public $idAttributeType = 1;
     public $idAttributeLength = 16;
+    public $idCreatorCombinatedUnique = false;
     public $expiredAfterAttribute = 'expired_after';
     public static $ExpiredAfterDefaultValue = 30 * 86400;
     /**
