@@ -12,10 +12,13 @@
 
 namespace rhosocial\user\tests\models\identifier;
 
+use rhosocial\base\helpers\Number;
 use rhosocial\user\models\migrations\M170304140437CreateUserTable;
 use rhosocial\user\models\migrations\M170307150614CreatePasswordHistoryTable;
+use rhosocial\user\tests\data\models\identifier\Username;
 use rhosocial\user\tests\data\models\user\User;
 use rhosocial\user\tests\TestCase;
+use yii\helpers\Inflector;
 
 /**
  * Class UsernameTest
@@ -81,6 +84,10 @@ class UsernameTest extends TestCase
     {
         $this->user->username = $this->username . '1';
         $this->assertEquals($this->username . '1', (string)$this->user->getUsername()->one());
+
+        $username = new Username(["content" => $this->username . '2']);
+        $this->user->username = $username;
+        $this->assertEquals($this->username . '2', (string)$this->user->getUsername()->one());
     }
 
     /**
@@ -111,5 +118,39 @@ class UsernameTest extends TestCase
         }
         $user = new User(['password' => '123456']);
         $this->assertTrue($user->register([$user->createUsername($this->username . '1')]));
+    }
+
+    /**
+     * @group username
+     */
+    public function testDisableUsername() {
+        $user = new User(['password' => '123456']);
+        $user->usernameClass = false;
+        $this->assertFalse($user->hasEnabledUsername());
+        $this->assertNull($user->getUsername());
+        $this->assertNull($user->createUsername());
+    }
+
+    /**
+     * @group username
+     */
+    public function testNullUsername() {
+        $user = new User(['password' => '123456']);
+        $this->assertTrue($user->register());
+        $username = $user->createUsername();
+        $this->assertInstanceOf(Username::class, $username);
+        $this->assertFalse($username->save());
+        $message = Inflector::camelize($username->contentAttribute) . " cannot be blank.";
+        $this->assertEquals($message, $username->getErrorSummary(false)[0]);
+    }
+
+    /**
+     * @group username
+     */
+    public function testStringifyUsername() {
+        $user = new User(['password' => '123456']);
+        $random = Number::randomNumber();
+        $username = $user->createUsername($random);
+        $this->assertEquals($random, (string)$username);
     }
 }

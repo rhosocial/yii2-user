@@ -56,10 +56,10 @@ trait UserUsernameTrait
 
     /**
      * Create or get username.
-     * @param $username
+     * @param string $username
      * @return null|Username
      */
-    public function createUsername($username)
+    public function createUsername(string|null $username = null)
     {
         if (!$this->hasEnabledUsername()) {
             return null;

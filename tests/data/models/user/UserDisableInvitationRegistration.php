@@ -15,7 +15,8 @@ namespace rhosocial\user\tests\data\models\user;
 /**
  * Invitation registration is not enabled for this user.
  */
-class UserNotInvitationRegistration extends \rhosocial\user\models\User
+class UserDisableInvitationRegistration extends \rhosocial\user\models\User
 {
     public $invitationRegistrationClass = false;
+    public $invitationRegistrationCodeClass = false;
 }

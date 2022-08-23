@@ -12,7 +12,7 @@
 namespace rhosocial\user\tests\models\invitation;
 
 use rhosocial\user\models\migrations\M170304140437CreateUserTable;
-use rhosocial\user\tests\data\models\user\UserNotInvitationRegistration as User;
+use rhosocial\user\tests\data\models\user\UserDisableInvitationRegistration as User;
 use rhosocial\user\tests\TestCase;
 use yii\base\InvalidConfigException;
 
