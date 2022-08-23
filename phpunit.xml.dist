@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="./tests/bootstrap.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnFailure="false" timeoutForLargeTests="1200" processIsolation="true" verbose="true" printerClass="Codedungeon\PHPUnitPrettyResultPrinter\Printer" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
+  <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true">
     <include>
       <directory>console</directory>
       <directory>models</directory>
       <directory>rbac</directory>
     </include>
+    <report>
+      <clover outputFile="clover.xml" />
+    </report>
   </coverage>
   <testsuites>
     <testsuite name="Common">

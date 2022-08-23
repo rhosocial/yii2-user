@@ -12,7 +12,7 @@
 
 namespace rhosocial\user\tests\models\invitation;
 
-use rhosocial\user\models\exceptions\NotActiveUserException;
+use rhosocial\user\models\exceptions\UserNotActiveException;
 use rhosocial\user\models\invitation\migrations\m170603_122711_CreateInvitationTable;
 use rhosocial\user\models\invitation\migrations\m220813_051356_CreateInvitationCodeTable;
 use rhosocial\user\models\migrations\M170304140437CreateUserTable;
@@ -135,12 +135,12 @@ class RegistrationTest extends TestCase
      * Test null user to invite registration.
      * @group invitation
      * @group register
-     * @1depends testRegister()
+     * @depends testRegister()
      */
     public function testRegisterInvitedByNull() {
         $this->invitee = new User(['password' => '123456']);
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Empty Invitation Code.");
+        $this->expectExceptionMessage("Inviter not specified and Invitation Registration Code not enabled.");
         $this->invitee->registerByInvitation();
     }
 
@@ -148,7 +148,7 @@ class RegistrationTest extends TestCase
      * Test new user to invite registration.
      * @group invitation
      * @group register
-     * @1depends testRegister()
+     * @depends testRegister()
      */
     public function testRegisterInvitedByANewUser() {
         $user = new User(['password' => '123456']);
@@ -162,13 +162,13 @@ class RegistrationTest extends TestCase
      * Test inactive user to invite registration.
      * @group invitation
      * @group register
-     * @1depends testRegister()
+     * @depends testRegister()
      */
     public function testRegisterInvitedByAnInactiveInviter() {
         $this->assertFalse($this->inactiveUser->getIsNewRecord());
         $this->assertEquals(User::$statusInactive, $this->inactiveUser->status);
         $this->invitee = new User(['password' => '123456']);
-        $this->expectException(NotActiveUserException::class);
+        $this->expectException(UserNotActiveException::class);
         $this->expectExceptionMessage("The inviter is not currently an active user and cannot be as an inviter.");
         $this->invitee->registerByInvitation([], [], $this->inactiveUser);
     }
@@ -228,7 +228,7 @@ class RegistrationTest extends TestCase
     /**
      * @group invitation
      * @group register
-     * @1depends testGetInvitees
+     * @depends testGetInvitees
      */
     public function testGetInviteesByMethod()
     {
@@ -282,5 +282,9 @@ class RegistrationTest extends TestCase
         $invitation = new Registration(['content' => 0]);
         $this->assertNotEquals(0, $invitation->content);
         $this->assertEquals(Registration::INVITATION_REGISTRATION, $invitation->content);
+    }
+
+    public function testIssueInvitationRegistrationCode() {
+        $this->user->issueInvitationRegistrationCode();
     }
 }

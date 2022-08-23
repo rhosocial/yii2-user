@@ -10,20 +10,20 @@
  * @license https://vistart.me/license/
  */
 
-namespace rhosocial\user\models\invitation;
+namespace rhosocial\user\models\invitation\exceptions;
 
 /**
- *
+ * Invitation Code Not Enabled Exception.
  * @version 1.0
  * @author vistart <i@vistart.me>
  */
-class InvitationCodeNotFoundException extends \yii\base\Exception
+class InvitationCodeNotEnabledException extends \yii\base\InvalidConfigException
 {
     /**
      * @return string the user-friendly name of this exception
      */
     public function getName()
     {
-        return 'Invitation Code Not Found';
+        return 'Invitation Code Not Enabled';
     }
 }

@@ -57,3 +57,5 @@ composer.lock
 # phpunit
 .phpunit.result.cache
 /coverage
+/.phpunit.cache
+clover.xml

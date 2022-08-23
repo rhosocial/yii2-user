@@ -21,8 +21,9 @@ use rhosocial\user\models\User;
  * Invitation codes can only be issued by registered users. The invitation code is globally unique, and all users can
  * uniquely determine the issuer and use of the invitation code through the invitation code.
  * Each user can issue an unlimited number of invitation codes.
- * Each invitation code can correspond to an infinite number of invitations.
- * The user can reuse the invitation code that has been used up.
+ * Each invitation code can correspond to an invitation.
+ * The user can not reuse the invitation code that has been used up.
+ * @property string $code Invitation Registration Code.
  * @package rhosocial\user\models\invitation
  * @version 1.0
  * @author vistart <i@vistart.me>
