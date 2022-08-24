@@ -41,6 +41,11 @@ trait UserInvitationRegistrationTrait
     public $invitationRegistrationCodeClass = false;
 
     /**
+     * @event Event an event that is triggered after user is registered by invitation successfully.
+     */
+    public static $eventAfterRegisterByInvitation = "afterRegisterByInvitation";
+
+    /**
      * Check whether this user enables the invitation from registration feature or not.
      * @return bool
      */
@@ -181,6 +186,7 @@ trait UserInvitationRegistrationTrait
             $transaction->rollBack();
             throw $ex;
         }
+        $this->trigger(static::$eventAfterRegisterByInvitation);
         return true;
     }
 

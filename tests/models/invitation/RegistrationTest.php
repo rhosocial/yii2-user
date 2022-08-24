@@ -25,6 +25,7 @@ use rhosocial\user\tests\data\models\invitation\Registration;
 use rhosocial\user\tests\data\models\invitation\RegistrationCode;
 use rhosocial\user\tests\data\models\user\User;
 use rhosocial\user\tests\TestCase;
+use yii\base\Event;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQueryInterface;
 use yii\db\IntegrityException;
@@ -420,5 +421,42 @@ class RegistrationTest extends TestCase
         
         $user = new User(["password" => "123456"]);
         $this->assertTrue($user->registerByInvitation(null, null, null, $code->code));
+    }
+
+    /**
+     * @param Event $event
+     * @return true
+     */
+    public function onAfterRegisterByInvitation($event) {
+        throw new InvalidArgumentException("onAfterRegisterByInvitation triggered.");
+        return true;
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     * @group event
+     */
+    public function testTriggerEventAfterRegisterByInvitationInviter() {
+        $user = new User(["password" => "123456"]);
+        $user->on(User::$eventAfterRegisterByInvitation, [$this, "onAfterRegisterByInvitation"]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("onAfterRegisterByInvitation triggered.");
+        $user->registerByInvitation(null, null, $this->user);
+    }
+
+    /**
+     * @group invitation
+     * @group register
+     * @group event
+     */
+    public function testTriggerEventAfterRegisterByInvitationCode() {
+        $this->user->issueInvitationRegistrationCode();
+        $code = $this->user->getLatestInvitationRegistrationCode();
+        $user = new User(["password" => "123456"]);
+        $user->on(User::$eventAfterRegisterByInvitation, [$this, "onAfterRegisterByInvitation"]);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("onAfterRegisterByInvitation triggered.");
+        $user->registerByInvitation(null, null, null, $code);
     }
 }
