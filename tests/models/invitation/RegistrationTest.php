@@ -402,9 +402,26 @@ class RegistrationTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals((string)$this->user, (string)$user);
     }
-    
+
+    /**
+     * @group invitation
+     * @group register
+     * @dependes testIssueInvitationRegistrationCodePredefined,
+     */
     public function testGetInvitationRegistrationCode() {
-        
+        $noInitModel = $this->user->invitationRegistrationCodeClass::buildNoInitModel();
+        /* @var noInitModel RegistrationCode */
+        $length = $noInitModel->idAttributeLength;
+        $code1 = Number::randomNumber("8452", $length);
+        $code2 = Number::randomNumber("8453", $length);
+        $remainingLength = $length - 4;
+        $this->assertMatchesRegularExpression("/^8452\d{{$remainingLength}}$/", $code1);
+        $this->assertTrue($this->user->issueInvitationRegistrationCode($code1));
+        sleep(1);
+        $this->assertMatchesRegularExpression("/^8453\d{{$remainingLength}}$/", $code2);
+        $this->assertTrue($this->user->issueInvitationRegistrationCode($code2));
+        $code = $this->user->getLatestInvitationRegistrationCode();
+        $this->assertEquals($code2, $code->code);
     }
 
     /**
