@@ -37,3 +37,36 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker-compose -f tests/environments/yii2-user-php81/mysql8.yml down
+  test_php80_mariadb109:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Build and Start containers
+        run: docker-compose -f tests/environments/yii2-user-php80/mariadb109.yml up -d --build && docker ps
+      - name: Install dependencies
+        run: |
+          docker exec yii2-user-php80_php_1 sh -c "composer install -v"
+          sleep 60
+      - name: Run tests
+        run: docker exec yii2-user-php80_php_1 sh -c "XDEBUG_MODE=coverage phpunit"
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f tests/environments/yii2-user-php80/mariadb109.yml down
+  test_php81_mariadb109:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Build and Start containers
+        run: docker-compose -f tests/environments/yii2-user-php81/mariadb109.yml up -d --build && docker ps
+      - name: Install dependencies
+        run: |
+          docker exec yii2-user-php81_php_1 sh -c "composer install -v"
+          sleep 60
+      - name: Run tests
+        run: docker exec yii2-user-php81_php_1 sh -c "XDEBUG_MODE=coverage phpunit"
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f tests/environments/yii2-user-php81/mariadb109.yml down
+
