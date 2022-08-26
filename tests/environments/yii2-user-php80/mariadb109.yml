@@ -16,8 +16,8 @@ services:
       - "composer_data_rhosocial_yii2user:/root/.composer/cache"
       - ../../../../yii2-user:/root/yii2-user
     depends_on:
-      - mariadb
-  mariadb:
+      - mysql
+  mysql:
     image: mariadb:10.9
     working_dir: /root/yii2-user
     ports:
