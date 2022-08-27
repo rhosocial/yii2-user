@@ -26,6 +26,7 @@ class Registration extends Invitation
 {
     const INVITATION_REGISTRATION = 0x01;
     public $allowRepeated = false;
+    public $invitationCodeClass = RegistrationCode::class;
 
     /**
      * @inheritdoc

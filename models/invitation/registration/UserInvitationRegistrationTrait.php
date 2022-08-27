@@ -149,7 +149,7 @@ trait UserInvitationRegistrationTrait
      * @throws IntegrityException throws if [[$inviter]] cannot be refreshed or invitation active record failed to save.
      * @throws UserNotActiveException throws if [[$inviter]] is not active.
      */
-    public function registerByInvitation(array $associatedModels = null, array $authRoles = null, User $inviter = null, string|InvitationCode|null $code = null)
+    public function registerByInvitation(array $associatedModels = null, array $authRoles = null, User $inviter = null, InvitationCode|string|null $code = null)
     {
         if (!$this->hasEnabledInvitationRegistration()) {
             throw new InvalidConfigException("Invitation registration is not enabled.");
@@ -176,7 +176,7 @@ trait UserInvitationRegistrationTrait
             if ($result !== true) {
                 throw new IntegrityException("Registration Failed.");
             }
-            $invitation = $inviter->createInvitationRegistration($this);
+            $invitation = $inviter->createInvitationRegistration($this, $code);
             $result = $invitation->save();
             if (!$result) {
                 throw new IntegrityException("Record Invitation Failed:" . $invitation->getFirstError());
@@ -195,12 +195,12 @@ trait UserInvitationRegistrationTrait
      * @param string|User $invitee The invited person.
      * @return Registration
      */
-    public function createInvitationRegistration($invitee)
+    public function createInvitationRegistration($invitee, RegistrationCode|string $code = null)
     {
         if (!$this->hasEnabledInvitationRegistration()) {
             return null;
         }
-        return $this->create($this->invitationRegistrationClass, ['invitee' => $invitee]);
+        return $this->create($this->invitationRegistrationClass, ['invitee' => $invitee, 'invitationCode' => $code]);
     }
 
     /**
@@ -247,7 +247,7 @@ trait UserInvitationRegistrationTrait
         }
         $class = $this->invitationRegistrationCodeClass;
         $noInit = $class::buildNoInitModel();
-        /* @var $noInit InvitationCode */
+        /* @var $noInit RegistrationCode */
         return $this->hasMany($class, [$noInit->createdByAttribute => $this->guidAttribute]);
     }
 
@@ -287,7 +287,13 @@ trait UserInvitationRegistrationTrait
         if (!$this->hasEnabledInvitationRegistrationCode()) {
             return null;
         }
-        return $this->hasOne($this->invitationRegistrationClass, ['guid' => 'invitation_code_guid'])->via('invitationRegistrationCodes');
+        $class1 = $this->invitationRegistrationCodeClass;
+        $noInit1 = $class1::buildNoInitModel();
+        /* @var $noInit1 RegistrationCode */
+        $class2 = $this->invitationRegistrationClass;
+        $noInit2 = $class2::buildNoInitModel();
+        /* @var $noInit2 Registration */
+        return $this->hasOne($class2, [$noInit2->invitationCodeGuidAttribute => $noInit1->guidAttribute])->via('invitationRegistrationCodes');
     }
 
     /**

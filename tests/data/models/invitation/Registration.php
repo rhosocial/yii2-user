@@ -23,4 +23,5 @@ use rhosocial\user\tests\data\models\user\User;
 class Registration extends \rhosocial\user\models\invitation\registration\Registration
 {
     public $hostClass = User::class;
+    public $invitationCodeClass = RegistrationCode::class;
 }

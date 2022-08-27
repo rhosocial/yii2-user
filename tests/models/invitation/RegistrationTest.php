@@ -434,10 +434,28 @@ class RegistrationTest extends TestCase
         $code = $this->user->getLatestInvitationRegistrationCode();
         $this->assertInstanceOf(RegistrationCode::class, $code);
 
-        //
-        
+        // After an invitation code is issued, the record of used invitation code should be empty before it is used.
+        // var_dump($query = $this->user->getInvitationRegistrationCodeInvitation()->createCommand()->getRawSql());
+        $invitation = $this->user->getInvitationRegistrationCodeInvitation()->one();
+        $this->assertNull($invitation);
+
         $user = new User(["password" => "123456"]);
         $this->assertTrue($user->registerByInvitation(null, null, null, $code->code));
+
+        // After using the invitation code, you should be able to find the invitation record.
+        $invitation = Registration::find()->where(['invitation_code_guid' => $code->getGUID()])->one();
+        $this->assertInstanceOf(Registration::class, $invitation);
+        $inviter_guid = $this->user->guid;
+        $this->assertEquals($inviter_guid, $invitation->{$invitation->createdByAttribute});
+        $invitee_guid = $user->guid;
+        $this->assertEquals($invitee_guid, $invitation->invitee_guid);
+        $code_guid = $code->guid;
+        $this->assertEquals($code_guid, $invitation->{$invitation->invitationCodeGuidAttribute});
+
+        // var_dump($query = $this->user->getInvitationRegistrationCodeInvitation()->createCommand()->getRawSql());
+        $invitation = $this->user->getInvitationRegistrationCodeInvitation()->one();
+        $this->assertInstanceOf(Registration::class, $invitation);
+        $this->assertEquals($code->getGUID(), $invitation->getAttribute($invitation->invitationCodeGuidAttribute));
     }
 
     /**

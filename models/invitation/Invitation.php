@@ -46,6 +46,9 @@ abstract class Invitation extends BaseBlameableModel
      */
     public $allowRepeated = true;
 
+    public $invitationCodeGuidAttribute = 'invitation_code_guid';
+    public $invitationCodeClass = InvitationCode::class;
+
     /**
      * @return array
      */
@@ -89,6 +92,41 @@ abstract class Invitation extends BaseBlameableModel
     {
         $userClass = $this->hostClass;
         return $userClass::findOne($this->invitee_guid);
+    }
+
+    /**
+     * @param InvitationCode|string|null $code
+     * @return void
+     */
+    public function setInvitationCode(InvitationCode|string $code = null) {
+        if ($code == null) {
+            $this->{$this->invitationCodeGuidAttribute} = null;
+            return;
+        }
+        if ($this->invitationCodeGuidAttribute == false || $this->invitationCodeClass == false) {
+            return;
+        }
+        if ($code instanceof InvitationCode) {
+            $code = $code->{$code->guidAttribute};
+            $this->{$this->invitationCodeGuidAttribute} = $code;
+            return;
+        }
+        if (is_string($code)) {
+            $class = $this->invitationCodeClass;
+            $this->{$this->invitationCodeGuidAttribute} = $class::find()->id($code)->one()->guid;
+            return;
+        }
+    }
+
+    /**
+     * @return null
+     */
+    public function getInvitationCode() {
+        if ($this->invitationCodeGuidAttribute == false || $this->invitationCodeClass == false) {
+            return null;
+        }
+        $class = $this->invitationCodeClass;
+        return $class::findOne($this->{$this->invitationCodeGuidAttribute});
     }
 
     /**
